@@ -19,5 +19,32 @@ Une interface texte ou graphique sera ajoutée par la suite. ...
 
 Def  - D20 systeme :
 
+- Jet de D20 : Les actions sont généralement résolues en lançant un D20, en y ajoutant des modificateurs (compétence, caractéristique, bonus divers) et en comparant le résultat à une Classe de Difficulté (CD) ou un jet opposé.
+- Caractéristiques : Un personnage possède des attributs de base (ex. : Force, Dextérité, Intelligence) qui influencent ses capacités et ses jets de dés.
+- Bonus et modificateurs : Les scores de caractéristiques, compétences, dons et équipements donnent des bonus ou malus aux jets de D20.
+- Classes et niveaux : Les personnages appartiennent à des classes (guerrier, mage, voleur, etc.) et gagnent des niveaux qui améliorent leurs capacités.
+
+Points de vie (PV) et points de mana (PM) : Les personnages ont des PV qui déterminent leur survie et parfois des PM pour la magie.
+
+Combat au tour par tour : Lors d’un affrontement, chaque personnage agit selon une initiative, effectue une attaque (jet d’attaque + modificateur) et inflige des dégâts (jet de dés basé sur l'arme ou la capacité).
+
+Jets de sauvegarde : Lorsqu’un personnage doit résister à une menace (poison, magie, piège), il effectue un jet de sauvegarde basé sur une caractéristique.
+
+Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mauvais) qui influence son rôle et ses décisions.
+
+Évolution du personnage : L’expérience gagnée permet de monter en niveau et d’améliorer les compétences, capacités et caractéristiques.
+
+...
+
+<!-- Todo -->
+
+- personnage
+- Jet de dé
+- Caractéristique (force, dextérité, constitution, intelligence, sagesse, charisme)
+- Bonus / malus
+- classes / niveau
+- combat au tour par tour
+- sauvegarde
+- evolution du personnage
 
 ...
