@@ -1,0 +1,14 @@
+{
+    "players": [
+        {
+            "id": 1,
+            "name": "Alice",
+            "level": 1
+        },
+        {
+            "id": 2,
+            "name": "Bob",
+            "level": 2
+        }
+    ]
+}

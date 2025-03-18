@@ -17,6 +17,8 @@ Une interface texte ou graphique sera ajoutée par la suite. ...
 
 --- | others things | ---
 
+lien avec toute la documentation : [docu DnD](https://regles-donjons-dragons.com/page2.html)
+
 Def  - D20 systeme :
 
 - Jet de D20 : Les actions sont généralement résolues en lançant un D20, en y ajoutant des modificateurs (compétence, caractéristique, bonus divers) et en comparant le résultat à une Classe de Difficulté (CD) ou un jet opposé.
@@ -37,6 +39,10 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 ...
 
 <!-- Todo -->
+
+Urgent :
+
+- page Création de personnage avec choix de classe parmis une liste.
 
 - personnage
 - Jet de dé
