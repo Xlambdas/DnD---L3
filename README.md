@@ -44,6 +44,8 @@ Urgent :
 
 - page Création de personnage avec choix de classe parmis une liste.
 
+Autre / objectifs :
+
 - personnage
 - Jet de dé
 - Caractéristique (force, dextérité, constitution, intelligence, sagesse, charisme)
