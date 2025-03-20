@@ -38,6 +38,14 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 
 Évolution du personnage : L’expérience gagnée permet de monter en niveau et d’améliorer les compétences, capacités et caractéristiques.
 
+# Questions
+
+Marge de manoeuvre ?
+quels regles a appliquer ?
+
+
+
+
 ...
 
 <!-- Todo -->
