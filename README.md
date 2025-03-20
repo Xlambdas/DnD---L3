@@ -1,4 +1,6 @@
+
 # DnD---L3
+
 game for the final project on informatics L3.
 
 Cute game with all the things an dungeon and dragon need !!
@@ -24,7 +26,7 @@ Def  - D20 systeme :
 - Jet de D20 : Les actions sont généralement résolues en lançant un D20, en y ajoutant des modificateurs (compétence, caractéristique, bonus divers) et en comparant le résultat à une Classe de Difficulté (CD) ou un jet opposé.
 - Caractéristiques : Un personnage possède des attributs de base (ex. : Force, Dextérité, Intelligence) qui influencent ses capacités et ses jets de dés.
 - Bonus et modificateurs : Les scores de caractéristiques, compétences, dons et équipements donnent des bonus ou malus aux jets de D20.
-- Classes et niveaux : Les personnages appartiennent à des classes (guerrier, mage, voleur, etc.) et gagnent des niveaux qui améliorent leurs capacités.
+- Classes et niveaux : Les personnages appartiennent à une/des classes (guerrier, mage, voleur, etc.) et gagnent des niveaux qui améliorent leurs capacités.
 
 Points de vie (PV) et points de mana (PM) : Les personnages ont des PV qui déterminent leur survie et parfois des PM pour la magie.
 
