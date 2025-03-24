@@ -40,7 +40,7 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 
 # Questions
 
-Marge de manoeuvre ?
+Marge de manoeuvre ? forme du jeux ? différentes pages ? interface utilisateur ?
 quels regles a appliquer ?
 
 
