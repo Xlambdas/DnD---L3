@@ -54,9 +54,9 @@ Urgent :
 Autre / objectifs :
 
 - personnage
-    - create perso
-    - save to database
-    UPDATE : if he already exist : return (waw man, the gamer already exist, find another name nigger)
+  - create perso
+  - save to database
+  - UPDATE : if he already exist : return (waw man, the gamer already exist, find another name nigger)
 - Jet de dé
 - Caractéristique (force, dextérité, constitution, intelligence, sagesse, charisme)
 - Bonus / malus
