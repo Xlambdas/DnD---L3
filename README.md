@@ -43,9 +43,6 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 Marge de manoeuvre ? forme du jeux ? différentes pages ? interface utilisateur ?
 quels regles a appliquer ?
 
-
-
-
 ...
 
 <!-- Todo -->
@@ -57,9 +54,9 @@ Urgent :
 Autre / objectifs :
 
 - personnage
-    - create perso
-    - save to database
-    UPDATE : if he already exist : return (waw man, the gamer already exist, find another name nigger)
+  - create perso
+  - save to database
+  - UPDATE : if he already exist : return (waw man, the gamer already exist, find another name nigger)
 - Jet de dé
 - Caractéristique (force, dextérité, constitution, intelligence, sagesse, charisme)
 - Bonus / malus
