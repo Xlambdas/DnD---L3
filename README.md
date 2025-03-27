@@ -57,6 +57,9 @@ Autre / objectifs :
   - create perso
   - save to database
   - UPDATE : if he already exist : return (waw man, the gamer already exist, find another name nigger)
+  - UPDATE : 
+      - id unique généré par joueur
+      - delete player 
 - Jet de dé
 - Caractéristique (force, dextérité, constitution, intelligence, sagesse, charisme)
 - Bonus / malus
