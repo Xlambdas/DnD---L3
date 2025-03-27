@@ -20,12 +20,23 @@ class Player ():
                     data = {"players": []}
         else:
             data = {"players": []}
+        
+        # Vérifie si le nom existe déjà
+        existing_names = [player["name"] for player in data["players"]]
 
+        if self.name in existing_names:
+            print("Sorry, name already used")
+            return False  # Évite d'aller plus loin si le nom existe déjà
+    
         # Ajoute le joueur et sauvegarde
         data["players"].append(self.to_dict())
 
         with open(filename, 'w') as f:
             json.dump(data, f, indent=4)
+
+        print(f"Player {self.name} added successfully!")
+        return True  # Indique que le joueur a bien été ajouté
+    
 
 def get_players():
     # Read data from the JSON file
@@ -37,6 +48,6 @@ def get_players():
             return []
 
 # test
-player1 = Player(1, "Steve", 5)
-# player1.create_player()
+player1 = Player(8, "Mon_enoooorme_chibre", 50)
+player1.create_player()
 print(get_players())
