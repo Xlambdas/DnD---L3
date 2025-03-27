@@ -9,6 +9,11 @@
             "id": 2,
             "name": "Bob",
             "level": 2
+        },
+        {
+            "id": 1,
+            "name": "Steve",
+            "level": 5
         }
     ]
 }

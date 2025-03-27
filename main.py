@@ -27,7 +27,7 @@ def get_players():
 
 # Example usage of get_players function
 if __name__ == "__main__":
-    player_instance = create_player()
+    # player_instance = create_player()
     players = get_players()
 
     for player_instance in players:
