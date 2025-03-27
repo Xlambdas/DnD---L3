@@ -12,14 +12,8 @@ class Player ():
 
     def create_player(self, filename='game_database.json'):
         # Vérifie si le fichier existe et lit les données existantes
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                try:
-                    data = json.load(f)
-                except json.JSONDecodeError:
-                    data = {"players": []}
-        else:
-            data = {"players": []}
+        data = get_players()
+        print("create player",data)
         
         # Vérifie si le nom existe déjà
         existing_names = [player["name"] for player in data["players"]]
@@ -37,17 +31,34 @@ class Player ():
         print(f"Player {self.name} added successfully!")
         return True  # Indique que le joueur a bien été ajouté
     
+def get_players(filename='game_database.json'):
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = {"players": []}
+    else:
+        data = {"players": []}
+    return data
 
-def get_players():
-    # Read data from the JSON file
-    with open('game_database.json', 'r') as f:
-        try:
-            data = json.load(f)
-            return data.get('players', [])
-        except json.JSONDecodeError:
-            return []
+# def delete_player(name, filename='game_database.json'):
+#         """Supprime un joueur en fonction de son nom."""
+#         data = get_players(filename)
 
-# test
+#         # Filtrer les joueurs à garder
+#         new_players = [p for p in data["players"] if p["name"] != name]
+
+#         if len(new_players) == len(data["players"]):
+#             print(f"❌ Player {name} not found.")
+#             return False
+
+#         # Sauvegarde les nouveaux joueurs
+#         data["players"] = new_players
+#         Player.save_all_data(data, filename)
+#         print(f"✅ Player {name} deleted successfully!")
+#         return True
+
 player1 = Player(8, "Mon_enoooorme_chibre", 50)
+# print("get_players",get_players('game_database.json'))
 player1.create_player()
-print(get_players())
