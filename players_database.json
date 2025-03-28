@@ -57,5 +57,47 @@
             "endurance": 20,
             "bonus": {"magic_power": 6, "arcane_knowledge": 3}
         }
+    ],
+    "race": [
+        {
+            "name": "Elf",
+            "base_health": 30,
+            "bonus": {"Dexterity": 2, "Perception": 1}
+        },
+        {
+            "name": "Dwarf",
+            "base_health": 25,
+            "bonus": {"Constitution": 2, "Resilience": 1}
+        },
+        {
+            "name": "Human",
+            "base_health": 30,
+            "bonus": {"Versatility": 1}
+        },
+        {
+            "name": "Halfling",
+            "base_health": 25,
+            "bonus": {"Dexterity": 2, "Luck": 1}
+        },
+        {
+            "name": "Orc",
+            "base_health": 30,
+            "bonus": {"Strength": 2, "Intimidation": 1}
+        },
+        {
+            "name": "Tiefling",
+            "base_health": 30,
+            "bonus": {"Charisma": 2, "Infernal Resistance": 1}
+        },
+        {
+            "name": "Gnome",
+            "base_health": 25,
+            "bonus": {"Intelligence": 2, "Craftiness": 1}
+        },
+        {
+            "name": "Dragonborn",
+            "base_health": 30,
+            "bonus": {"Strength": 2, "Draconic Ancestry": 1}
+        }
     ]
 }
