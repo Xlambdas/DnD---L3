@@ -1,5 +1,8 @@
 import json
 import os
+from main import get_all_data
+from classe import *
+from race import *
 
 class Player ():
     def __init__(self, id, name, level, classe, race):

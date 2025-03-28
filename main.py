@@ -1,5 +1,6 @@
 # Fichier pour l'affichage de la fenêtre principale du jeu.
 
+import os
 import json
 from ezTK import *
 # from player import create_player
@@ -76,3 +77,15 @@ if __name__ == "__main__":
 
     # # Run the main menu
     # root.loop()
+
+
+def get_all_data(filename='players_database.json'):
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = {}
+    else:
+        data = {}
+    return data

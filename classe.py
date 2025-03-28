@@ -1,11 +1,6 @@
-# from ezTK import *
-# import json
-
-
-# # Function to retrieve a class by name
-# def get_class_by_name(name):
-#     return predefined_classes.get(name, None)
-
+from ezTK import *
+import json
+from main import get_all_data
 
 class Classe ():
     def __init__(self, nom, force, endurance, bonus):
@@ -93,20 +88,20 @@ predefined_classes = {
 import json
 import os
 
-def get_data(filename='players_database.json'):
+def get_all_data(filename='players_database.json'):
     if os.path.exists(filename):
         with open(filename, 'r') as f:
             try:
                 data = json.load(f)
             except json.JSONDecodeError:
-                data = {"classe": []}
+                data = {}
     else:
-        data = {"classe": []}
+        data = {}
     return data
 
 
 def get_classe(name):
-    data = get_data()
+    data = get_all_data()
     for classe in data['classe']:
         if classe['name'] == name:
             return classe

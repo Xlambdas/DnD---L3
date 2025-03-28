@@ -1,3 +1,8 @@
+import json
+import os
+from main import get_all_data
+
+
 class Race:
     def __init__(self, name, speed, abilities):
         self.name = name
@@ -20,21 +25,15 @@ class Race:
         return base_attack + bonus
 
 
-predefined_races = {
-    "Elf": Race("Elf", 30, {"Dexterity": 2, "Perception": 1}),
-    "Dwarf": Race("Dwarf", 25, {"Constitution": 2, "Resilience": 1}),
-    "Human": Race("Human", 30, {"Versatility": 1}),
-    "Halfling": Race("Halfling", 25, {"Dexterity": 2, "Luck": 1}),
-    "Orc": Race("Orc", 30, {"Strength": 2, "Intimidation": 1}),
-    "Tiefling": Race("Tiefling", 30, {"Charisma": 2, "Infernal Resistance": 1}),
-    "Gnome": Race("Gnome", 25, {"Intelligence": 2, "Craftiness": 1}),
-    "Dragonborn": Race("Dragonborn", 30, {"Strength": 2, "Draconic Ancestry": 1}),
-}
 
-# Function to retrieve a race by name
-def get_race_by_name(name):
-    return predefined_races.get(name, None)
+def get_race(name):
+    data = get_all_data()
+    for race in data['race']:
+        if race['name'] == name:
+            return race
+    return data['race']
 
+playerRace = get_race("Elf")
+player01 = Race(playerRace['name'], playerRace['base_health'], playerRace['bonus'])
 
-print(get_race_by_name("Elf").describe())
-
+print(player01.describe())
