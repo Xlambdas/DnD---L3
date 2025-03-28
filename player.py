@@ -2,13 +2,15 @@ import json
 import os
 
 class Player ():
-    def __init__(self, id, name, level):
+    def __init__(self, id, name, level, classe, race):
         self.id = id
         self.name = name
         self.level = level
+        self.classe = classe
+        self.race = race
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "level": self.level}
+        return {"id": self.id, "name": self.name, "level": self.level, "classe": self.classe, "race": self.race}
 
     def create_player(self, filename='players_database.json'):
         # Vérifie si le fichier existe et lit les données existantes
@@ -59,6 +61,6 @@ def get_players(filename='game_database.json'):
 #         print(f"✅ Player {name} deleted successfully!")
 #         return True
 
-player1 = Player(8, "Mon_enoooorme_chibre", 50)
+player1 = Player(8, "Mon_enoooorme_chibre", 50, "Warrior", "Elf")
 # print("get_players",get_players('game_database.json'))
 player1.create_player()

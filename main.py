@@ -14,12 +14,12 @@ class DnDGame:
         Button(self.root, text="Create new Player")#, command=create_player_window)
         players = self.display_players()
         for player in players:
-            Button(self.root, text=f"Name: {player['name']}, Level: {player['level']}",
-            command=lambda p=player: open_player_window(p))
+            Button(self.root, text=f"Name: {player['name']}, Level: {player['level']}, Classe: {player['classe']}, Race: {player['race']}",
+                command=lambda p=player: open_player_window(p))
         self.root.loop()
 
     def get_players(self):
-        with open('game_database.json', 'r') as f:
+        with open('players_database.json', 'r') as f:
             data = json.load(f)
         return data['players']
     
@@ -42,8 +42,8 @@ def create_database():
     # Sample data
     value = {
         "players": [
-            {"id": 1, "name": "cutiiie", "level": 1},
-            {"id": 2, "name": "Bob", "level": 2}
+            {"id": 1, "name": "cutiiie", "level": 1, "class": "Warrior", "race": "Elf"},
+            {"id": 2, "name": "Bob", "level": 2, "class": "Mage", "race": "Human"}
         ]
     }
 

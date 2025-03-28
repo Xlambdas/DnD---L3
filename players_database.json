@@ -1,34 +1,11 @@
 {
     "players": [
         {
-            "id": 1,
-            "name": "Alice",
-            "level": 1
-        },
-        {
-            "id": 2,
-            "name": "Bob",
-            "level": 2
-        },
-        {
-            "id": 1,
-            "name": "Steve",
-            "level": 5
-        },
-        {
-            "id": 6,
-            "name": "Magroooosebite",
-            "level": 50
-        },
-        {
-            "id": 8,
-            "name": "Magroooosebite",
-            "level": 50
-        },
-        {
             "id": 8,
             "name": "Mon_enoooorme_chibre",
-            "level": 50
+            "level": 50,
+            "classe": "Warrior",
+            "race": "Elf"
         }
     ]
 }
