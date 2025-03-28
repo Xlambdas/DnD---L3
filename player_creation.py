@@ -105,6 +105,8 @@ def open_player_window(name):
 
 # if __name__ == "__main__":
 #     create_player_window()
+# if __name__ == "__main__":
+#     create_player_window()
 
 
 def open_game(player):
