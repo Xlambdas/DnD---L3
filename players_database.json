@@ -16,10 +16,46 @@
             "bonus": {"strength": 10, "endurance": 5}
         },
         {
-            "name": "cataa",
-            "strength": 40,
+            "name": "Mage",
+            "strength": 20,
+            "endurance": 25,
+            "bonus": {"intelligence": 5, "mana": 3}
+        },
+        {
+            "name": "Rogue",
+            "strength": 30,
+            "endurance": 20,
+            "bonus": {"dexterity": 5, "stealth": 3}
+        },
+        {
+            "name": "Cleric",
+            "strength": 25,
             "endurance": 30,
-            "bonus": {"strength": 10, "endurance": 5}
+            "bonus": {"wisdom": 5, "healing": 3}
+        },
+        {
+            "name": "Paladin",
+            "strength": 35,
+            "endurance": 40,
+            "bonus": {"charisma": 5, "holy_power": 3}
+        },
+        {
+            "name": "Ranger",
+            "strength": 30,
+            "endurance": 25,
+            "bonus": {"dexterity": 4, "marksmanship": 3}
+        },
+        {
+            "name": "Barbarian",
+            "strength": 45,
+            "endurance": 30,
+            "bonus": {"strength": 6, "rage": 3}
+        },
+        {
+            "name": "Sorcerer",
+            "strength": 20,
+            "endurance": 20,
+            "bonus": {"magic_power": 6, "arcane_knowledge": 3}
         }
     ]
 }
