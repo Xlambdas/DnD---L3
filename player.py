@@ -53,11 +53,11 @@ def delete_player(name, filename='players_database.json'):
         data = {"players": all_data.get("players", [])}
 
         #  = get_players(name)
-        print("current players",data)
+        # print("current players",data)
 
         # Filtrer les joueurs à garder
         new_players = [p for p in data["players"] if p["name"] != name]
-        print("new_players",new_players)
+        # print("new_players",new_players)
         print(len(new_players), len(all_data["players"]))
         # Si aucun joueur n'a été supprimé, le nom n'existe pas
 
@@ -82,5 +82,5 @@ player1 = Player(8, "Mon_enoooorme_chibre", 50, "Warrior", "Elf")
 player2 = Player(8, "Mama_mia", 50, "Warrior", "Elf")
 
 # print("get_players",get_players('game_database.json'))
-# player2.create_player()
-delete_player("Mon_big_chibre")
+player2.create_player()
+delete_player("Mama_mia")

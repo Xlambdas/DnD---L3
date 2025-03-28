@@ -17,8 +17,8 @@ class DnDGame:
         Button(self.root, text="Create new Player")#, command=create_player_window)
         players = self.display_players()
         for player in players:
-            Button(self.root, text=f"Name: {player['name']}, Level: {player['level']}, Classe: {player['classe']}, Race: {player['race']}",
-                command=lambda p=player: open_player_window(p))
+            Button(self.root, text=f"Name: {player['name']}, Level: {player['level']}, Classe: {player['classe']}, Race: {player['race']}")
+                #    ,command=lambda p=player: open_player_window(p))
         self.root.loop()
 
     def get_players(self):

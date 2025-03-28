@@ -42,7 +42,7 @@ def get_classe(name: str):
     data = get_all_data()
     # print("data",data)
     for classe in data['classe']:
-        print("classe",classe)
+        # print("classe",classe)
         if classe['name'] == name:
             return classe
     raise ValueError(f"Class {name} not found.")
@@ -50,7 +50,7 @@ def get_classe(name: str):
 
 
 # test
-playerClass = get_classe("Barb")
+playerClass = get_classe("Barbarian")
 
 # player01 = Classe(playerClass["name"], playerClass["strength"], playerClass["endurance"], playerClass["bonus"])
 # print(player01.describe())

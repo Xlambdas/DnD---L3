@@ -37,4 +37,6 @@ def get_race(name):
 playerRace = get_race("Elf")
 player01 = Race(playerRace['name'], playerRace['base_health'], playerRace['bonus'])
 
-print(player01.describe())
+playerinfo = player01.describe()
+print("playerinfo",playerinfo)
+print(playerRace['name'])

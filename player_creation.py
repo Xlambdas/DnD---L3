@@ -71,31 +71,63 @@ def create_player_window():
     window.loop()
 
 
-def open_player_window(player):
-    print(f"Opening player window for {player['name']}")
+def open_player_window(name):
+    # Create the window using ezTK
+    # print(f"Opening player window for {player['name']}")
+    # print(f"Opening player window for {player.name}")
     window = Win(title="test Create Player", width=300, height=200)
+    # Name input
+
+    player = get_players(name)
+    
+    # player = {"player": [theplayer]}
+    # # print(f"Opening player window for {player['name']}")
+    # print(player)  # Add this line to inspect the player object
+    # print(f"Opening player window for {player['name']}")
+
 
     # Name input
-    Label(window, text=f"Name:{player['name']}")
-    Label(window, text=f"Level:{player['level']}")
-    Label(window, text=f"ID:{player['id']}")
-    Label(window, text=f"Class: {player['classe']}")
-    Label(window, text=f"Race: {player['race']}")
-    Label(window, text=f"description: {get_class_by_name(player['classe']).describe()}")
+    Label(window, text=f"Name:{player['players'][0]['name']}")
+    Label(window, text=f"Level:{player['players'][0]['level']}")
+    Label(window, text=f"ID:{player['players'][0]['id']}")
+    Label(window, text=f"Class: {player['players'][0]['classe']}")
+    Label(window, text=f"Race: {player['players'][0]['race']}")
+    # Label(window, text='caca'f"description: {get_class_by_name(player['classe']).describe()}")
     Button(window, text="Play", command=lambda: {
         print("play"),
         window.quit(),  # Close the player window
         open_game(player)
     })
-    Button(window, text="Close", command=window.quit)  # Close the player window
+    # Button(window, text="Close", command=window.quit)  # Close the player window
 
-if __name__ == "__main__":
-    create_player_window()
+    # Run the window
+    window.loop()
+
+# if __name__ == "__main__":
+#     create_player_window()
 
 
 def open_game(player):
-    print(f"Opening game for {player['name']}")
+    print(f"Opening game for {player['players'][0]['name']}")
     window = Win(title="Game", width=300, height=200)
-    Label(window, text=f"Welcome to the game, {player['name']}!")
+    Label(window, text=f"Welcome to the game, {player['players'][0]['name']}!")
     Button(window, text="Close", command=window.quit)
     window.loop()
+
+
+# player01 = Classe(playerClass["name"], playerClass["strength"], playerClass["endurance"], playerClass["bonus"])
+# print(player01.describe())
+# print(player01['Speed'])
+# playerinfo = player01.describe()
+# print(playerinfo)
+# print(player01)
+# open_player_window('Mon_enoooorme_chibre')
+test_player = get_players("Mon_enoooorme_chibre")
+# print(test_player)
+
+# open_player_window('Mon_enoooorme_chibre')
+# print(test_player['players'][0]['name'])
+open_player_window('Mon_enoooorme_chibre')
+
+# open_game(test_player)
+# create_player_window()
