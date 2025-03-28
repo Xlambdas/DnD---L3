@@ -50,7 +50,7 @@ def get_classe(name: str):
 
 
 # test
-playerClass = get_classe("Barb")
+playerClass = get_classe("Warrior")
 
-# player01 = Classe(playerClass["name"], playerClass["strength"], playerClass["endurance"], playerClass["bonus"])
-# print(player01.describe())
+player01 = Classe(playerClass["name"], playerClass["strength"], playerClass["endurance"], playerClass["bonus"])
+print(player01.describe())

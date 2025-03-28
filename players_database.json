@@ -11,6 +11,47 @@
             "inventory": [],
             "xp": 1000,
             "gold": 100
+        },
+        {
+            "id": 9,
+            "name": "Shadow_Strike",
+            "level": 35,
+            "classe": "Rogue",
+            "race": "Halfling",
+            "health": 80,
+            "mana": 30,
+            "inventory": [
+                "Dagger",
+                "Lockpick"
+            ],
+            "xp": 750,
+            "gold": 200
+        },
+        {
+            "id": 10,
+            "name": "Arcane_Flame",
+            "level": 40,
+            "classe": "Mage",
+            "race": "Human",
+            "health": 70,
+            "mana": 120,
+            "inventory": [
+                "Spellbook",
+                "Mana Potion"
+            ],
+            "xp": 900,
+            "gold": 150
+        },
+        {
+            "id": 0,
+            "name": "test_name",
+            "level": 1,
+            "classe": "Warrior",
+            "race": "Elf",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
         }
     ],
     "classe": [
@@ -18,26 +59,37 @@
             "name": "Warrior",
             "strength": 40,
             "endurance": 30,
-            "bonus": {"strength": 10, "endurance": 5}
-
+            "bonus": {
+                "strength": 10,
+                "endurance": 5
+            }
         },
         {
             "name": "Monk",
             "strength": 35,
             "endurance": 25,
-            "bonus": {"dexterity": 4, "wisdom": 3}
+            "bonus": {
+                "dexterity": 4,
+                "wisdom": 3
+            }
         },
         {
             "name": "Necromancer",
             "strength": 20,
             "endurance": 20,
-            "bonus": {"dark_magic": 6, "summoning": 3}
+            "bonus": {
+                "dark_magic": 6,
+                "summoning": 3
+            }
         },
         {
             "name": "Bard",
             "strength": 25,
             "endurance": 20,
-            "bonus": {"charisma": 5, "inspiration": 3}
+            "bonus": {
+                "charisma": 5,
+                "inspiration": 3
+            }
         },
         {
             "name": "Mage",

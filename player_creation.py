@@ -71,31 +71,31 @@ def create_player_window():
     window.loop()
 
 
-def open_player_window(player):
-    print(f"Opening player window for {player['name']}")
-    window = Win(title="test Create Player", width=300, height=200)
+# def open_player_window(player):
+#     print(f"Opening player window for {player['name']}")
+#     window = Win(title="test Create Player", width=300, height=200)
 
-    # Name input
-    Label(window, text=f"Name:{player['name']}")
-    Label(window, text=f"Level:{player['level']}")
-    Label(window, text=f"ID:{player['id']}")
-    Label(window, text=f"Class: {player['classe']}")
-    Label(window, text=f"Race: {player['race']}")
-    Label(window, text=f"description: {get_class_by_name(player['classe']).describe()}")
-    Button(window, text="Play", command=lambda: {
-        print("play"),
-        window.quit(),  # Close the player window
-        open_game(player)
-    })
-    Button(window, text="Close", command=window.quit)  # Close the player window
+#     # Name input
+#     Label(window, text=f"Name:{player['name']}")
+#     Label(window, text=f"Level:{player['level']}")
+#     Label(window, text=f"ID:{player['id']}")
+#     Label(window, text=f"Class: {player['classe']}")
+#     Label(window, text=f"Race: {player['race']}")
+#     Label(window, text=f"description: {get_class_by_name(player['classe']).describe()}")
+#     Button(window, text="Play", command=lambda: {
+#         print("play"),
+#         window.quit(),  # Close the player window
+#         open_game(player)
+#     })
+#     Button(window, text="Close", command=window.quit)  # Close the player window
 
-if __name__ == "__main__":
-    create_player_window()
+# if __name__ == "__main__":
+#     create_player_window()
 
 
-def open_game(player):
-    print(f"Opening game for {player['name']}")
-    window = Win(title="Game", width=300, height=200)
-    Label(window, text=f"Welcome to the game, {player['name']}!")
-    Button(window, text="Close", command=window.quit)
-    window.loop()
+# def open_game(player):
+#     print(f"Opening game for {player['name']}")
+#     window = Win(title="Game", width=300, height=200)
+#     Label(window, text=f"Welcome to the game, {player['name']}!")
+#     Button(window, text="Close", command=window.quit)
+#     window.loop()

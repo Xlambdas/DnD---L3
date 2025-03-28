@@ -5,22 +5,22 @@ from main import get_all_data
 
 
 class Race:
-    def __init__(self, name, speed, abilities):
+    def __init__(self, name, health, bonus):
         self.name = name
-        self.speed = speed
-        self.abilities = abilities
+        self.health = health
+        self.bonus = bonus
 
     def describe(self):
         """
-        Return a description of the player Race : name, speed and abilities.
+            Return a description of the player Race : name, speed and abilities.
         """
-        abilities_desc = ", ".join(f"{key}: {value}" for key, value in self.abilities.items())
-        return f"Race: {self.name}, Speed: {self.speed}, Abilities: {abilities_desc}"
+        bonus_descr = ", ".join(f"{key}: {value}" for key, value in self.bonus.items())
+        return f"Race: {self.name}, Speed: {self.health}, Abilities: {bonus_descr}"
         # Example of predefined races stored in a dictionary
 
     def attack_bonus(self, base_attack):
         """
-        Calcule le bonus d'attaque en fonction des capacités de la race.
+            Calcule le bonus d'attaque en fonction des capacités de la race.
         """
         bonus = sum(self.abilities.values())
         return base_attack + bonus
@@ -28,6 +28,9 @@ class Race:
 
 
 def get_race(name):
+    """
+        Get all the data concerning the races (about the player) from the database
+    """
     data = get_all_data()
     for race in data['race']:
         if race['name'] == name:
