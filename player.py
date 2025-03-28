@@ -10,7 +10,7 @@ class Player ():
     def to_dict(self):
         return {"id": self.id, "name": self.name, "level": self.level}
 
-    def create_player(self, filename='game_database.json'):
+    def create_player(self, filename='players_database.json'):
         # Vérifie si le fichier existe et lit les données existantes
         data = get_players()
         print("create player",data)
