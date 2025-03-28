@@ -7,5 +7,19 @@
             "classe": "Warrior",
             "race": "Elf"
         }
+    ],
+    "classe": [
+        {
+            "name": "Warrior",
+            "strength": 40,
+            "endurance": 30,
+            "bonus": {"strength": 10, "endurance": 5}
+        },
+        {
+            "name": "cataa",
+            "strength": 40,
+            "endurance": 30,
+            "bonus": {"strength": 10, "endurance": 5}
+        }
     ]
 }
