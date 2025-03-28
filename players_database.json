@@ -2,7 +2,14 @@
     "players": [
         {
             "id": 8,
-            "name": "Mon_enoooorme_chibre",
+            "name": "Mon",
+            "level": 50,
+            "classe": "Warrior",
+            "race": "Elf"
+        },
+        {
+            "id": 8,
+            "name": "Mama_mia",
             "level": 50,
             "classe": "Warrior",
             "race": "Elf"
@@ -13,91 +20,138 @@
             "name": "Warrior",
             "strength": 40,
             "endurance": 30,
-            "bonus": {"strength": 10, "endurance": 5}
+            "bonus": {
+                "strength": 10,
+                "endurance": 5
+            }
         },
         {
             "name": "Mage",
             "strength": 20,
             "endurance": 25,
-            "bonus": {"intelligence": 5, "mana": 3}
+            "bonus": {
+                "intelligence": 5,
+                "mana": 3
+            }
         },
         {
             "name": "Rogue",
             "strength": 30,
             "endurance": 20,
-            "bonus": {"dexterity": 5, "stealth": 3}
+            "bonus": {
+                "dexterity": 5,
+                "stealth": 3
+            }
         },
         {
             "name": "Cleric",
             "strength": 25,
             "endurance": 30,
-            "bonus": {"wisdom": 5, "healing": 3}
+            "bonus": {
+                "wisdom": 5,
+                "healing": 3
+            }
         },
         {
             "name": "Paladin",
             "strength": 35,
             "endurance": 40,
-            "bonus": {"charisma": 5, "holy_power": 3}
+            "bonus": {
+                "charisma": 5,
+                "holy_power": 3
+            }
         },
         {
             "name": "Ranger",
             "strength": 30,
             "endurance": 25,
-            "bonus": {"dexterity": 4, "marksmanship": 3}
+            "bonus": {
+                "dexterity": 4,
+                "marksmanship": 3
+            }
         },
         {
             "name": "Barbarian",
             "strength": 45,
             "endurance": 30,
-            "bonus": {"strength": 6, "rage": 3}
+            "bonus": {
+                "strength": 6,
+                "rage": 3
+            }
         },
         {
             "name": "Sorcerer",
             "strength": 20,
             "endurance": 20,
-            "bonus": {"magic_power": 6, "arcane_knowledge": 3}
+            "bonus": {
+                "magic_power": 6,
+                "arcane_knowledge": 3
+            }
         }
     ],
     "race": [
         {
             "name": "Elf",
             "base_health": 30,
-            "bonus": {"Dexterity": 2, "Perception": 1}
+            "bonus": {
+                "Dexterity": 2,
+                "Perception": 1
+            }
         },
         {
             "name": "Dwarf",
             "base_health": 25,
-            "bonus": {"Constitution": 2, "Resilience": 1}
+            "bonus": {
+                "Constitution": 2,
+                "Resilience": 1
+            }
         },
         {
             "name": "Human",
             "base_health": 30,
-            "bonus": {"Versatility": 1}
+            "bonus": {
+                "Versatility": 1
+            }
         },
         {
             "name": "Halfling",
             "base_health": 25,
-            "bonus": {"Dexterity": 2, "Luck": 1}
+            "bonus": {
+                "Dexterity": 2,
+                "Luck": 1
+            }
         },
         {
             "name": "Orc",
             "base_health": 30,
-            "bonus": {"Strength": 2, "Intimidation": 1}
+            "bonus": {
+                "Strength": 2,
+                "Intimidation": 1
+            }
         },
         {
             "name": "Tiefling",
             "base_health": 30,
-            "bonus": {"Charisma": 2, "Infernal Resistance": 1}
+            "bonus": {
+                "Charisma": 2,
+                "Infernal Resistance": 1
+            }
         },
         {
             "name": "Gnome",
             "base_health": 25,
-            "bonus": {"Intelligence": 2, "Craftiness": 1}
+            "bonus": {
+                "Intelligence": 2,
+                "Craftiness": 1
+            }
         },
         {
             "name": "Dragonborn",
             "base_health": 30,
-            "bonus": {"Strength": 2, "Draconic Ancestry": 1}
+            "bonus": {
+                "Strength": 2,
+                "Draconic Ancestry": 1
+            }
         }
     ]
 }
