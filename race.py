@@ -1,5 +1,6 @@
 import json
 import os
+# from other files :
 from main import get_all_data
 
 
@@ -11,7 +12,7 @@ class Race:
 
     def describe(self):
         """
-        renvoie une description de la race.
+        Return a description of the player Race : name, speed and abilities.
         """
         abilities_desc = ", ".join(f"{key}: {value}" for key, value in self.abilities.items())
         return f"Race: {self.name}, Speed: {self.speed}, Abilities: {abilities_desc}"

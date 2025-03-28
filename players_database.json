@@ -2,17 +2,15 @@
     "players": [
         {
             "id": 8,
-            "name": "Mon",
+            "name": "Mon_enoooorme_chibre",
             "level": 50,
             "classe": "Warrior",
-            "race": "Elf"
-        },
-        {
-            "id": 8,
-            "name": "Mama_mia",
-            "level": 50,
-            "classe": "Warrior",
-            "race": "Elf"
+            "race": "Elf",
+            "health": 100,
+            "mana": 50,
+            "inventory": [],
+            "xp": 1000,
+            "gold": 100
         }
     ],
     "classe": [
@@ -20,10 +18,26 @@
             "name": "Warrior",
             "strength": 40,
             "endurance": 30,
-            "bonus": {
-                "strength": 10,
-                "endurance": 5
-            }
+            "bonus": {"strength": 10, "endurance": 5}
+
+        },
+        {
+            "name": "Monk",
+            "strength": 35,
+            "endurance": 25,
+            "bonus": {"dexterity": 4, "wisdom": 3}
+        },
+        {
+            "name": "Necromancer",
+            "strength": 20,
+            "endurance": 20,
+            "bonus": {"dark_magic": 6, "summoning": 3}
+        },
+        {
+            "name": "Bard",
+            "strength": 25,
+            "endurance": 20,
+            "bonus": {"charisma": 5, "inspiration": 3}
         },
         {
             "name": "Mage",
