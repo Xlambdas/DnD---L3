@@ -5,8 +5,8 @@ from ezTK import *
 # sys.path.append('../ezTK')
 # import sys
 # sys.path.append('../player')
-from player import *
-from classe import *
+from player import get_player, create_player
+from classe import get_classe
 from race import *
 
 
@@ -35,11 +35,16 @@ def save_player(name, level, player_class, player_race):
 
 def create_player_window():
     def submit():
+        # Retrieve values from the input fields
         name = name_entry.value
-        level = int(level_entry.value)
+        # level = int(level_entry.value)
         player_class = class_entry.value
         player_race = race_entry.value
-        save_player(name, level, player_class, player_race)
+
+        # Create the player using the retrieved values
+        create_player(name, player_class, player_race)
+
+        # Update the result label to confirm player creation
         result_label.text = f"Player '{name}' created successfully!"
 
     # Create the window using ezTK
@@ -50,8 +55,8 @@ def create_player_window():
     name_entry = Entry(window, width=20)
 
     # Level input
-    Label(window, text="Level:")
-    level_entry = Entry(window, width=20)
+    # Label(window, text="Level:")
+    # level_entry = Entry(window, width=20)
 
     # Class input
     Label(window, text="Class:")
@@ -78,7 +83,7 @@ def open_player_window(name):
     window = Win(title="test Create Player", width=300, height=200)
     # Name input
 
-    player = get_players(name)
+    player = get_player(name)
     
     # player = {"player": [theplayer]}
     # # print(f"Opening player window for {player['name']}")
@@ -87,11 +92,11 @@ def open_player_window(name):
 
 
     # Name input
-    Label(window, text=f"Name:{player['players'][0]['name']}")
-    Label(window, text=f"Level:{player['players'][0]['level']}")
-    Label(window, text=f"ID:{player['players'][0]['id']}")
-    Label(window, text=f"Class: {player['players'][0]['classe']}")
-    Label(window, text=f"Race: {player['players'][0]['race']}")
+    Label(window, text=f"Name:{player['name']}")
+    Label(window, text=f"Level:{player['level']}")
+    Label(window, text=f"ID:{player['id']}")
+    Label(window, text=f"Class: {player['classe']}")
+    Label(window, text=f"Race: {player['race']}")
     # Label(window, text='caca'f"description: {get_class_by_name(player['classe']).describe()}")
     Button(window, text="Play", command=lambda: {
         print("play"),
@@ -110,9 +115,9 @@ def open_player_window(name):
 
 
 def open_game(player):
-    print(f"Opening game for {player['players'][0]['name']}")
+    # print(f"Opening game for {player['name']}")
     window = Win(title="Game", width=300, height=200)
-    Label(window, text=f"Welcome to the game, {player['players'][0]['name']}!")
+    Label(window, text=f"Welcome to the game, {player['name'] }!")
     Button(window, text="Close", command=window.quit)
     window.loop()
 
@@ -124,12 +129,17 @@ def open_game(player):
 # print(playerinfo)
 # print(player01)
 # open_player_window('Mon_enoooorme_chibre')
-test_player = get_players("Mon_enoooorme_chibre")
-# print(test_player)
+test_player = get_player("Shadow_Strike")
+print(test_player)
 
 # open_player_window('Mon_enoooorme_chibre')
 # print(test_player['players'][0]['name'])
-open_player_window('Mon_enoooorme_chibre')
+# open_player_window('Mon_enoooorme_chibre')
+# open_player_window('Mon_enoooorme_chibre')
+# create_player_window()
+# create_player("Mon_enoooorme_chibre", "Barbarian", "Elf")
+open_game(test_player)
+# open_player_window(test_player['name'])
 
 # open_game(test_player)
 # create_player_window()

@@ -1,18 +1,6 @@
 {
     "players": [
         {
-            "id": 8,
-            "name": "Mon_enoooorme_chibre",
-            "level": 50,
-            "classe": "Warrior",
-            "race": "Elf",
-            "health": 100,
-            "mana": 50,
-            "inventory": [],
-            "xp": 1000,
-            "gold": 100
-        },
-        {
             "id": 9,
             "name": "Shadow_Strike",
             "level": 35,
@@ -45,6 +33,17 @@
         {
             "id": 0,
             "name": "test_name",
+            "level": 1,
+            "classe": "Warrior",
+            "race": "Elf",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "L_exterminateur_de_race",
             "level": 1,
             "classe": "Warrior",
             "race": "Elf",

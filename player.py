@@ -11,7 +11,7 @@ class Player ():
     def __init__(self, name, classe, race):
         self.name = name
         self.classe = classe
-        # self.race = race
+        self.race = race
         playerRace = get_race(race)
         self.race = Race(playerRace['name'], playerRace['base_health'], playerRace['bonus'])
         playerClass = get_classe(classe)
@@ -38,7 +38,9 @@ def get_player(name):
         # print("player test for : ", player)
         if player['name'] == name:
             return player
-    return data['player']
+    return data['players']
+    # ça il faut le modifier pour renvoyer un message d'erreur si le joueur n'existe pas
+    # raise ValueError(f"Player {name} not found.")
 
 
 def create_player(name: str, classe: str, race: str):
@@ -46,6 +48,7 @@ def create_player(name: str, classe: str, race: str):
         Create a new player and save it in the database.
     """
     data = get_all_data()
+    # print("data",data)
     data_players = data['players']
     # print("data_players",data_player)
 
@@ -55,9 +58,11 @@ def create_player(name: str, classe: str, race: str):
 
     if name in exist_names:
         print("You can't use this name, it is already used...")
-        return create_player_window()
+        return False #create_player_window()
 
     data_players.append({"id": 0, "name": name, "level": 1, "classe": classe, "race": race, "health": 100, "mana": 100, "inventory": [], "xp": 0})
+    data ["players"]= data_players #{"players": data_players}
+    # print("data_players",data_players)
     # print("test data : ", data_player)
 
     with open('players_database.json', 'w') as f:
@@ -70,15 +75,16 @@ def create_player(name: str, classe: str, race: str):
 def delete_player(name):
         """Supprime un joueur en fonction de son nom."""
         data = get_all_data()
-        data_player = {"players": data.get("players", [])}
+        # print("data",data)
+        # data_player = {"players": data.get("players", [])}
 
         #  = get_players(name)
         # print("current players",data)
 
         # Filtrer les joueurs à garder
         new_players = [p for p in data["players"] if p["name"] != name]
-        print("new_players",new_players)
-        print(len(new_players), len(all_data["players"]))
+        # print("new_players",new_players)
+        # print(len(new_players), len(data["players"]))
         # Si aucun joueur n'a été supprimé, le nom n'existe pas
 
 
@@ -88,7 +94,7 @@ def delete_player(name):
 
         # Sauvegarde les nouveaux joueurs
         data["players"] = new_players
-        print("all_data players",data["players"])
+        # print("all_data players",data["players"])
         # all_data["players"] = data["players"]
         # print("all_data",all_data)
         # data = all_data
@@ -103,4 +109,8 @@ def delete_player(name):
 
 # print("get_players",get_players('game_database.json'))
 # player2.create_player()
-delete_player("Mon_big_chibre")
+# delete_player("Shadow_Strike")
+# print(get_player("Mon_enoooorme_chibre"))
+# create_player("L_exterminateur_de_race", "Warrior", "Elf")
+# print(get_player("Arcane_Flame"))
+
