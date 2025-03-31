@@ -1,9 +1,9 @@
 from ezTK import *
 import json
-# from other files :
-from main import get_all_data
+import os
 
-class Classe (): # --- | Classe | ---
+# --- | Instance of Classe | ---
+class Classe ():
     def __init__(self, name, strength, endurance, bonus):
         self.class_name = name
         self.strength = strength
@@ -23,6 +23,17 @@ class Classe (): # --- | Classe | ---
     def defend(self):
         return f"{self.class_name} defends with an endurance of {self.endurance}."
 
+
+def get_all_classe_name ():
+    """
+        Retrieve all classes from the dataset.
+        Returns:
+            data: A list representing all classes in the dataset.
+    """
+    data = get_all_data()
+    classes = data['classe']
+    classes_name = [classe['name'] for classe in classes]
+    return classes_name
 
 # --- | fonction annexe | ---
 # To get the class by her name
@@ -46,6 +57,20 @@ def get_classe(name: str):
         if classe['name'] == name:
             return classe
     raise ValueError(f"Class {name} not found.")
+
+
+
+# --- | general functions | ---
+def get_all_data(filename='players_database.json'):
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = {}
+    else:
+        data = {}
+    return data
 
 
 

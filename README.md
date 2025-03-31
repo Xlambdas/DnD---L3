@@ -1,5 +1,10 @@
+# fait sur la premiere semaine
 
-# DnD---L3
+- création de la base de donnée et des fonctions de récupération.
+- création des classes Race, Classe et player
+- début d'interface player (pour le moment non fonctionnelle suite a des modifications - ajout de race et classe)..
+
+## DnD---L3
 
 game for the final project on informatics L3.
 
@@ -38,7 +43,7 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 
 Évolution du personnage : L’expérience gagnée permet de monter en niveau et d’améliorer les compétences, capacités et caractéristiques.
 
-# Questions
+## Questions
 
 Marge de manoeuvre ? forme du jeux ? différentes pages ? interface utilisateur ?
 quels regles a appliquer ?
@@ -57,9 +62,9 @@ Autre / objectifs :
   - create perso
   - save to database
   - UPDATE : if he already exist : return (waw man, the gamer already exist, find another name nigger)
-  - UPDATE : 
-      - id unique généré par joueur
-      - delete player 
+  - UPDATE :
+    - id unique généré par joueur
+    - delete player
 - Jet de dé
 - Caractéristique (force, dextérité, constitution, intelligence, sagesse, charisme)
 - Bonus / malus

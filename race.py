@@ -1,9 +1,21 @@
 import json
 import os
-# from other files :
-from main import get_all_data
+
+# --- | general functions | ---
+def get_all_data(filename='players_database.json'):
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = {}
+    else:
+        data = {}
+    return data
 
 
+
+# --- | instance of Race | ---
 class Race:
     def __init__(self, name, health, bonus):
         self.name = name
@@ -43,3 +55,5 @@ player01 = Race(playerRace['name'], playerRace['base_health'], playerRace['bonus
 playerinfo = player01.describe()
 # print("playerinfo",playerinfo)
 # print(playerRace['name'])
+
+

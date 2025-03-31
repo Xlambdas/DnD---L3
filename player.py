@@ -2,13 +2,19 @@ import json
 import os
 from ezTK import *
 #from other files :
-from main import get_all_data
-from race import get_race, Race
+from race import get_race, get_all_data, Race
 from classe import get_classe, Classe
 # from player_creation import create_player_window
 
 class Player ():
     def __init__(self, name, classe, race):
+        """
+            require :
+                - name : str : name of the player
+                - classe : str : class of the player (in a predetermined list)
+                - race : str : race of the player (by default = Human)
+            Ensures : get all the information about the player in the database.
+        """
         self.name = name
         self.classe = classe
         self.race = race
@@ -27,34 +33,34 @@ class Player ():
         return {"name": self.name, "level": 1, "classe": self.classe, "race": self.race}
 
 
-
-
 def get_player(name):
     """
         Get all the data concerning the player from the database.
+        required : name : str : name of the player.
+        Ensures : New player in the database if the name is not already used.
     """
     data = get_all_data()
     for player in data['players']:
-        # print("player test for : ", player)
         if player['name'] == name:
             return player
+    if not name in data['players']:
+        print("You can't use this name, it is already used...")
+        return {}
     return data['players']
-    # ça il faut le modifier pour renvoyer un message d'erreur si le joueur n'existe pas
-    # raise ValueError(f"Player {name} not found.")
 
-
-def create_player(name: str, classe: str, race: str):
+def create_player(name: str, classe: str, race: str): # todo : not so usefull !! only used in player_creation.py (creation_player_window())
     """
         Create a new player and save it in the database.
+        required :
+            - name : str : name of the player
+            - classe : str : class of the player (in a predetermined list)
+            - race : str : race  of the player (by default = Human)
+        Ensures : New player in the database if the name is not already used.
     """
     data = get_all_data()
-    # print("data",data)
     data_players = data['players']
-    # print("data_players",data_player)
 
-    # Vérifie si le nom existe déjà
-    exist_names = [player["name"] for player in data_players]
-    # print("existing_names",exist_names)
+    exist_names = [player["name"] for player in data_players] # check if the name already exists
 
     if name in exist_names:
         print("You can't use this name, it is already used...")
@@ -109,8 +115,56 @@ def delete_player(name):
 
 # print("get_players",get_players('game_database.json'))
 # player2.create_player()
-# delete_player("Shadow_Strike")
-# print(get_player("Mon_enoooorme_chibre"))
-# create_player("L_exterminateur_de_race", "Warrior", "Elf")
-# print(get_player("Arcane_Flame"))
+# delete_player("Mon_big_chibre")
 
+
+# def create_player_window():
+#     def submit():
+#         name = name_entry.value
+#         player_class = class_entry.value
+#         player_race = race_entry.value
+#         create_player(name, player_class, player_race)
+#         result_label.text = f"Player '{name}' created successfully!"
+
+#     # Create the window using ezTK
+#     window = Win(title="Create Player", width=300, height=300)
+
+#     # Name input
+#     Label(window, text="Name:")
+#     name_entry = Entry(window, width=20)
+
+#     # Level input
+#     Label(window, text="Level:")
+#     level_entry = Entry(window, width=20)
+
+#     # Class input
+#     Label(window, text="Class:")
+#     class_entry = Entry(window, width=20)
+
+#     # Race input
+#     Label(window, text="Race:")
+#     race_entry = Entry(window, width=20)
+
+#     # Submit button
+#     Button(window, text="Create Player", command=submit)
+
+#     # Result label
+#     result_label = Label(window, text="")
+
+#     # Run the window
+#     window.loop()
+
+
+
+# # print("test create player : ", create_player("testme", "Warrior", "Elf"))
+
+# # print ("test del player : ", delete_player("testme"))
+
+
+# # player = get_player("test_name")
+# # testPlayer = Player(player['name'], player['classe'], player['race'])
+
+# # print("show current player : ", testPlayer.descr())
+
+
+# create_player_window()

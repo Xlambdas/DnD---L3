@@ -1,13 +1,27 @@
 # import tkinter as tk
 import json
-from ezTK import *
+from ezTK import *  # Import all widgets from ezTK
 # import sys
 # sys.path.append('../ezTK')
 # import sys
 # sys.path.append('../player')
 from player import get_player, create_player
-from classe import get_classe
+from classe import get_classe, get_all_classe_name
 from race import *
+
+
+
+# def get_all_race_name ():
+#     """
+#         Retrieve all race from the dataset.
+#         Returns:
+#             data: A list representing all races in the dataset.
+#     """
+#     data = get_all_data()
+#     races = data['race']
+#     races_name = [races['name'] for races in races]
+#     return races_name
+
 
 
 def save_player(name, level, player_class, player_race):
@@ -34,56 +48,66 @@ def save_player(name, level, player_class, player_race):
         json.dump(data, f, indent=4)
 
 def create_player_window():
+    """
+        Create a new player using a GUI. You need to enter a name and select a class. 
+        The race is set to "Human" by default.
+        The player is then created and saved in the database.
+    """
     def submit():
         # Retrieve values from the input fields
-        name = name_entry.value
-        # level = int(level_entry.value)
-        player_class = class_entry.value
-        player_race = race_entry.value
+        name = name_entry.get()
+        data = get_all_data()
+        for player in data['players']:
+            # print("player test for : ", player) b
+            if player['name'] == name:
+                alert = Win(title="Alert", width=300, height=100)
+                Label(alert, text="This name already exists. Please choose another one.", font=("Arial", 12), bg="lightyellow")
+                alert.loop()
+                return
+        if not name:
+            alert = Win(title="Alert", width=300, height=100)
+            Label(alert, text="Please enter a valid name.", font=("Arial", 12), bg="lightyellow")
+            alert.loop()
+            return
+        if not classe_entry.curselection():
+            alert = Win(title="Alert", width=300, height=100)
+            Label(alert, text="Please select a class in the list.", font=("Arial", 12), bg="lightyellow")
+            alert.loop()
+            return
 
-        # Create the player using the retrieved values
+        player_class = classe_entry.get(classe_entry.curselection())
+        player_race = 'Human'
+
+
         create_player(name, player_class, player_race)
-
-        # Update the result label to confirm player creation
         result_label.text = f"Player '{name}' created successfully!"
+        window.quit()  # todo : close the window after creating the player
+        open_player_window(name)  # Open the player window
 
-    # Create the window using ezTK
-    window = Win(title="Create Player", width=300, height=300)
+    # Create the window for the player creation :
+    window = Win(title="Create Player", width=500, height=400)
 
-    # Name input
-    Label(window, text="Name:")
+    Label(window, text="Create your Player", font=("Arial", 16), bg="lightblue")
+    Label(window, text="Choose your Name:")
     name_entry = Entry(window, width=20)
+    Label(window, text="Choose your Class:")
+    classe_entry = Listbox(window, width=20, height=5, scroll=True)
+    
+    for item in get_all_classe_name():
+        classe_entry.insert('end', item)
 
-    # Level input
-    # Label(window, text="Level:")
-    # level_entry = Entry(window, width=20)
-
-    # Class input
-    Label(window, text="Class:")
-    class_entry = Entry(window, width=20)
-
-    # Race input
-    Label(window, text="Race:")
-    race_entry = Entry(window, width=20)
-
-    # Submit button
     Button(window, text="Create Player", command=submit)
 
-    # Result label
+    # Result :
     result_label = Label(window, text="")
-
-    # Run the window
     window.loop()
 
 
 def open_player_window(name):
-    # Create the window using ezTK
-    # print(f"Opening player window for {player['name']}")
-    # print(f"Opening player window for {player.name}")
-    window = Win(title="test Create Player", width=300, height=200)
-    # Name input
 
+    window = Win(title="test Create Player", width=300, height=200)
     player = get_player(name)
+    print(" player Creation (open_player_window) - player : ", player)
     
     # player = {"player": [theplayer]}
     # # print(f"Opening player window for {player['name']}")
@@ -122,6 +146,8 @@ def open_game(player):
     window.loop()
 
 
+# --- | Zone de test | ---
+
 # player01 = Classe(playerClass["name"], playerClass["strength"], playerClass["endurance"], playerClass["bonus"])
 # print(player01.describe())
 # print(player01['Speed'])
@@ -129,8 +155,9 @@ def open_game(player):
 # print(playerinfo)
 # print(player01)
 # open_player_window('Mon_enoooorme_chibre')
-test_player = get_player("Shadow_Strike")
-print(test_player)
+# test_player = get_player("Shadow_Strike")
+# print(test_player)
+# create_player_window()
 
 # open_player_window('Mon_enoooorme_chibre')
 # print(test_player['players'][0]['name'])
@@ -138,8 +165,9 @@ print(test_player)
 # open_player_window('Mon_enoooorme_chibre')
 # create_player_window()
 # create_player("Mon_enoooorme_chibre", "Barbarian", "Elf")
-open_game(test_player)
+# open_game(test_player)
 # open_player_window(test_player['name'])
 
 # open_game(test_player)
 # create_player_window()
+

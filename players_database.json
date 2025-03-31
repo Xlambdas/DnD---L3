@@ -51,6 +51,138 @@
             "mana": 100,
             "inventory": [],
             "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "zesdfc",
+            "level": 1,
+            "classe": "Monk",
+            "race": "Elf",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "",
+            "level": 1,
+            "classe": "Barbarian",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "qsc",
+            "level": 1,
+            "classe": "Mage",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "rezd",
+            "level": 1,
+            "classe": "Necromancer",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "sqc",
+            "level": 1,
+            "classe": "Monk",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "sqcsqsccsqcs",
+            "level": 1,
+            "classe": "Necromancer",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "zqsd",
+            "level": 1,
+            "classe": "Bard",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "try this",
+            "level": 1,
+            "classe": "Mage",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "zdc",
+            "level": 1,
+            "classe": "Bard",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "fgbv ",
+            "level": 1,
+            "classe": "Monk",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "sqxdc",
+            "level": 1,
+            "classe": "Bard",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "id": 0,
+            "name": "xdc",
+            "level": 1,
+            "classe": "Monk",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
         }
     ],
     "classe": [
