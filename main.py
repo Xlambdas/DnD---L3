@@ -1,18 +1,46 @@
-# Fichier pour l'affichage de la fenêtre principale du jeu.
-
-import os
-import json
 from ezTK import *
 # from other files :
+from player import Player
 
-# from player import create_player
-from player_creation import create_player_window, open_player_window
-from player import get_player, Player
+def open_game(name):
+    """
+        Open the game for the selected player.
+    """
+    print(f"Opening game for {name}")
+    game = DnDGame(name)
+    return game.root.loop()
+    # player = Player(name)
+    # player_name = player.name
+    # print(f"Player name: {player_name}")
+    # print(f"Player info: {player.descr()}")
+    # window = Win(title="Game", width=300, height=200)
+    # Label(window, text=f"Welcome to the game, {player.name}!")
+    # Button(window, text="Close", command=window.quit)
+    # window.loop()
 
 
 class DnDGame:
-    def __init__(self):
+    def __init__(self, name):
         self.root = None
+        self.player = Player(name)
+        self.create_main_menu()
+    
+    def create_main_menu(self):
+        self.root = Win(title="Main Menu", width=300, height=200, bg='lightgray')
+        Label(self.root, text="Main menu", font="Arial 20 bold")
+        # Button(self.root, text="Create new Player", command=self.create_player_window, bg='lightblue')
+        # Button(self.root, text="Play", command=self.open_game)
+        pass  # The loop is already handled in open_game
+
+
+open_game("fg")  # Replace with the actual player name you want to test
+
+
+
+# --- | brouillon | -----------------------------------------------
+
+# class DnDGame:
+#    def __init__(self):
         # self.root = Win(title="Main Menu", width=300, height=200, bg='lightgray')
         # Label(self.root, text="Main menu", font="Arial 20 bold")
         # # print("class mainMenu - test view player : ", self.display_players())
@@ -22,45 +50,6 @@ class DnDGame:
         #     Button(self.root, text=f"Name: {player['name']}, Level: {player['level']}, Classe: {player['classe']}, Race: {player['race']}",command=lambda p=player['name']: open_player_window(p))
         # self.root.loop()
 
-    def get_players(self):
-        with open('players_database.json', 'r') as f:
-            data = json.load(f)
-        return data['players']
-    
-    def display_players(self):
-        players = self.get_players()
-        # print("class mainMenu - display_players : ", players)
-        return players
-    
-    def get_my_player(self, num: int):
-        players = self.get_players()
-        for player in players:
-            if player['id'] == num:
-                # print("class mainMenu - get_my_player : ", player)
-                return player
-        return None
 
 
-
-def home_page():
-    """
-        Open the home page for the game. to get or create the player instance.
-    """
-    root = Win(title="Main Menu", width=300, height=200, bg='lightgray')
-    Label(root, text="Main menu", font="Arial 20 bold")
-    players = DnDGame().display_players()
-    Button(root, text="Create Player", command=create_player_window)
-    for player in players:
-        Button(root, text=f"Name: {player['name']}, Level: {player['level']}, Classe: {player['classe']}, Race: {player['race']}", command=lambda p=player['name']: open_player_window(p))
-
-    root.loop()
-
-
-
-if __name__ == "__main__":
-    open = home_page()
-
-    # # Run the main menu
-    # root.loop()
-
-
+# --- | Zone de test | ---

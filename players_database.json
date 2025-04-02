@@ -1,7 +1,6 @@
 {
     "players": [
         {
-            "id": 9,
             "name": "Shadow_Strike",
             "level": 35,
             "classe": "Rogue",
@@ -16,7 +15,6 @@
             "gold": 200
         },
         {
-            "id": 10,
             "name": "Arcane_Flame",
             "level": 40,
             "classe": "Mage",
@@ -31,7 +29,6 @@
             "gold": 150
         },
         {
-            "id": 0,
             "name": "test_name",
             "level": 1,
             "classe": "Warrior",
@@ -42,7 +39,6 @@
             "xp": 0
         },
         {
-            "id": 0,
             "name": "L_exterminateur_de_race",
             "level": 1,
             "classe": "Warrior",
@@ -53,21 +49,9 @@
             "xp": 0
         },
         {
-            "id": 0,
-            "name": "zesdfc",
+            "name": "drfgbhnj",
             "level": 1,
             "classe": "Monk",
-            "race": "Elf",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "",
-            "level": 1,
-            "classe": "Barbarian",
             "race": "Human",
             "health": 100,
             "mana": 100,
@@ -75,19 +59,7 @@
             "xp": 0
         },
         {
-            "id": 0,
-            "name": "qsc",
-            "level": 1,
-            "classe": "Mage",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "rezd",
+            "name": "fg",
             "level": 1,
             "classe": "Necromancer",
             "race": "Human",
@@ -97,87 +69,9 @@
             "xp": 0
         },
         {
-            "id": 0,
-            "name": "sqc",
-            "level": 1,
-            "classe": "Monk",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "sqcsqsccsqcs",
-            "level": 1,
-            "classe": "Necromancer",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "zqsd",
+            "name": "qsdvg",
             "level": 1,
             "classe": "Bard",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "try this",
-            "level": 1,
-            "classe": "Mage",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "zdc",
-            "level": 1,
-            "classe": "Bard",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "fgbv ",
-            "level": 1,
-            "classe": "Monk",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "sqxdc",
-            "level": 1,
-            "classe": "Bard",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "id": 0,
-            "name": "xdc",
-            "level": 1,
-            "classe": "Monk",
             "race": "Human",
             "health": 100,
             "mana": 100,

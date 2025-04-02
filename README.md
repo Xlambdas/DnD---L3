@@ -1,10 +1,15 @@
-# fait sur la premiere semaine
+
+# Avanccé du travail
+
+## fait sur la premiere semaine
 
 - création de la base de donnée et des fonctions de récupération.
 - création des classes Race, Classe et player
 - début d'interface player (pour le moment non fonctionnelle suite a des modifications - ajout de race et classe)..
 
-## DnD---L3
+## Fait sur la deuxieme semaine
+
+# DnD---L3
 
 game for the final project on informatics L3.
 
@@ -22,6 +27,7 @@ Comme pour les autres projets, l'accent sera mis sur une bonne définition des c
 
 Une interface texte ou graphique sera ajoutée par la suite. ...
 
+## Autre
 --- | others things | ---
 
 lien avec toute la documentation : [docu DnD](https://regles-donjons-dragons.com/page2.html)
@@ -43,12 +49,13 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 
 Évolution du personnage : L’expérience gagnée permet de monter en niveau et d’améliorer les compétences, capacités et caractéristiques.
 
-## Questions
+## Questions pour le prof
 
-Marge de manoeuvre ? forme du jeux ? différentes pages ? interface utilisateur ?
-quels regles a appliquer ?
+comment faire un choix avec deux listes (classes et races) ?
 
 ...
+
+## Liste des choses a faire
 
 <!-- Todo -->
 
@@ -74,3 +81,16 @@ Autre / objectifs :
 - evolution du personnage
 
 ...
+
+fichier a jour :
+
+- utils
+- player_creation
+- main (bientot)
+
+a faire :
+
+- player
+- classe
+- race
+- main
