@@ -17,10 +17,11 @@ def get_all_data(filename='players_database.json'):
 
 # --- | instance of Race | ---
 class Race:
-    def __init__(self, name, health, bonus):
+    def __init__(self, name):
         self.name = name
-        self.health = health
-        self.bonus = bonus
+        self.data = self.get_race(name)
+        self.health = self.data['base_health']
+        self.bonus = self.data['bonus']
 
     def describe(self):
         """
@@ -29,6 +30,16 @@ class Race:
         bonus_descr = ", ".join(f"{key}: {value}" for key, value in self.bonus.items())
         return f"Race: {self.name}, Speed: {self.health}, Abilities: {bonus_descr}"
         # Example of predefined races stored in a dictionary
+
+    def get_race(self, name):
+        """
+            Get all the data concerning the races (about the player) from the database
+        """
+        data = get_all_data()
+        for race in data['race']:
+            if race['name'] == name:
+                return race
+        return data['race']
 
     def attack_bonus(self, base_attack):
         """
@@ -39,21 +50,6 @@ class Race:
 
 
 
-def get_race(name):
-    """
-        Get all the data concerning the races (about the player) from the database
-    """
-    data = get_all_data()
-    for race in data['race']:
-        if race['name'] == name:
-            return race
-    return data['race']
+# --- | brouillon | -----------------------------------------------
 
-playerRace = get_race("Elf")
-player01 = Race(playerRace['name'], playerRace['base_health'], playerRace['bonus'])
-
-playerinfo = player01.describe()
-# print("playerinfo",playerinfo)
-# print(playerRace['name'])
-
-
+# --- | Zone de test | ---

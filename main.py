@@ -8,8 +8,7 @@ def open_game(name):
     """
     print(f"Opening game for {name}")
     game = DnDGame(name)
-    return game.root.loop()
-    # player = Player(name)
+    # return game.root.loop()
     # player_name = player.name
     # print(f"Player name: {player_name}")
     # print(f"Player info: {player.descr()}")
@@ -23,18 +22,31 @@ class DnDGame:
     def __init__(self, name):
         self.root = None
         self.player = Player(name)
-        self.create_main_menu()
-    
-    def create_main_menu(self):
-        self.root = Win(title="Main Menu", width=300, height=200, bg='lightgray')
-        Label(self.root, text="Main menu", font="Arial 20 bold")
-        # Button(self.root, text="Create new Player", command=self.create_player_window, bg='lightblue')
-        # Button(self.root, text="Play", command=self.open_game)
-        pass  # The loop is already handled in open_game
+        self.interface()
+
+    def interface(self):
+        self.root = Win(title="game", width=600, height=400, bg='lightgray', fold=10)
+        # creation of the map :
+        self.map_frame = Frame(self.root, fold=10, bg='white')
+        for row in range(20):
+            for col in range(10):
+                background = "lightblue" if (row + col) % 2 == 0 else "lightgreen"
+                Label(self.map_frame, text="", width=4, height=2, relief="ridge", bg=background)
 
 
-open_game("fg")  # Replace with the actual player name you want to test
-
+        # user interface :
+        self.action_panel = Frame(self.root, width=150, bg='lightblue')
+        Label(self.action_panel, text=f"Actions left :{self.player.actions}", font="Arial 14 bold", bg='lightblue')
+        Label(self.action_panel, text=f"Player: {self.player.name}", bg='lightblue')
+        Button(self.action_panel, text="Move", command=lambda: (
+            self.player.action('mouv'),
+            ), bg='lightgray')
+        Button(self.action_panel, text="Attack", command=lambda: (
+            self.player.action('attack'),
+            ), bg='lightgray')
+        Button(self.action_panel, text="Inventory")#, command=self.inventory_action, bg='lightgray')
+        Button(self.action_panel, text="End Turn")#, command=self.end_turn_action, bg='lightgray')
+        self.root.loop()
 
 
 # --- | brouillon | -----------------------------------------------
@@ -53,3 +65,5 @@ open_game("fg")  # Replace with the actual player name you want to test
 
 
 # --- | Zone de test | ---
+
+open_game("fg")

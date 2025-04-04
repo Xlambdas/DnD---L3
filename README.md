@@ -9,6 +9,9 @@
 
 ## Fait sur la deuxieme semaine
 
+- refonte des différentes classes, corrections des bugs.
+- page de création du joueur avec choix de la classe.
+
 # DnD---L3
 
 game for the final project on informatics L3.
@@ -28,6 +31,7 @@ Comme pour les autres projets, l'accent sera mis sur une bonne définition des c
 Une interface texte ou graphique sera ajoutée par la suite. ...
 
 ## Autre
+
 --- | others things | ---
 
 lien avec toute la documentation : [docu DnD](https://regles-donjons-dragons.com/page2.html)
@@ -51,7 +55,7 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 
 ## Questions pour le prof
 
-comment faire un choix avec deux listes (classes et races) ?
+comment faire un choix avec deux listes (classes et races) ? comment gerer loop et window ?
 
 ...
 
@@ -61,8 +65,6 @@ comment faire un choix avec deux listes (classes et races) ?
 
 Urgent :
 
-- page Création de personnage avec choix de classe parmis une liste.
-
 Autre / objectifs :
 
 - personnage
@@ -70,7 +72,6 @@ Autre / objectifs :
   - save to database
   - UPDATE : if he already exist : return (waw man, the gamer already exist, find another name nigger)
   - UPDATE :
-    - id unique généré par joueur
     - delete player
 - Jet de dé
 - Caractéristique (force, dextérité, constitution, intelligence, sagesse, charisme)
@@ -81,16 +82,3 @@ Autre / objectifs :
 - evolution du personnage
 
 ...
-
-fichier a jour :
-
-- utils
-- player_creation
-- main (bientot)
-
-a faire :
-
-- player
-- classe
-- race
-- main

@@ -2,10 +2,8 @@ import json
 import os
 from ezTK import *
 #from other files :
-from race import get_race, get_all_data, Race
-from classe import get_classe, Classe
-# from main import DnDGame
-# from player_creation import create_player_window
+from race import get_all_data, Race
+from classe import Classe
 
 class Player ():
     def __init__(self, name):
@@ -18,16 +16,12 @@ class Player ():
         """
         self.name = name
         info_player = self.get_bdd()
-        # print("info form the player - info_player :",info_player)
         self.race = info_player['race']
         self.classe = info_player['classe']
         self.xp = info_player['xp']
-        playerRace = get_race(self.race)
-        self.info_race = Race(playerRace['name'], playerRace['base_health'], playerRace['bonus'])
-        playerClass = get_classe(self.classe)
-        self.info_classe = Classe(playerClass["name"], playerClass["strength"], playerClass["endurance"], playerClass["bonus"])
-        # print("test race : ", self.race.describe())
-        # print("test class : ", self.classe.describe())
+        self.info_race = Race(self.race)
+        self.info_classe = Classe(self.classe)
+        self.actions = 2
 
     def descr(self):
         return {"name": self.name, "level": 1, "classe": self.classe, "race": self.race}
@@ -56,7 +50,44 @@ class Player ():
         """
         pass
 
-# --- | piste de recherche | ---
+    def action(self, type):
+        """
+            Perform an action based on the type of action.
+            required : type : str : type of action (attack, heal, etc.)
+            Ensures : perform the action and return the result.
+        """
+        if self.actions <= 0:
+            print("No actions left.")
+            return None
+        self.actions -= 1
+        if type == "attack":
+            return self.attack()
+        elif type == "mouv":
+            return self.mouv()
+        else:
+            print("Unknown action type.")
+            return None
+
+    def attack(self):
+        """
+            Calculate the attack bonus of the player.
+            Ensures : return the attack bonus of the player.
+        """
+        # base_attack = 10
+        print ("file player - attack")
+        pass
+
+    def mouv(self):
+        """
+            Calculate the movement of the player.
+            Ensures : return the movement of the player.
+        """
+        print("file player - mouv")
+        pass
+
+
+# --- | brouillon | -----------------------------------------------
+
 
 
 
@@ -141,3 +172,5 @@ class Player ():
 #         # Sauvegarde les données
 #         print(f"✅ Player {name} deleted successfully!")
 #         return True
+
+# --- | Zone de test | ---

@@ -11,6 +11,10 @@ from main import open_game
 def open_player_window(name):
     """
         Open the player window for the selected player.
+        Requires:
+            - name : str : name of the player
+        Ensures:
+            - Open the player window with all the information about the player.
     """
     data = get_all_data()
     players_info = data['players']
@@ -78,7 +82,6 @@ def create_player_window():
     window.loop()
 
 # ---------------------------------------------------
-
 
 
 

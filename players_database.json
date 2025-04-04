@@ -77,6 +77,26 @@
             "mana": 100,
             "inventory": [],
             "xp": 0
+        },
+        {
+            "name": "sxdvgbh",
+            "level": 1,
+            "classe": "Sorcerer",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
+        },
+        {
+            "name": "rty",
+            "level": 1,
+            "classe": "Bard",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0
         }
     ],
     "classe": [
