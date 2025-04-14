@@ -32,31 +32,31 @@ class DnDGame:
         self.current_turn = "player"  # Start with player's turn
         self.interface()
     
-    def all_enemies_dead(self):
-        """Check if all enemies are dead"""
-        return all(enemy.health <= 0 for enemy in self.enemies)
+    # def all_enemies_dead(self):
+    #     """Check if all enemies are dead"""
+    #     return all(enemy.health <= 0 for enemy in self.enemies)
 
-    def all_players_dead(self):
-        """Check if all players are dead"""
-        # If you have multiple players, adjust accordingly
-        return self.player.health <= 0
+    # def all_players_dead(self):
+    #     """Check if all players are dead"""
+    #     # If you have multiple players, adjust accordingly
+    #     return self.player.health <= 0
 
-    def game_over_screen(self, player_won):
-        """Display game over screen with restart/exit options"""
-        # Clear current window contents
-        for widget in self.window.winfo_children():
-            widget.destroy()
+    # def game_over_screen(self, player_won):
+    #     """Display game over screen with restart/exit options"""
+    #     # Clear current window contents
+    #     for widget in self.window.winfo_children():
+    #         widget.destroy()
         
-        # Create game over message
-        message = "Victory! All enemies defeated." if player_won else "Game Over! Your character has fallen."
-        tk.Label(self.window, text=message, font=("Arial", 18)).pack(pady=20)
+    #     # Create game over message
+    #     message = "Victory! All enemies defeated." if player_won else "Game Over! Your character has fallen."
+    #     tk.Label(self.window, text=message, font=("Arial", 18)).pack(pady=20)
         
-        # Create buttons
-        restart_button = tk.Button(self.window, text="Play Again", command=self.restart_game)
-        restart_button.pack(pady=10)
+    #     # Create buttons
+    #     restart_button = tk.Button(self.window, text="Play Again", command=self.restart_game)
+    #     restart_button.pack(pady=10)
         
-        exit_button = tk.Button(self.window, text="Exit Game", command=self.window.destroy)
-        exit_button.pack(pady=10)
+    #     exit_button = tk.Button(self.window, text="Exit Game", command=self.window.destroy)
+    #     exit_button.pack(pady=10)
     
     def restart_game(self):
         """Restart the game by recreating everything"""
