@@ -107,7 +107,31 @@
             "bonus": {
                 "strength": 10,
                 "endurance": 5
-            }
+            },
+            "special_abilities": ["Heroic Strike", "Shield Wall"],
+            "weapon_mastery": true
+        },
+        {
+            "name": "Mage",
+            "strength": 20, 
+            "endurance": 25,
+            "bonus": {
+                "intelligence": 5,
+                "mana": 3
+            },
+            "special_abilities": ["Arcane Explosion", "Frost Nova"],
+            "spell_mastery": true
+        },
+        {
+            "name": "Rogue",
+            "strength": 30,
+            "endurance": 20,
+            "bonus": {
+                "dexterity": 5,
+                "stealth": 3
+            },
+            "special_abilities": ["Shadowstrike", "Vanish"],
+            "stealth_mastery": true
         },
         {
             "name": "Monk",
@@ -134,24 +158,6 @@
             "bonus": {
                 "charisma": 5,
                 "inspiration": 3
-            }
-        },
-        {
-            "name": "Mage",
-            "strength": 20,
-            "endurance": 25,
-            "bonus": {
-                "intelligence": 5,
-                "mana": 3
-            }
-        },
-        {
-            "name": "Rogue",
-            "strength": 30,
-            "endurance": 20,
-            "bonus": {
-                "dexterity": 5,
-                "stealth": 3
             }
         },
         {
@@ -207,7 +213,9 @@
             "bonus": {
                 "Dexterity": 2,
                 "Perception": 1
-            }
+            },
+            "endurance_modifier": -2,
+            "night_vision": true
         },
         {
             "name": "Dwarf",
@@ -215,14 +223,18 @@
             "bonus": {
                 "Constitution": 2,
                 "Resilience": 1
-            }
+            },
+            "endurance_modifier": 3,
+            "stone_resistance": true
         },
         {
             "name": "Human",
             "base_health": 30,
             "bonus": {
                 "Versatility": 1
-            }
+            },
+            "endurance_modifier": 1,
+            "adaptability": true
         },
         {
             "name": "Halfling",
