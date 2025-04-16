@@ -55,8 +55,6 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 
 ## Questions pour le prof
 
-comment faire un choix avec deux listes (classes et races) ? comment gerer loop et window ?
-
 ...
 
 ## Liste des choses a faire

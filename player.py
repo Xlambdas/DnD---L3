@@ -19,8 +19,32 @@ class Player ():
         self.race = info_player['race']
         self.classe = info_player['classe']
         self.xp = info_player['xp']
+<<<<<<< Updated upstream
         self.info_race = Race(self.race)
         self.info_classe = Classe(self.classe)
+=======
+        
+        # Create race object - use specific class if available
+        if self.race_name == "Elf":
+            self.info_race = Elf()
+        elif self.race_name == "Dwarf":
+            self.info_race = Dwarf()
+        elif self.race_name == "Human":
+            self.info_race = Human()
+        else:
+            self.info_race = Race(self.race_name)
+            
+        # Create class object - use specific class if available
+        if self.classe_name == "Warrior":
+            self.info_classe = Warrior()
+        elif self.classe_name == "Mage":
+            self.info_classe = Mage()
+        elif self.classe_name == "Rogue":
+            self.info_classe = Rogue()
+        else:
+            self.info_classe = Classe(self.classe_name)
+
+>>>>>>> Stashed changes
         self.actions = 2
 
     def descr(self):
