@@ -1,6 +1,8 @@
 from ezTK import *
 # from other files :
 from player import Player
+from enemy import Goblin, Orc
+import random
 
 def open_game(name):
     """
@@ -8,32 +10,53 @@ def open_game(name):
     """
     print(f"Opening game for {name}")
     game = DnDGame(name)
+    # return game.root.loop()
+    # player_name = player.name
+    # print(f"Player name: {player_name}")
+    # print(f"Player info: {player.descr()}")
+    # window = Win(title="Game", width=300, height=200)
+    # Label(window, text=f"Welcome to the game, {player.name}!")
+    # Button(window, text="Close", command=window.quit)
+    # window.loop()
+
 
 class DnDGame:
     def __init__(self, name):
-
         self.root = None
         self.player = Player(name)
-<<<<<<< Updated upstream
-        self.interface()
-
-    def interface(self):
-        self.root = Win(title="game", width=600, height=400, bg='lightgray', fold=10)
-        # creation of the map :
-        self.map_frame = Frame(self.root, fold=10, bg='white')
-        for row in range(20):
-            for col in range(10):
-                background = "lightblue" if (row + col) % 2 == 0 else "lightgreen"
-                Label(self.map_frame, text="", width=4, height=2, relief="ridge", bg=background)
-=======
         # Create some enemies
         self.enemies = [
             Goblin(),
-            # Orc()
+            Orc()
         ]
         self.current_turn = "player"  # Start with player's turn
-        self.selected_cell = None  # Track the selected cell
         self.interface()
+    
+    # def all_enemies_dead(self):
+    #     """Check if all enemies are dead"""
+    #     return all(enemy.health <= 0 for enemy in self.enemies)
+
+    # def all_players_dead(self):
+    #     """Check if all players are dead"""
+    #     # If you have multiple players, adjust accordingly
+    #     return self.player.health <= 0
+
+    # def game_over_screen(self, player_won):
+    #     """Display game over screen with restart/exit options"""
+    #     # Clear current window contents
+    #     for widget in self.window.winfo_children():
+    #         widget.destroy()
+        
+    #     # Create game over message
+    #     message = "Victory! All enemies defeated." if player_won else "Game Over! Your character has fallen."
+    #     tk.Label(self.window, text=message, font=("Arial", 18)).pack(pady=20)
+        
+    #     # Create buttons
+    #     restart_button = tk.Button(self.window, text="Play Again", command=self.restart_game)
+    #     restart_button.pack(pady=10)
+        
+    #     exit_button = tk.Button(self.window, text="Exit Game", command=self.window.destroy)
+    #     exit_button.pack(pady=10)
     
     def restart_game(self):
         """Restart the game by recreating everything"""
@@ -45,43 +68,21 @@ class DnDGame:
         self.__init__(self.name)  # Reinitialize with the same name
 
     def interface(self):
-        """
-            Create the game interface.
-        """
-        global root; root = Win(title="game", width=600, height=400, bg='lightgray', fold=10)
-        self.root = root
-
+        self.root = Win(title="game", width=600, height=400, bg='lightgray', fold=10)
+        
         # Create map
         self.map_frame = Frame(self.root, fold=10, bg='white')
         self.cells = []
-        for col in range(20):
-            col_cells = []
-            for row in range(10):
+        for row in range(20):
+            for col in range(10):
                 background = "lightblue" if (row + col) % 2 == 0 else "lightgreen"
-                cell = Brick(self.map_frame, width=32, height=32, border=2, relief="ridge", bg=background, state=(row, col))
-                cell.bind("<Button-1>", lambda event, r=row, c=col: self.on_cell_click((r, c)))  # Bind click event
-                col_cells.append(cell)
-            self.cells.append(col_cells)
+                cell = Label(self.map_frame, text="", width=4, height=2, relief="ridge", bg=background)
+                self.cells.append(cell)
 
         # User interface
         self.action_panel = Frame(self.root, width=150, bg='lightblue')
-<<<<<<< Updated upstream
-        Label(self.action_panel, text=f"Actions left :{self.player.actions}", font="Arial 14 bold", bg='lightblue')
-        Label(self.action_panel, text=f"Player: {self.player.name}", bg='lightblue')
-        Button(self.action_panel, text="Move", command=lambda: (
-            self.player.action('mouv'),
-            ), bg='lightgray')
-        Button(self.action_panel, text="Attack", command=lambda: (
-            self.player.action('attack'),
-            ), bg='lightgray')
-        Button(self.action_panel, text="Inventory")#, command=self.inventory_action, bg='lightgray')
-        Button(self.action_panel, text="End Turn")#, command=self.end_turn_action, bg='lightgray')
-        self.root.loop()
-
-
-=======
         self.action_label = Label(self.action_panel, text=f"Actions left: {self.player.actions}", font="Arial 14 bold", bg='lightblue')
-        Label(self.action_panel, text=f"Player: {self.player.name}", bg='lightblue', height=2, font="Arial 14 bold")
+        Label(self.action_panel, text=f"Player: {self.player.name}", bg='lightblue')
         
         # Game status
         self.status_label = Label(self.action_panel, text=f"Turn: {self.current_turn.capitalize()}", font="Arial 12", bg='lightblue')
@@ -90,137 +91,37 @@ class DnDGame:
         Button(self.action_panel, text="Move", command=lambda: self.player_action('mouv'), bg='lightgray')
         Button(self.action_panel, text="Attack", command=lambda: self.player_action('attack'), bg='lightgray')
         Button(self.action_panel, text="End Turn", command=self.end_turn, bg='lightgray')
+        # Button(self.action_panel, text="Inventory")#, command=self.inventory_action, bg='lightgray')
+        # Button(self.action_panel, text="End Turn")#, command=self.end_turn_action, bg='lightgray')
         
         # Randomize player position
-        # self.player.coord_player = (random.randrange(0, 10), random.randrange(0, 20))
-        self.player.coord_player = (5,5)
+        self.player.coord_player = (random.randrange(0,10), random.randrange(0,3))
         
         # Place enemies away from player
-        # for enemy in self.enemies:
-        #     while self.distance(enemy.coord, self.player.coord_player) < 3:
-        #         enemy.coord = (random.randrange(0, 10), random.randrange(0, 20))
         for enemy in self.enemies:
-            enemy.coord = ((4,4))
+            # Make sure enemies start at least 3 squares away from player
+            while self.distance(enemy.coord, self.player.coord_player) < 3:
+                enemy.coord = (random.randrange(0,10), random.randrange(10,20))
+        
         # Update the display
         self.update_game_display()
         self.root.loop()
-
-    def on_cell_click(self, coords: tuple[int, int]):
-            """Handle cell click events."""
-            row, col = coords
-            print(f"Cell clicked: ({row}, {col})")
-            if self.current_turn != "player":
-                self.status_label.config(text="Not your turn!")
-                return
-            
-            # if self.actions <= 0:
-            #     print("No actions left.")
-            # return None
-            self.player.actions -= 1  # Decrease actions left
-            possible_moves = self.possible_coords(self.player.coord_player, move_distance=2)
-            print(f"Possible moves: {possible_moves}")
-
-            if coords in possible_moves:
-                print (f"Valid move to {coords}")
-                # Move the player to the clicked cell
-                self.player.coord_player = coords
-                print(f"Player moved to {self.player.coord_player}")
-                # Update the display to show the new position
-                self.update_game_display()
-                # Highlight the clicked cell
-                # Reset the previously selected cell if any
-                if self.selected_cell:
-                    prev_row, prev_col = self.selected_cell
-                    background = "lightblue" if (prev_row + prev_col) % 2 == 0 else "lightgreen"
-                    self.cells[prev_row][prev_col].config(bg=background)
-
-                # Highlight the clicked cell in yellow
-                self.cells[row][col].config(bg="yellow")
-                self.selected_cell = (row, col)
-                self.player.coord_player = coords
-                self.update_game_display()
-            else:
-                print("Invalid move. Cell not in possible moves.")
-
 
     def distance(self, coord1, coord2):
         """Calculate Manhattan distance between two coordinates"""
         x1, y1 = coord1
         x2, y2 = coord2
+        # return abs(x2 - x1) + abs(y2 - y1)
         return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
-
-    def possible_coords(self, start_coord, move_distance):
-        """Calculate possible coordinates within a movement distance"""
-        possible_moves = []
-        for dx in range(-move_distance, move_distance + 1):
-            for dy in range(-move_distance, move_distance + 1):
-                if abs(dx) + abs(dy) > move_distance:
-                    continue
-                new_x = start_coord[0] + dx
-                new_y = start_coord[1] + dy
-                if 0 <= new_x < 10 and 0 <= new_y < 20:
-                    possible_moves.append((new_x, new_y))
-        return possible_moves
-
-    def grid_dist(self, start_coord, move_distance):
-        """
-        Modify the grid colors to highlight all available cells within a movement distance.
-        Args:
-            start_coord (tuple): Starting coordinate (x, y).
-            move_distance (int): Maximum movement distance.
-        """
-        # Highlight all possible movement cells
-        print(f"Highlighting cells within {move_distance} distance from {start_coord}")
-
-        possible_moves = self.possible_coords(start_coord, move_distance)
-        print(f"Possible moves, grid_dist: {possible_moves}")
-        for x in range(20):
-            for y in range(10):
-                if (x, y) in possible_moves and (x, y) != self.player.coord_player:
-                    # Highlight available cells in gray
-                    if any(enemy.coord == (x, y) for enemy in self.enemies):
-                        self.cells[x][y].config(bg="red")  # Highlight enemy position
-                    else:
-                        # print("test cell")
-                        self.cells[x][y].config(bg="lightgray")
-                else:
-                    # Keep the original color for other cells
-                    background = self.cells[x][y].cget("bg")
-                    self.cells[y][x].config(bg=background)
-
-        # for x in range(20):
-        #     for y in range(10):
-        #         # print(f"Checking cell ({x}, {y})")
-        #         if (x, y) in possible_moves and (x, y) != self.player.coord_player:
-        #             # Check if the cell is occupied by an enemy
-        #             # print(f"Cell ({x}, {y}) is a possible move")
-        #             if any(enemy.coord == (x, y) for enemy in self.enemies):
-        #                 self.cells[x][y].config(bg="red")  # Highlight enemy position
-        #             else:
-        #                 # print("test cell")
-        #                 self.cells[x][y].config(bg="lightgray")
-        #         else:
-        #             print(f"Cell ({x}, {y}) is not a possible move")
-        #             # Keep the previous color
-        #             background = self.cells[x][y].cget("bg")
-        #             self.cells[x][y].config(bg=background)
-        # # self.update_game_display()
-
 
     def player_action(self, action_type):
         """Handle player action"""
         if self.current_turn != "player":
             self.status_label.config(text="Not your turn!")
             return
-
-        if action_type == "mouv":
-            # Highlight all possible movement cells using grid_dist
-            self.grid_dist(self.player.coord_player, move_distance=2)
-            print(f"Player action: {action_type}")
-            # self.player.action(action_type)
-        else :
-            self.player.action(action_type)
-
+            
+        result = self.player.action(action_type)
+        
         # Update actions display
         self.action_label.config(text=f"Actions left: {self.player.actions}")
         
@@ -239,8 +140,6 @@ class DnDGame:
             self.player.actions = 2  # Reset player actions for next turn
             self.root.after(500, self.enemy_turn)  # Schedule enemy turn after delay
         else:
-            # Update actions display
-            self.action_label.config(text=f"Actions left: {self.player.actions}")
             self.current_turn = "player"
             self.status_label.config(text="Player's turn")
 
@@ -257,31 +156,32 @@ class DnDGame:
             self.root.after(500, None)
         
         # End enemy turn
-        
         self.root.after(500, self.end_turn)
 
     def update_game_display(self):
         """Update the display to show current game state"""
         # Clear the map
-        for row_idx, row in enumerate(self.cells):
-            for col_idx, cell in enumerate(row):
-                background = "lightblue" if (row_idx + col_idx) % 2 == 0 else "lightgreen"
-                cell.config(bg=background, text="")
+        for i, cell in enumerate(self.cells):
+            row = i // 10
+            col = i % 10
+            background = "lightblue" if (row + col) % 2 == 0 else "lightgreen"
+            cell.config(bg=background, text="")
         
         # Show player
         x, y = self.player.coord_player
-        self.cells[y][x].config(bg="blue", text="P")
+        cell_index = (y * 10) + x
+        if 0 <= cell_index < len(self.cells):
+            self.cells[cell_index].config(bg="blue", text="P")
         
         # Show enemies
         for enemy in self.enemies:
             x, y = enemy.coord
-            if 0 <= x < 10 and 0 <= y < 20:
+            cell_index = (y * 10) + x
+            if 0 <= cell_index < len(self.cells):
                 if isinstance(enemy, Goblin):
-                    self.cells[y][x].config(bg="green", text="G")
+                    self.cells[cell_index].config(bg="green", text="G")
                 elif isinstance(enemy, Orc):
-                    self.cells[y][x].config(bg="red", text="O")
-
-
+                    self.cells[cell_index].config(bg="red", text="O")
 # --- | brouillon | -----------------------------------------------
 
 # class DnDGame:
