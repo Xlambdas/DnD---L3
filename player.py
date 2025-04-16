@@ -44,6 +44,9 @@ class Player ():
         else:
             self.info_classe = Classe(self.classe_name)
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         self.actions = 2
 

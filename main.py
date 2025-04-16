@@ -62,10 +62,8 @@ class DnDGame:
                 cell.bind("<Button-1>", lambda event, r=row, c=col: self.on_cell_click((r, c)))  # Bind click event
                 col_cells.append(cell)
             self.cells.append(col_cells)
->>>>>>> Stashed changes
 
-
-        # user interface :
+        # User interface
         self.action_panel = Frame(self.root, width=150, bg='lightblue')
 <<<<<<< Updated upstream
         Label(self.action_panel, text=f"Actions left :{self.player.actions}", font="Arial 14 bold", bg='lightblue')
@@ -284,7 +282,6 @@ class DnDGame:
                     self.cells[y][x].config(bg="red", text="O")
 
 
->>>>>>> Stashed changes
 # --- | brouillon | -----------------------------------------------
 
 # class DnDGame:
