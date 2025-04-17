@@ -1,55 +1,54 @@
-import json
-import os
 
-# --- | general functions | ---
-def get_all_data(filename='players_database.json'):
-    if os.path.exists(filename):
-        with open(filename, 'r') as f:
-            try:
-                data = json.load(f)
-            except json.JSONDecodeError:
-                data = {}
-    else:
-        data = {}
-    return data
-
-
-
-# --- | instance of Race | ---
-class Race:
+class BaseRace:
+    """Base for all races"""
     def __init__(self, name):
         self.name = name
-        self.data = self.get_race(name)
-        self.health = self.data['base_health']
-        self.bonus = self.data['bonus']
+        self.base_health = 25  # Default value
+        self.bonus = {}
 
     def describe(self):
-        """
-            Return a description of the player Race : name, speed and abilities.
-        """
+        """Return a description of the race"""
         bonus_descr = ", ".join(f"{key}: {value}" for key, value in self.bonus.items())
-        return f"Race: {self.name}, Speed: {self.health}, Abilities: {bonus_descr}"
-        # Example of predefined races stored in a dictionary
+        return f"Race: {self.name}, Base Health: {self.base_health}, Abilities: {bonus_descr}"
 
-    def get_race(self, name):
-        """
-            Get all the data concerning the races (about the player) from the database
-        """
-        data = get_all_data()
-        for race in data['race']:
-            if race['name'] == name:
-                return race
-        return data['race']
-
+    # --- | gestion de la race | ---
     def attack_bonus(self, base_attack):
-        """
-            Calcule le bonus d'attaque en fonction des capacités de la race.
-        """
-        bonus = sum(self.abilities.values())
+        """Calculate attack bonus based on race abilities"""
+        bonus = sum(self.bonus.values())
         return base_attack + bonus
 
+    def get_endurance(self):
+        """Each race might modify endurance differently"""
+        return 0  # Base modifier
 
 
-# --- | brouillon | -----------------------------------------------
+# --- | Specific race classes | ---
+class Elf(BaseRace):
+    def __init__(self):
+        super().__init__("Elf")
+        # Additional elf-specific attributes
+        self.night_vision = True
 
-# --- | Zone de test | ---
+    def get_endurance(self):
+        """Elves are more agile but have less endurance"""
+        return -2
+
+class Dwarf(BaseRace):
+    def __init__(self):
+        super().__init__("Dwarf")
+        # Additional dwarf-specific attributes
+        self.stone_resistance = True
+        
+    def get_endurance(self):
+        """Dwarves have better endurance"""
+        return +3
+
+class Human(BaseRace):
+    def __init__(self):
+        super().__init__("Human")
+        # Additional human-specific attributes
+        self.adaptability = True
+        
+    def get_endurance(self):
+        """Humans have average endurance"""
+        return +1
