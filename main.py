@@ -34,14 +34,22 @@ class DnDGame:
         self.root = Frame(win, fold=2)
     
         # Create map
+<<<<<<< Updated upstream
         self.map_frame = Frame(self.root, fold=20, width=40 * 16, height=20 * 16, bg='white', grow=False)
         # self.map_frame.pack_propagate(False)
+=======
+        self.map_frame = Frame(self.root, fold=20, bg='white')
+>>>>>>> Stashed changes
         self.cells = []
         for col in range(40):
             col_cells = []
             for row in range(20):
                 background = "lightblue" if (row + col) % 2 == 0 else "lightgreen"
+<<<<<<< Updated upstream
                 cell = Brick(self.map_frame, width=16, height=16, bg=background, grow=False, state=(row, col))
+=======
+                cell = Brick(self.map_frame, width=16, height=16, border=1, bg=background, state=(row, col))
+>>>>>>> Stashed changes
                 cell.bind("<Button-1>", lambda event, r=row, c=col: self.on_cell_click((r, c)))  # Bind click event
                 col_cells.append(cell)
             self.cells.append(col_cells)
@@ -130,7 +138,11 @@ class DnDGame:
                 cell.config(bg=background, text="", border=1)
 
         # Show player
+<<<<<<< Updated upstream
         x, y = self.player.coord
+=======
+        x, y = self.player.coord_player
+>>>>>>> Stashed changes
         self.cells[y][x].config(bg="blue", text="P", fg="white", font="Arial 12 bold", border=1)
 
         # Show enemies
@@ -140,10 +152,15 @@ class DnDGame:
             if 0 <= x < 20 and 0 <= y < 40:
                 if isinstance(enemy, Goblin):
                     self.cells[y][x].config(bg="darkgreen", text="G", fg="white", font="Arial 12 bold", border=1)
+<<<<<<< Updated upstream
                 elif isinstance(enemy, Orc):
                     self.cells[y][x].config(bg="red", text="O", fg="white", font="Arial 12 bold", border=1)
                 elif isinstance(enemy, Cutiie):
                     self.cells[y][x].config(bg="darkgreen", text="G", fg="white", font="Arial 12 bold", border=1)
+=======
+            elif isinstance(enemy, Orc):
+                self.cells[y][x].config(bg="darkred", text="O", fg="white", font="Arial 12 bold", border=1)
+>>>>>>> Stashed changes
         
         if self.player.actions <= 0:
             self.status_label.config(text="No actions left!")
@@ -179,7 +196,11 @@ class DnDGame:
         for y in range(20):
             for x in range(40):
                 # print (f"Checking cell ({x}, {y})")
+<<<<<<< Updated upstream
                 if (y,x) == self.player.coord:
+=======
+                if (y,x) == self.player.coord_player:
+>>>>>>> Stashed changes
                         self.cells[x][y].config(bg="blue", text="P", font="Arial 12 bold", border=1)
                 elif (y,x) in possible_moves:
                     if any(enemy.coord == (y, x) for enemy in self.enemies):
@@ -218,12 +239,17 @@ class DnDGame:
         elif self.action_type == "attack":
             if any(enemy.coord == coords for enemy in self.enemies):
                 self.attack(coords)
+<<<<<<< Updated upstream
                 return
             else:
                 self.move_distance = self.player.bonus_range_mouv()
 
                 self.mouv(coords)
                 return
+=======
+            else:
+                self.mouv(coords)
+>>>>>>> Stashed changes
 
 
     def mouv(self, coords: tuple[int, int]):
