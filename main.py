@@ -24,6 +24,7 @@ class DnDGame:
         ]
         self.current_turn = "player"  # Start with player's turn
         self.selected_cell = None  # Track the selected cell
+        self.game_over = False  # Track if the game is over
         self.interface()
 
     def interface(self):
@@ -31,6 +32,7 @@ class DnDGame:
             Create the game interface.
         """
         global win; win = Win(title="game", bg='lightgray', inout=self.on_inout)
+        self.win = win
         self.root = Frame(win, fold=2)
     
         # Create map
@@ -77,6 +79,7 @@ class DnDGame:
         # Button(self.action_panel, text="End Turn", command=self.end_turn, bg='lightgray')
 
         self.player.coord = (5,5)
+        self.player.health = 1
 
 
         # Place enemies away from player
@@ -98,6 +101,9 @@ class DnDGame:
 
     def on_inout(self, widget, code, mods):
         """Handle mouse in/out events."""
+        if self.game_over:
+            return None
+            
         if widget.master == self.map_frame and widget.index is not None:
             row, col = widget.index
             for enemy in self.enemies:
@@ -126,6 +132,11 @@ class DnDGame:
 
     def update_game_display(self):
         """Update the display to show current game state"""
+        # Check if player is dead
+        if self.player.health <= 0 and not self.game_over:
+            self.show_game_over()
+            return
+            
         # Clear the map
         for row_idx, row in enumerate(self.cells):
             for col_idx, cell in enumerate(row):
@@ -153,6 +164,42 @@ class DnDGame:
             self.end_turn()
             return
 
+    def show_game_over(self):
+        """Display game over screen and provide restart option"""
+        self.game_over = True
+        
+        # Clear the main window
+        for widget in self.win.winfo_children():
+            widget.destroy()
+        
+        # Create game over screen
+        game_over_frame = Frame(self.win, width=800, height=600, bg='black',fold=3)
+
+
+        
+        # Game over message
+        Label(game_over_frame, text="GAME OVER", font="Arial 36 bold", fg="red", bg="black")
+        Label(game_over_frame, text=f"{self.player.name} has been defeated!", font="Arial 18", fg="white", bg="black")
+        
+        # Show stats
+        stats_frame = Frame(game_over_frame, bg='black', fold=1)
+        Label(stats_frame, text=f"XP earned: {self.player.xp}", font="Arial 14", fg="white", bg="black")
+        Label(stats_frame, text=f"Class: {self.player.classe_name}", font="Arial 14", fg="white", bg="black")
+        Label(stats_frame, text=f"Race: {self.player.race_name}", font="Arial 14", fg="white", bg="black")
+        
+        # Button to restart
+        Button(game_over_frame, text="Play Again", font="Arial 16 bold", bg="red", fg="white", 
+               command=self.restart_game)
+        
+        # Button to quit
+        Button(game_over_frame, text="Quit", font="Arial 16 bold", bg="gray", fg="white", 
+               command=lambda: win.destroy())
+
+    def restart_game(self):
+        """Restart the game with the same player name"""
+        win.destroy()
+        open_game(self.player.name)
+
     def possible_coords(self, start_coord, move_distance): # todo : a ne pas modifier
         """Calculate possible coordinates within a movement distance"""
         possible_moves = []
@@ -174,6 +221,9 @@ class DnDGame:
             start_coord (tuple): Starting coordinate (x, y).
             move_distance (int): Maximum movement distance.
         """
+        if self.game_over:
+            return
+            
         # Highlight all possible movement cells
         print(f"Highlighting cells within {move_distance} distance from {start_coord}")
 
@@ -205,6 +255,8 @@ class DnDGame:
 
     def on_cell_click(self, coords: tuple[int, int]):
         """Handle cell click events."""
+        if self.game_over:
+            return
 
         if self.current_turn != "player":
             self.status_label.config(text="Not your turn!")
@@ -230,6 +282,9 @@ class DnDGame:
 
 
     def mouv(self, coords: tuple[int, int]):
+        if self.game_over:
+            return
+            
         row, col = coords
 
         print(f"Cell clicked: ({row}, {col})")
@@ -258,6 +313,9 @@ class DnDGame:
             print("Invalid move. Cell not in possible moves.")
 
     def attack(self, coords: tuple[int, int]):
+        if self.game_over:
+            return
+            
         row, col = coords
 
         print(f"Cell clicked: ({row}, {col})")
@@ -303,6 +361,9 @@ class DnDGame:
         """
             End the player's turn and switch to the enemy's turn.
         """
+        if self.game_over:
+            return
+            
         if self.current_turn == "player":
             self.current_turn = "enemies"
             self.status_label.config(text="Enemies' turn")
@@ -322,6 +383,9 @@ class DnDGame:
         """
             Handle player actions.
         """
+        if self.game_over:
+            return
+            
         if self.current_turn != "player":
             self.status_label.config(text="Not your turn!")
             return
@@ -358,7 +422,8 @@ class DnDGame:
         """
             Handle enemy actions.
         """
-
+        if self.game_over:
+            return
 
         if self.current_turn != "enemies":
             self.status_label.config(text="Player turn!")
@@ -376,19 +441,14 @@ class DnDGame:
 
                 self.player.defensed(data)
                 print(f"{enemy.name} attacks for {data} damage!")
+                
+                # Check if player died after this attack
+                if self.player.health <= 0:
+                    self.update_game_display()  # This will trigger the game over screen
+                    return  # Exit enemy action loop if player is dead
+                    
             if action == "mouv":
                 position.append(enemy.coord)
-
-
-            #     # Enemy attacks player
-            #     action, damage = enemy.attack()
-            #     print(f"{enemy.name} attacks for {damage} damage!")
-            #     self.player.defensed(damage)
-            # elif action == "move":
-            #     # Enemy moves toward player
-            #     new_x, new_y = enemy.move_toward(self.player.coord)
-            #     enemy.coord = (new_x, new_y)
-            #     print(f"{enemy.name} moves to {enemy.coord}")
 
             print(f"{enemy.name} action: {action}, data: {data}")
             # Update display after each enemy acts
