@@ -26,6 +26,7 @@ class Player():
         self.race_name = info_player['race']
         self.classe_name = info_player['classe']
         self.xp = info_player['xp']
+        self.health = info_player['health']
 
         # Create race object - use specific class if available
         race_class = globals().get(self.race_name)
@@ -35,7 +36,7 @@ class Player():
         # Create class object - use specific class if available
 
         self.actions = 2
-        self.coord_player = (random.randrange(0,10), random.randrange(0,3))
+        self.coord = (random.randrange(0,10), random.randrange(0,3))
 
     def descr(self):
         return {"name": self.name, "level": 1, "classe": self.classe_name, "race": self.race_name}
@@ -85,5 +86,22 @@ class Player():
         bonus = random.randint(1, 3) + 1
         print ("bonus attack : ", bonus)
         return bonus
+    
+    def bonus_defense (self):
+        """randomly take a number between 1 and 6 for the bonus of defense of the player
+        return the bonus of defense"""
+        bonus = random.randint(1, 3) + 1
+        print ("bonus defense : ", bonus)
+        return bonus
+
+
+    def defensed (self, damage):
+        """Defend against an attack"""
+        # Calculate damage after endurance reduction
+        bonus = self.bonus_defense()
+        reduced_damage = max(0, damage - bonus)
+        self.health -= reduced_damage
+        print(f"{self.name} defends and takes {reduced_damage} damage!")
+        return reduced_damage
 
 

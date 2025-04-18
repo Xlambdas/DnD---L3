@@ -7,23 +7,21 @@ class Enemy:
         self.health = health
         self.strength = strength
         self.endurance = endurance
-        self.coord = (random.randrange(0,10), random.randrange(0,3))
+        self.coord = (0,0)
 
     def describe(self):
         """Return a description of the enemy"""
         return f"{self.name}: Health={self.health}, Strength={self.strength}, Endurance={self.endurance}"
 
-    def act(self, player_coord):
+    def action(self, position, player_coord):
         """Decide what action to take based on player position"""
         # Calculate distance to player
         distance = self.distance_to(player_coord)
 
-        # If player is within attack range, attack
-        if distance <= 1:
-            return self.attack()
-        # Otherwise, move toward player
+        if distance <= 1: # if in range attack the player
+            return ('attack', self.__attack())
         else:
-            return self.move_toward(player_coord)
+            return ('mouv', self.__move_toward(position, player_coord))
 
     def distance_to(self, target_coord):
         """Calculate Manhattan distance to target"""
@@ -31,11 +29,11 @@ class Enemy:
         x2, y2 = target_coord
         return abs(x2 - x1) + abs(y2 - y1)
 
-    def attack(self):
+    def __attack(self):
         """Attack the player"""
         damage = self.strength + random.randint(1, 6)  # Base strength + random roll
         print(f"{self.name} attacks for {damage} damage!")
-        return ("attack", damage)
+        return damage
     
     def defend(self, damage):
         """Defend against an attack"""
@@ -45,7 +43,7 @@ class Enemy:
         print(f"{self.name} defends and takes {reduced_damage} damage!")
         return ("defend", reduced_damage)
 
-    def move_toward(self, target_coord):
+    def __move_toward(self, position, target_coord):
         """Move toward the target coordinates"""
         # Calculate direction
         current_x, current_y = self.coord
@@ -54,28 +52,42 @@ class Enemy:
         # Move up to endurance/10 steps (rounded up, minimum 1)
         movement_range = max(1, self.endurance // 10)
         # Determine direction with priority (x-axis first)
+        potential_moves = []
         if current_x < target_x:
-            new_x = min(current_x + movement_range, target_x)
-            new_y = current_y
-        elif current_x > target_x:
-            new_x = max(current_x - movement_range, target_x)
-            new_y = current_y
-        elif current_y < target_y:
-            new_x = current_x
-            new_y = min(current_y + movement_range, target_y)
-        elif current_y > target_y:
-            new_x = current_x
-            new_y = max(current_y - movement_range, target_y)
-        else:
-            # Already at target
-            new_x, new_y = current_x, current_y
+            potential_moves.append((min(current_x + movement_range, target_x), current_y))
+        if current_x > target_x:
+            potential_moves.append((max(current_x - movement_range, target_x), current_y))
+        if current_y < target_y:
+            potential_moves.append((current_x, min(current_y + movement_range, target_y)))
+        if current_y > target_y:
+            potential_moves.append((current_x, max(current_y - movement_range, target_y)))
+
+        # Filter out positions that are in the 'position' list (unavailable)
+        print (f"Potential moves: {potential_moves} in {position}")
+        valid_moves = [move for move in potential_moves if move not in position]
+
+        if not valid_moves:
+            print(f"{self.name} cannot move (all paths blocked).")
+            return self.coord
+
+        # Choose the first valid move (priority given to x-axis movement)
+        new_x, new_y = valid_moves[0]
 
         # Update position
         self.coord = (new_x, new_y)
         print(f"{self.name} moves to {self.coord}")
-        return ("move", self.coord)
+        return self.coord
 
+    def is_occupied(self, position):
+        """Check if a position is occupied by another enemy"""
+        # This method should be implemented to check the game state for other enemies
+        # For now, it returns False as a placeholder
+        return False
 
+class Cutiie(Enemy):
+    def __init__(self):
+        super().__init__("Cutiie", health=3, strength=5, endurance=15)
+        
 
 # --- | Specific enemy classes | ---
 class Goblin(Enemy):
