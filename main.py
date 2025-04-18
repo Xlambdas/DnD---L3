@@ -40,7 +40,7 @@ class DnDGame:
         for col in range(40):
             col_cells = []
             for row in range(20):
-                background = "lightblue" if (row + col) % 2 == 0 else "lightgreen"
+                background = "#bbffbb" if (row + col) % 2 == 0 else "#ccffcc"
                 cell = Brick(self.map_frame, width=16, height=16, bg=background, grow=False, state=(row, col))
                 cell.bind("<Button-1>", lambda event, r=row, c=col: self.on_cell_click((r, c)))  # Bind click event
                 col_cells.append(cell)
@@ -52,14 +52,15 @@ class DnDGame:
         Label(status_frame, text="Status", bg='gray', font="Arial 14 bold")
         self.status_case = Label(status_frame, text="On case : " + str(self.player.coord), bg='lightblue', font="Arial 12")
         self.status_name = Label(status_frame, text="Name: " + str(self.player.name), bg='lightblue', font="Arial 12")
+        self.status_race = Label(status_frame, text="Race: " + str(self.player.race_name), bg='lightblue', font="Arial 12")
+        self.status_classe = Label(status_frame, text="Classe: " + str(self.player.classe_name), bg='lightblue', font="Arial 12")
         self.status_health = Label(status_frame, text="Health: " + str(self.player.health), bg='lightblue', font="Arial 12")
         self.status_xp = Label(status_frame, text="XP: " + str(self.player.xp), bg='lightblue', font="Arial 12")
         event_log = Frame(side_frame, width=400, bg='lightblue', grow=False, fold=1)
         title = Frame(event_log, width=800, height=200, bg='lightblue', grow=False)
         Label(title, text="All the action of the game :", bg='gray', font="Arial 14 bold")
-        self.frame_log = Frame(event_log, width=800, height=200, bg='lightblue' )
-        self.show_event = Label(self.frame_log, text="curent move", bg='lightblue', font="Arial 12")
-
+        frame_log = Frame(event_log, width=800, height=200, bg='lightblue' )
+        self.show_event = Label(frame_log, text="curent action", bg='lightblue', font="Arial 12")
 
 
         # --- | User interface | ---
@@ -104,6 +105,8 @@ class DnDGame:
                     print(f"Mouse is over cell: ({enemy.coord}) - {enemy}")
                     self.status_case['text'] = f"On case : {enemy.coord}"
                     self.status_name['text'] = f"Name: {enemy.name}"
+                    self.status_race['text'] = f"Name: {enemy.range_attack}"
+                    self.status_classe['text'] = f"Name: {None}"
                     self.status_health['text'] = f"Health: {enemy.health}"
                     self.status_xp['text'] = f"XP: {None}"
                     return enemy.coord
@@ -126,7 +129,7 @@ class DnDGame:
         # Clear the map
         for row_idx, row in enumerate(self.cells):
             for col_idx, cell in enumerate(row):
-                background = "#9fe7f8" if (row_idx + col_idx) % 2 == 0 else "#b4ffa8"
+                background = "#b7dfb7" if (row_idx + col_idx) % 2 == 0 else "#ccffcc"
                 cell.config(bg=background, text="", border=1)
 
         # Show player
@@ -139,12 +142,12 @@ class DnDGame:
             x, y = enemy.coord
             if 0 <= x < 20 and 0 <= y < 40:
                 if isinstance(enemy, Goblin):
-                    self.cells[y][x].config(bg="darkgreen", text="G", fg="white", font="Arial 12 bold", border=1)
+                    self.cells[y][x].config(bg="darkgreen", border=1)
                 elif isinstance(enemy, Orc):
-                    self.cells[y][x].config(bg="red", text="O", fg="white", font="Arial 12 bold", border=1)
+                    self.cells[y][x].config(bg="red", border=1)
                 elif isinstance(enemy, Cutiie):
-                    self.cells[y][x].config(bg="darkgreen", text="G", fg="white", font="Arial 12 bold", border=1)
-        
+                    self.cells[y][x].config(bg="darkgreen", border=1)
+
         if self.player.actions <= 0:
             self.status_label.config(text="No actions left!")
             self.end_turn()
@@ -314,7 +317,6 @@ class DnDGame:
 
 
     # action for each categories
-    
 
     def player_action(self, action_type):
         """
@@ -356,28 +358,27 @@ class DnDGame:
         """
             Handle enemy actions.
         """
-        # Implement enemy actions here
-        print('Enemy action!')
-        pass
+
+
         if self.current_turn != "enemies":
             self.status_label.config(text="Player turn!")
             return
 
+        self.show_event['text'] = "Enemy action"
+
         position = [self.player.coord]
-        print(f"Player position: {position}")
-        # for enemy in self.enemies:
-        #     position.append(enemy.coord)
-        #     # Check if enemy is in range of player
+
         for enemy in self.enemies:
-            # Enemy AI decides what to do
             action, data = enemy.action(position, self.player.coord)
             if action == "attack":
                 position.append(enemy.coord)
-                # self.status_label.config(text=f"{enemy.name} attacks you with {data} damage !")
+                self.show_event['text'] = f"Enemy {enemy.name} \n attacks for {data} damage!"
+
                 self.player.defensed(data)
                 print(f"{enemy.name} attacks for {data} damage!")
             if action == "mouv":
                 position.append(enemy.coord)
+
 
             #     # Enemy attacks player
             #     action, damage = enemy.attack()
@@ -391,17 +392,17 @@ class DnDGame:
 
             print(f"{enemy.name} action: {action}, data: {data}")
             # Update display after each enemy acts
-            self.update_game_display()
 
-            # Add a delay between enemy actions
-            self.root.after(500, None)
+        # Add a delay between enemy actions
+        self.root.after(50, None)
 
         # End enemy turn
 
         if not self.enemies:
             print("No enemies left. Creating new enemies...")
             enemy_type = random.choice([Cutiie])
-            for _ in range(5):  # Create 2 new enemies
+            enemy_nb = random.randint(1, 10)
+            for _ in range(enemy_nb):  # Create 2 new enemies
                 self.enemies.append(enemy_type())
             for enemy in self.enemies:
                 while True:
@@ -409,6 +410,7 @@ class DnDGame:
                     if (x, y) != self.player.coord and all(e.coord != (x, y) for e in self.enemies):
                         enemy.coord = (x, y)
                         break
+        self.update_game_display()
 
         self.root.after(500, self.end_turn)
         pass
