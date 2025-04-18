@@ -188,16 +188,17 @@ class DnDGame:
         Label(stats_frame, text=f"Race: {self.player.race_name}", font="Arial 14", fg="white", bg="black")
         
         # Button to restart
-        Button(game_over_frame, text="Play Again", font="Arial 16 bold", bg="red", fg="white", 
+        Button(game_over_frame, text="Play Again", font="Arial 16 bold", bg="red", fg="green", 
                command=self.restart_game)
         
         # Button to quit
-        Button(game_over_frame, text="Quit", font="Arial 16 bold", bg="gray", fg="white", 
-               command=lambda: win.destroy())
+        Button(game_over_frame, text="Quit", font="Arial 16 bold", bg="gray", fg="red", 
+               command=lambda: self.win.exit())#win.destroy())
 
     def restart_game(self):
         """Restart the game with the same player name"""
-        win.destroy()
+        self.win.destroy()
+        self.win.exit()
         open_game(self.player.name)
 
     def possible_coords(self, start_coord, move_distance): # todo : a ne pas modifier
