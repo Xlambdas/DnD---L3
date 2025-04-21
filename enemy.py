@@ -88,6 +88,9 @@ class Cutiie(Enemy):
     def __init__(self):
         super().__init__("Cutiie", health=3, strength=5, endurance=15)
         
+class Boss(Enemy):
+    def __init__(self):
+        super().__init__("Boss", health=45, strength=30, endurance=15)
 
 # --- | Specific enemy classes | ---
 class Goblin(Enemy):
@@ -119,7 +122,7 @@ class Goblin(Enemy):
 class Orc(Enemy):
     """Orc enemy - strong but slow"""
     def __init__(self):
-        super().__init__("Orc", health=30, strength=15, endurance=20)
+        super().__init__("Orc", health=5, strength=15, endurance=20)
         self.rage = 0  # Rage builds up when taking damage
 
     def attack(self):

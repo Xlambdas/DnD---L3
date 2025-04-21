@@ -13,19 +13,31 @@ def open_game(name):
 
 
 class DnDGame:
-    def __init__(self, name):
-
+    def __init__(self, name,palier = 5):
+        self.palier = palier
         self.root = None
         self.player = Player(name)
         # Create some enemies
         self.enemies = [
             Cutiie(),
-            # Orc()
+            Orc(),
+            Goblin()
         ]
+        # Couleurs pour chaque palier
+        self.PALIER_COLORS = {
+            1: {"bg1": "#b7dfb7", "bg2": "#ccffcc", "border": "#559955"},  # Forêt verdoyante
+            2: {"bg1": "#d9c7a3", "bg2": "#e5d4b3", "border": "#8a7654"},  # Désert/savane
+            3: {"bg1": "#a3b5d9", "bg2": "#b3c5e5", "border": "#546d8a"},  # Montagnes
+            4: {"bg1": "#d9a3a3", "bg2": "#e5b3b3", "border": "#8a5454"},  # Volcan/enfer
+            5: {"bg1": "#1f1f1f", "bg2": "#2a2a2a", "border": "#555555"}   # Antre du boss final
+        }
+        
+        self.MAX_PALIER = 5
         self.current_turn = "player"  # Start with player's turn
         self.selected_cell = None  # Track the selected cell
         self.game_over = False  # Track if the game is over
         self.interface()
+    
 
     def interface(self):
         """
@@ -42,7 +54,13 @@ class DnDGame:
         for col in range(40):
             col_cells = []
             for row in range(20):
-                background = "#bbffbb" if (row + col) % 2 == 0 else "#ccffcc"
+                # background = "#bbffbb" if (row + col) % 2 == 0 else "#ccffcc"
+                # Utiliser les couleurs du palier actuel
+                colors = self.PALIER_COLORS.get(self.palier, self.PALIER_COLORS[1])
+                # print("c'est mon background",colors)
+                background = colors["bg1"] if (row + col) % 2 == 0 else colors["bg2"]
+                # print("c'est mon background",background)
+
                 cell = Brick(self.map_frame, width=16, height=16, bg=background, grow=False, state=(row, col))
                 cell.bind("<Button-1>", lambda event, r=row, c=col: self.on_cell_click((r, c)))  # Bind click event
                 col_cells.append(cell)
@@ -68,6 +86,7 @@ class DnDGame:
         # --- | User interface | ---
         self.action_panel = Frame(self.root, bg='lightblue', fold=1)
         self.action_label = Label(self.action_panel, text=f"Actions left: {self.player.actions}", font="Arial 14 bold", bg='lightblue')
+        self.palier_label = Label(self.action_panel, text=f"Palier: {self.palier}/{self.MAX_PALIER}", font="Arial 12", bg='lightblue')
         # Label(self.action_panel, text=f"Player: {self.player.name}", bg='lightblue', height=2, font="Arial 14 bold")
 
         # Game status
@@ -76,9 +95,10 @@ class DnDGame:
         # Buttons
         Button(self.action_panel, text="Move", command=lambda: self.player_action('mouv'), bg='lightgray')
         Button(self.action_panel, text="Attack", command=lambda: self.player_action('attack'), bg='lightgray')
+        # Button(self.action_panel, text="Save Game", command=self.save_game, bg='lightgray')
         # Button(self.action_panel, text="End Turn", command=self.end_turn, bg='lightgray')
 
-        self.player.coord = (5,5)
+        self.player.coord = (9,39)
         self.player.health = 1
 
 
@@ -93,7 +113,7 @@ class DnDGame:
         #             enemy.coord = (x, y)
         #             break
         for enemy in self.enemies:
-            enemy.coord = (4,5)
+            enemy.coord = (random.randrange(5,15),5)
 
         # Update the display
         self.update_game_display()
@@ -140,7 +160,11 @@ class DnDGame:
         # Clear the map
         for row_idx, row in enumerate(self.cells):
             for col_idx, cell in enumerate(row):
-                background = "#b7dfb7" if (row_idx + col_idx) % 2 == 0 else "#ccffcc"
+                # background = "#b7dfb7" if (row_idx + col_idx) % 2 == 0 else "#ccffcc"
+                # Utiliser les couleurs du palier actuel
+                colors = self.PALIER_COLORS.get(self.palier, self.PALIER_COLORS[1])
+                background = colors["bg1"] if (row_idx + col_idx) % 2 == 0 else colors["bg2"]
+                # print("c'est mon background", background)
                 cell.config(bg=background, text="", border=1)
 
         # Show player
