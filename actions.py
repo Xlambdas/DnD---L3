@@ -93,12 +93,20 @@ class GameActions:
                 attack = self.player.bonus_attack()
                 for enemy in self.enemies:
                     if enemy.coord == coords:
+                        # Passer le niveau du joueur à l'ennemi
+                        enemy.player_level = self.player.level
+
                         print("enemy attacked!", enemy)
                         action, data = enemy.defend(attack)
                         print(f"TEST :: Enemy {enemy} attacked for {data} damage!")
 
                         if enemy.health <= 0:
                             print(f"Enemy {enemy} defeated!")
+
+                            # Ajouter l'XP au joueur en fonction du type d'ennemi
+                            self.player.gain_xp(enemy.xp_value)
+
+
                             # Remove enemy from the game
                             self.ui.log_action(f"You killed {enemy.name}!")
                             self.enemies.remove(enemy)
