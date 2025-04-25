@@ -2,12 +2,14 @@ import random
 
 class Enemy:
     """Base for all enemies"""
-    def __init__(self, name, health, strength, endurance):
+    def __init__(self, name, health, strength, endurance, xp_value = 5):
         self.name = name
         self.health = health
         self.strength = strength
         self.endurance = endurance
-        self.coord = (0,0)
+        self.coord = (1,1)
+        self.xp_value = xp_value
+        self.player_level = 1
 
     def describe(self):
         """Return a description of the enemy"""
@@ -31,10 +33,25 @@ class Enemy:
 
     def __attack(self):
         """Attack the player"""
-        damage = self.strength + random.randint(1, 6)  # Base strength + random roll
-        print(f"{self.name} attacks for {damage} damage!")
+        base_damage = self.strength + random.randint(1, 6)
+
+        # Ajuster les dégâts en fonction du niveau du joueur
+        # À partir du niveau 3, les ennemis deviennent plus forts
+        if self.player_level <= 2:
+            damage = base_damage
+        else:
+            # Augmentation de 10% par niveau au-dessus de 2
+            level_multiplier = 1 + (self.player_level - 2) * 0.1
+            damage = int(base_damage * level_multiplier)
+
+        print(f"{self.name} attacks for {damage} damage (level adjustment: x{level_multiplier if self.player_level > 2 else 1})!")
         return damage
-    
+
+    def range_attack(self):
+        """Range for the attack"""
+        range = 1
+        return range
+
     def defend(self, damage):
         """Defend against an attack"""
         # Calculate damage after endurance reduction
@@ -53,13 +70,13 @@ class Enemy:
         movement_range = max(1, self.endurance // 10)
         # Determine direction with priority (x-axis first)
         potential_moves = []
-        if current_x < target_x:
+        if current_x < target_x and current_x + movement_range < 39:
             potential_moves.append((min(current_x + movement_range, target_x), current_y))
-        if current_x > target_x:
+        if current_x > target_x and current_x - movement_range > 0:
             potential_moves.append((max(current_x - movement_range, target_x), current_y))
-        if current_y < target_y:
+        if current_y < target_y and current_y + movement_range < 19:
             potential_moves.append((current_x, min(current_y + movement_range, target_y)))
-        if current_y > target_y:
+        if current_y > target_y and current_y - movement_range > 0:
             potential_moves.append((current_x, max(current_y - movement_range, target_y)))
 
         # Filter out positions that are in the 'position' list (unavailable)
@@ -84,19 +101,27 @@ class Enemy:
         # For now, it returns False as a placeholder
         return False
 
-class Cutiie(Enemy):
-    def __init__(self):
-        super().__init__("Cutiie", health=3, strength=5, endurance=15)
-        
+
 class Boss(Enemy):
     def __init__(self):
-        super().__init__("Boss", health=45, strength=30, endurance=15)
+        super().__init__("Boss", health=45, strength=30, endurance=15,xp_value=150)
+
+
+
+
+
+
+
+class Cutiie(Enemy):
+    def __init__(self):
+        super().__init__("Cutiie", health=3, strength=5, endurance=15, xp_value=15)
+
 
 # --- | Specific enemy classes | ---
 class Goblin(Enemy):
     """Goblin enemy - fast but weak"""
     def __init__(self):
-        super().__init__("Goblin", health=3, strength=8, endurance=25)
+        super().__init__("Goblin", health=3, strength=8, endurance=25, xp_value=25)
         self.sneaky = True
 
     def attack(self):
@@ -122,8 +147,8 @@ class Goblin(Enemy):
 class Orc(Enemy):
     """Orc enemy - strong but slow"""
     def __init__(self):
-        super().__init__("Orc", health=5, strength=15, endurance=20)
-        self.rage = 0  # Rage builds up when taking damage
+        super().__init__("Orc", health=5, strength=15, endurance=20, xp_value=40)
+        self.rage = 0
 
     def attack(self):
         """Orcs do more damage when enraged"""

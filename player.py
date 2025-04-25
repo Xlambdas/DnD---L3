@@ -3,7 +3,7 @@ import json
 import os
 import random
 from race import BaseRace, Elf, Dwarf, Human
-# from classe import Classe, Warrior, Mage, Rogue
+from classe import BaseClasse, Warrior, Mage, Rogue
 
 def get_all_data(filename='players_database.json'):
     if os.path.exists(filename):
@@ -19,7 +19,7 @@ def get_all_data(filename='players_database.json'):
 class Player():
     def __init__(self, name):
         """
-            Initialize a player with their name and load their data.
+            Initialize a player with their name and load their data.²
         """
         self.name = name
         info_player = self.get_bdd()
@@ -27,16 +27,68 @@ class Player():
         self.classe_name = info_player['classe']
         self.xp = info_player['xp']
         self.health = info_player['health']
+        self.palier = info_player['palier']
+
+        # Ajout du système de niveau
+        self.level = self.calculate_level()
+        self.xp_to_next_level = 100 * self.level  # XP nécessaire pour le prochain niveau
+
 
         # Create race object - use specific class if available
         race_class = globals().get(self.race_name)
-        print("test race class : ", race_class)
-        self.info_race = race_class() if race_class else BaseRace()
-        print("self info race : ", self.info_race, race_class)
+        self.info_race = race_class() if race_class else BaseRace("Human")
         # Create class object - use specific class if available
+        classe_class = globals().get(self.classe_name)
+        self.info_classe = classe_class() if classe_class else BaseClasse("Warrior")
 
         self.actions = 2
         self.coord = (random.randrange(0,10), random.randrange(0,3))
+
+        # Référence à l'UI (sera définie plus tard)
+        self.ui = None
+    
+    def set_ui(self, ui):
+        """Définit la référence à l'interface utilisateur"""
+        self.ui = ui
+    
+    def calculate_level(self):
+        """Calcule le niveau en fonction de l'XP"""
+        # Formule: chaque niveau nécessite 100*niveau précédent XP
+        level = 1
+        xp_threshold = 100
+        
+        while self.xp >= xp_threshold:
+            level += 1
+            xp_threshold += 100 * level
+            
+        return level
+    
+    def gain_xp(self, amount):
+        """Ajoute de l'XP au joueur et gère la montée de niveau"""
+        old_level = self.level
+        self.xp += amount
+        
+        if self.ui:
+            self.ui.log_action(f"Vous gagnez {amount} XP!")
+        
+        # Recalculer le niveau
+        new_level = self.calculate_level()
+        
+        # Si montée de niveau
+        if new_level > old_level:
+            self.level = new_level
+            self.xp_to_next_level = 100 * self.level
+            # Bonus de statistiques pour chaque niveau gagné
+            for _ in range(new_level - old_level):
+                self.health += 5  # Augmente les PV à chaque niveau
+            
+            if self.ui:
+                self.ui.log_action(f"Vous montez au niveau {self.level}!")
+                self.ui.log_action(f"Vos PV maximum augmentent de {5 * (new_level - old_level)}!")
+        
+        # Sauvegarder les modifications
+        self.set_bdd()
+
 
     def descr(self):
         return {"name": self.name, "level": 1, "classe": self.classe_name, "race": self.race_name}
@@ -56,6 +108,9 @@ class Player():
         for player in data.get('players', []):
             if player['name'] == self.name:
                 player['xp'] = self.xp
+                player['palier'] = self.palier
+                player['health'] = self.health
+                player['level'] = self.level
                 break
         else:
             # If player not found, add new player data
@@ -68,7 +123,7 @@ class Player():
     def bonus_range_mouv (self):
         """randomly take a number between 1 and 6 for the bonus of mouvement of the player
         return the bonus of movement"""
-        bonus = random.randint(1, 3) + 1
+        bonus = random.randint(1, 3) + 40
         print ("bonus range mouvement : ", bonus)
         return bonus
 
@@ -78,21 +133,24 @@ class Player():
         bonus = random.randint(1, 3) + 1
         print ("bonus range attack : ", bonus)
         return bonus
-    
 
     def bonus_attack (self):
         """randomly take a number between 1 and 6 for the bonus of attack of the player
         return the bonus of attack"""
-        bonus = random.randint(1, 3) + 1
-        print ("bonus attack : ", bonus)
-        return bonus
-    
+        base_bonus = random.randint(1, 3) + 1
+        level_bonus = int(self.level * 0.5)  # +0.5 dégâts par niveau
+        total_bonus = base_bonus + level_bonus
+        print(f"Bonus d'attaque: {base_bonus} (base) + {level_bonus} (level) = {total_bonus}")
+        return total_bonus
+
     def bonus_defense (self):
         """randomly take a number between 1 and 6 for the bonus of defense of the player
         return the bonus of defense"""
-        bonus = random.randint(1, 3) + 1
-        print ("bonus defense : ", bonus)
-        return bonus
+        base_bonus = random.randint(1, 3) + 1
+        level_bonus = int(self.level * 0.3)  # +0.3 défense par niveau
+        total_bonus = base_bonus + level_bonus
+        print(f"Bonus de defense: {base_bonus} (base) + {level_bonus} (level) = {total_bonus}")
+        return total_bonus
 
 
     def defensed (self, damage):

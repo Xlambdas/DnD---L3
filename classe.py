@@ -1,8 +1,3 @@
-import json
-import os
-
-
-
 class BaseClasse:
     """Base class for all character classes"""
     def __init__(self, name):
