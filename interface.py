@@ -105,8 +105,8 @@ class GameInterface:
     def update_game_display(self):
         """Update the display to show current game state"""
         # Clear the map
-        if self.palier == self.MAX_PALIER:
-            palier_boss()
+        if self.palier > self.MAX_PALIER: # juste pour les test, fonction palier_boss inachevée
+            self.palier_boss()
             return
         if self.player.coord == (9, 0) or self.player.coord == (10, 0):
             self.palier += 1
