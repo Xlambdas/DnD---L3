@@ -1,8 +1,9 @@
 from ezTK import *  # Import all components, including TOP
-from random import randint, random, choice, shuffle  # Import random functions
+from random import randint, random, choice, shuffle  # Import random functions=:
+import random
 # from other files :
 from player import Player
-from enemy import Goblin, Orc, Cutiie
+from enemy import Goblin, Orc, Cutiie, Boss
 from interface import GameInterface
 from actions import GameActions
 
@@ -11,7 +12,7 @@ class DNDGame:
         self.player = Player(name)
         # Create some enemies
         self.enemies = [
-            Cutiie(),
+            Cutiie(),Orc(),Goblin()
             # Orc()
         ]
         self.action_type = None  # Track the current action type
@@ -98,17 +99,67 @@ class DNDGame:
             Create a new enemy of the specified type.
         """
         self.enemies = []
+        enemy_types = []
+        player_level = self.player.level
 
-        for i in range(3*palier):
-            self.enemies.append(Cutiie())
+
+        # if palier == 5 and player_level % 2 == 1 :#not hasattr(self, 'boss_spawned') or (hasattr(self, 'boss_spawned') and not self.boss_spawned):
+        #     # Engendrer un boss de palier
+        #     self.ui.palier_boss()
+        #     # self.boss_spawned = True
+        #     return  # Ne pas générer d'autres ennemis quand le boss est présent
+
+        # Les types d'ennemis disponibles dépendent du palier
+        if palier <= 2:
+            enemy_types = [Cutiie]
+        elif palier <= 3:
+            enemy_types = [Cutiie, Goblin]
+        else:
+            enemy_types = [Cutiie, Goblin, Orc]
+        # else:
+        #     self.ui.palier_boss();return
+    
+        # Le nombre d'ennemis est exactement 3 fois le palier du joueur
+        enemy_count = 3 * palier
+
+        # Création des ennemis réguliers
+        for _ in range(enemy_count):
+            enemy_class = random.choice(enemy_types)
+            enemy = enemy_class()
+            print(enemy)
+
+            # Ajuster les statistiques en fonction du niveau
+            if player_level > 1:
+                enemy.health = int(enemy.health * (1 + 0.1 * player_level))
+                enemy.strength = int(enemy.strength * (1 + 0.05 * player_level))
+                enemy.xp_value = int(enemy.xp_value * (1 + 0.1 * player_level))
+            self.enemies.append(enemy)
+    
+        self.ui.log_action(f"{enemy_count} nouveaux ennemis sont apparus!")
+
 
     def new_palier(self, palier):
-
         """
             Create a new palier of enemies.
         """
         print(f"Creating new palier: {palier}")
-        self.create_enemy(palier=palier)
+        self.player.set_bdd()
+        print(f"saving new palier {palier} in bdd ")
+        
+        # Special handling for boss palier
+        if palier == self.ui.MAX_PALIER:
+            self.enemies = []  # Clear existing enemies
+            # from enemy import Boss
+            # boss = Boss()
+            # # boss.coord = (20, 10)  # Place boss in center
+            # self.enemies.append(boss)
+            self.ui.palier_boss()
+            self.ui.log_action(f"BOSS FINAL DU PALIER {palier}!")
+            # self.ui.log_action(f"Un {boss.name} terrifiant avec {boss.health} points de vie saa mère est apparu!")
+        else:
+            # Normal enemy creation
+            self.create_enemy(palier=palier)
+        
         print(f"Enemies created: {self.enemies}")
         self.enemy_coords()
 

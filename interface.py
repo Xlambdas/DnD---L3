@@ -1,5 +1,6 @@
 from ezTK import *
-from enemy import Cutiie, Goblin, Orc
+from enemy import Cutiie, Goblin, Orc, Boss
+import random
 
 
 class GameInterface:
@@ -14,7 +15,7 @@ class GameInterface:
         self.player = self.game.player
 
         # Colors for each level
-        self.palier = 1
+        self.palier = self.player.palier
         self.PALIER_COLORS = {
             1: {"bg1": "#b7dfb7", "bg2": "#ccffcc", "border": "#559955"},  # Lush forest
             2: {"bg1": "#d9c7a3", "bg2": "#e5d4b3", "border": "#8a7654"},  # Desert/savanna
@@ -96,7 +97,7 @@ class GameInterface:
         #             enemy.coord = (x, y)
         #             break
         for enemy in self.enemies:
-            enemy.coord = (4,5)
+            enemy.coord = (random.randrange(2,8),5)
 
         # Update the display
         self.update_game_display()
@@ -104,10 +105,13 @@ class GameInterface:
 
     def update_game_display(self):
         """Update the display to show current game state"""
-        # Clear the map
-        if self.palier > self.MAX_PALIER: # juste pour les test, fonction palier_boss inachevée
-            self.palier_boss()
-            return
+        # Check if we need to show the boss level
+        if self.palier == self.MAX_PALIER:
+            # Only create boss if it doesn't exist yet
+            if not any(isinstance(enemy, Boss) for enemy in self.game.enemies):
+                self.palier_boss()
+            
+        # Handle player movement to next palier
         if self.player.coord == (9, 0) or self.player.coord == (10, 0):
             self.palier += 1
             if self.palier > self.MAX_PALIER:
@@ -115,6 +119,7 @@ class GameInterface:
             self.game.new_palier(self.palier)
             print(f"New palier: end of fuction")
 
+        # Clear and update the map
         for col_idx, row in enumerate(self.cells):
             for row_idx, cell in enumerate(row):
                 colors = self.PALIER_COLORS.get(self.palier, self.PALIER_COLORS[1])
@@ -129,15 +134,20 @@ class GameInterface:
 
         # Show enemies
         for enemy in self.game.enemies:
-            print("test coords enemy : ", enemy.coord)
+            print(f"Rendering enemy: {enemy.name} at {enemy.coord}")
             x, y = enemy.coord
-            if 1 <= x < 19 and 1 <= y < 39:
-                if isinstance(enemy, Goblin):
-                    self.cells[y][x].config(bg="darkgreen", border=1)
+            
+            # Make sure coordinates are within valid range
+            if 0 <= y < 40 and 0 <= x < 20:  # Note: Accessing cells[y][x]
+                if isinstance(enemy, Boss):
+                    # Special rendering for boss
+                    self.cells[y][x].config(bg="purple", text="B", fg="white", font="Arial 12 bold", border=1)
+                elif isinstance(enemy, Goblin):
+                    self.cells[y][x].config(bg="darkgreen", text="G", fg="white", border=1)
                 elif isinstance(enemy, Orc):
-                    self.cells[y][x].config(bg="red", border=1)
+                    self.cells[y][x].config(bg="red", text="O", fg="white", border=1)
                 elif isinstance(enemy, Cutiie):
-                    self.cells[y][x].config(bg="darkgreen", border=1)
+                    self.cells[y][x].config(bg="darkgreen", text="C", fg="white", border=1)
 
         if self.player.actions <= 0:
             self.status_label.config(text="No actions left!")
@@ -261,5 +271,41 @@ class GameInterface:
 
 
     def palier_boss(self):
+        """
+        Génère un boss spécial quand le joueur atteint certains paliers de niveau
+        """
+        from enemy import Boss
+
+        self.enemies = []
+        
+        player_level = self.player.level
+        
+        # Créer un boss avec des statistiques adaptées au niveau du joueur
+        boss = Boss()
+        
+        # Augmenter les statistiques en fonction du niveau (plus puissant qu'un boss normal)
+        boss.health = int(boss.health * (1.5 + 0.3 * player_level))
+        boss.strength = int(boss.strength * (1.2 + 0.15 * player_level))
+        boss.endurance = int(boss.endurance * (1.1 + 0.1 * player_level))
+        
+        # Augmenter la valeur d'XP du boss
+        boss.xp_value = int(boss.xp_value * (1.5 + 0.2 * player_level))
+        
+        # # Placer le boss sur la carte (au centre par exemple)
+        # center_x = 10  # Ajustez selon la taille de votre carte
+        # center_y = 20
+        # boss.coord = (center_y, center_x)  # Note: In the rendering code, coords are (y,x)
+        
+        # Ajouter le boss à la liste des ennemis
+        self.enemies.append(boss)
+        self.game.enemies = self.enemies  # Update game's enemy list too
+        
+        # Afficher un message spécial
+        self.log_action(f"BOSS FINAL DU PALIER {self.palier}!")
+        self.log_action(f"Un {boss.name} terrifiant avec {boss.health} points de vie est apparu!")
+        
+        # Mettre à jour l'affichage
+        # self.update_game_display()
+        
         print("You have reached the final boss!")
-        return
+        return boss
