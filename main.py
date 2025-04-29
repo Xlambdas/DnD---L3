@@ -13,14 +13,14 @@ Functions:
 Usage:
     Run this script to start the game for a player.
 """
-from game import DnDGame
+from game import DNDGame
 
 def open_game(name):
     """
         Open the game for the selected player.
     """
     print(f"Opening game for {name}")
-    game = DnDGame(name)
+    game = DNDGame(name)
 
 
 if __name__ == "__main__":

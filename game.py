@@ -1,18 +1,20 @@
 from ezTK import *  # Import all components, including TOP
+from random import randint, random, choice, shuffle  # Import random functions
+import random
 # from other files :
 from player import Player
-from enemy import Goblin, Orc, Cutiie
+from enemy import Goblin, Orc, Cutiie, Boss
 from interface import GameInterface
 from actions import GameActions
 
-class Test_Game:
+class DNDGame:
     def __init__(self, name):
         self.player = Player(name)
         # Create some enemies
         self.enemies = [
-            Cutiie(),
-            # Orc()
+            Cutiie(), Cutiie(), Cutiie()
         ]
+        self.is_final_boss = False  # Track if the final boss is active
         self.action_type = None  # Track the current action type
         self.current_turn = "player"  # Start with player's turn
         self.selected_cell = None  # Track the selected cell
@@ -22,7 +24,7 @@ class Test_Game:
         self.ui.interface()
 
     def player_act(self, action_type):
-        print(f"Player action: {action_type}")
+        print(f"game - Player action: {action_type}")
         self.act.player_action(action_type)
 
 
@@ -51,23 +53,26 @@ class Test_Game:
         if self.player.actions < 0:
             print("No actions left.")
             return
-    
-        print(f"Cell clicked oncellclick 1 - action tye : {self.action_type}")
+
+        print(f"Cell clicked oncellclick 1 - action type : {self.action_type}")
 
         if self.action_type == "mouv":
             print(f"Cell clicked: {self.action_type} - {coords}")
             self.act.mouv(coords)
+            self.action_type = "None"
             return
         elif self.action_type == "attack":
             if any(enemy.coord == coords for enemy in self.enemies):
-                print(f"get enemy at {coords}, or {self.enemies}")
+                # print(f"get enemy at {coords}, or {self.enemies}")
                 self.act.attack(coords)
-                print(f"Attacking enemy at {coords}")
+                # print(f"Attacking enemy at {coords}")
+                self.action_type = "None"
                 return
             else:
                 self.move_distance = self.player.bonus_range_mouv()
-                print(f"Cell clicked: {self.action_type} - {coords}")
+                # print(f"Cell clicked: {self.action_type} - {coords}")
                 self.act.mouv(coords)
+                self.action_type = "None"
                 return
 
     def end_turn(self):
@@ -94,15 +99,97 @@ class Test_Game:
             Create a new enemy of the specified type.
         """
         self.enemies = []
-        for i in range(3*palier):
-            self.enemies.append(Cutiie())
+        enemy_types = []
+        player_level = self.player.level
+
+        if palier <= 2:
+            enemy_types = [Cutiie]
+        elif palier <= 3:
+            enemy_types = [Cutiie, Goblin]
+        else:
+            enemy_types = [Cutiie, Goblin, Orc]
+        enemy_count = 3 * palier
 
 
+        for _ in range(enemy_count):
+            enemy_class = random.choice(enemy_types)
+            enemy = enemy_class()
+
+            # Ajuster les statistiques en fonction du niveau
+            if player_level > 1:
+                enemy.health = int(enemy.health * (1 + 0.1 * player_level))
+                enemy.strength = int(enemy.strength * (1 + 0.05 * player_level))
+                enemy.xp_value = int(enemy.xp_value * (1 + 0.1 * player_level))
+            self.enemies.append(enemy)
+    
+        self.ui.log_action(f"{enemy_count} nouveaux ennemis sont apparus!")
 
 
+    def new_palier(self, palier):
+
+        """
+            Create a new palier of enemies.
+        """
+        print(f"Creating new palier: {palier}")
+
+        self.create_enemy(palier=palier)
+        # print(f"Enemies created: {self.enemies}")
+        self.enemy_coords()
+
+        self.ui.log_action(f"You enter in a new palier : {palier}")
+        self.ui.status_label.config(text="New palier created")
+        self.current_turn = "player"
+        self.ui.action_label.config(text=f"Actions left: {self.player.actions}")
+        # print(f"New palier: {self.ui.palier}")
+        self.ui.palier_label.config(text=f"Palier: {self.ui.palier}/{self.ui.MAX_PALIER}")
+        self.ui.player.coord = (9, 39)
+        self.player.palier = self.ui.palier
+        self.player.set_bdd()
 
 
-test_game = Test_Game("fg")
-if __name__ == "__main__":
-    test_game
+        # print(f"Enemies: {self.enemies}")
+        self.ui.action_label.config(text=f"Actions left: {self.player.actions}")
 
+
+    def enemy_coords(self):
+        """
+            Check if the clicked cell contains an enemy.
+        """
+        position = [(0, y) for y in range(0, 40)] + [(20, y) for y in range(0, 40)] + [(x, 0) for x in range(0, 20)] + [(x, 40) for x in range(0, 20)]
+        position.append((1,1))
+        # print(f"Cell clicked on enemy coords: {position}")
+        for enemy in self.enemies:
+            if enemy.coord in position:
+                # print("enemy coords", enemy.coord)
+                # Ensure all enemies are placed on different cells
+                while True:
+                    x, y = randint(0, 19), randint(0, 39)
+                    if (x, y) not in position:
+                        enemy.coord = (x, y)
+                        position.append(enemy.coord)
+                        # print(f"Enemy {enemy.name} moved to {enemy.coord}")
+                        break
+
+        self.ui.enemies = self.enemies
+        self.act.enemies = self.enemies
+        self.ui.root.after(500, self.end_turn)
+        pass
+
+    def boss_palier(self):
+        """
+            Create the final boss.
+        """
+        self.is_final_boss = True
+
+        self.enemies = [Boss()]
+        self.ui.log_action(f"You enter in the final boss !")
+        self.current_turn = "player"
+        self.ui.action_label.config(text=f"Actions left: {self.player.actions}")
+        print(f"Final boss: {self.ui.palier}")
+        self.ui.palier_label.config(text=f"Palier: {self.ui.palier}/{self.ui.MAX_PALIER}")
+        self.ui.player.coord = (9, 39)
+        self.ui.enemies = self.enemies
+        self.act.enemies = self.enemies
+        self.ui.update_boss_display()
+        self.ui.root.after(500, self.end_turn)
+        pass
