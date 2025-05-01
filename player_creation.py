@@ -65,7 +65,6 @@ def create_player_window():
             print(f"Player {name} added successfully!")
         open_game(name)
 
-
     # Create the window for the player creation :
     window = Win(title="Create Player", width=500, height=400)
     Label(window, text="Create your Player", font=("Arial", 16), bg="lightblue")

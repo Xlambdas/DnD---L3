@@ -13,17 +13,16 @@ class GameInterface:
         self.enemies = self.game.enemies
         self.player = self.game.player
 
-        # Colors for each level
         self.palier = self.player.palier
         self.PALIER_COLORS = {
-            1: {"bg1": "#b7dfb7", "bg2": "#ccffcc", "border": "#559955"},  # Lush forest
-            2: {"bg1": "#d9c7a3", "bg2": "#e5d4b3", "border": "#8a7654"},  # Desert/savanna
-            3: {"bg1": "#a3b5d9", "bg2": "#b3c5e5", "border": "#546d8a"},  # Mountains
-            4: {"bg1": "#d9a3a3", "bg2": "#e5b3b3", "border": "#8a5454"},  # Volcano/hell
-            5: {"bg1": "#1f1f1f", "bg2": "#2a2a2a", "border": "#555555"}   # Final boss lair
+            1: {"bg1": "#b7dfb7", "bg2": "#ccffcc", "border": "#559955"},
+            2: {"bg1": "#d9c7a3", "bg2": "#e5d4b3", "border": "#8a7654"},
+            3: {"bg1": "#a3b5d9", "bg2": "#b3c5e5", "border": "#546d8a"},
+            4: {"bg1": "#d9a3a3", "bg2": "#e5b3b3", "border": "#8a5454"},
+            5: {"bg1": "#1f1f1f", "bg2": "#2a2a2a", "border": "#555555"}
         }
-
-        self.MAX_PALIER = 5
+        self.MAX_PALIER = 6
+        self.action_history = []
 
 
     def interface(self):
@@ -36,7 +35,6 @@ class GameInterface:
 
         # Create map
         self.map_frame = Frame(self.root, fold=20, width=40 * 16, height=20 * 16, bg='white', grow=False)
-        # self.map_frame.pack_propagate(False)
         self.cells = []
         for col in range(40):
             col_cells = []
@@ -45,12 +43,12 @@ class GameInterface:
                 backg = colors["bg1"] if (row + col) % 2 == 0 else colors["bg2"]
                 color_wall = colors["border"] if row==0 or row==19 or col==0 or col==39 else backg
                 background = "black" if (row, col) == (10, 0) or (row, col) == (10,39) or (row, col) == (9,0) or (row, col) == (9,39) else color_wall
-                # background = "#bbffbb" if (row + col) % 2 == 0 else "#ccffcc"
 
                 cell = Brick(self.map_frame, width=16, height=16, bg=background, grow=False, state=(row, col))
-                cell.bind("<Button-1>", lambda event, r=row, c=col: self.game.on_cell_click((r, c)))  # Bind click event
+                cell.bind("<Button-1>", lambda event, r=row, c=col: self.game.on_cell_click((r, c)))
                 col_cells.append(cell)
             self.cells.append(col_cells)
+
         # --- | event log panel | ---
         side_frame = Frame(self.root, width=500, bg='gray', grow=False, fold=2)
         status_frame = Frame(side_frame, width=500, bg='gray', grow=False, fold=1)
@@ -72,21 +70,16 @@ class GameInterface:
         # --- | User interface | ---
         self.action_panel = Frame(self.root, bg='lightblue', fold=1)
         self.action_label = Label(self.action_panel, text=f"Actions left: {self.player.actions}", font="Arial 14 bold", bg='lightblue')
-        # Label(self.action_panel, text=f"Player: {self.player.name}", bg='lightblue', height=2, font="Arial 14 bold")
 
         # Game status
         self.status_label = Label(self.action_panel, text=f"Turn: {self.game.current_turn.capitalize()}", font="Arial 12", bg='lightblue')
 
-        # Buttons
         Button(self.action_panel, text="Move", command=lambda: self.game.player_act('mouv'), bg='lightgray')
         Button(self.action_panel, text="Attack", command=lambda: self.game.player_act('attack'), bg='lightgray')
-        # Button(self.action_panel, text="Save Game", command=self.save_game, bg='lightgray')
 
         self.player.coord = (9,39)
-
         for enemy in self.enemies:
             enemy.coord = (random.randrange(1,19),random.randrange(1,29))
-        # Update the display
         self.update_game_display()
         win.loop()
 
@@ -156,7 +149,7 @@ class GameInterface:
                         self.cells[x][y].config(bg="blue", text="P", font="Arial 12 bold", border=1)
                 elif (y,x) in possible_moves:
                     if any(enemy.coord == (y, x) for enemy in self.enemies):
-                        self.cells[x][y].config(bg="#c60000")  # Highlight enemy position
+                        self.cells[x][y].config(bg="#c60000")
                     else:
                         self.cells[x][y].config(bg="#f8f8f8")
                 else:
@@ -172,19 +165,32 @@ class GameInterface:
         self.action_panel.config(text=f"Actions left: {self.player.actions}")
         return
 
+    def restart_game(self):
+        """Restart the game by reinitializing everything"""
+        player_name = self.player.name
+
+        if hasattr(self, 'win') and self.win.winfo_exists():
+            for widget in self.win.winfo_children():
+                if widget.winfo_exists():
+                    widget.destroy()
+
+        self.action_history = []
+        self.game.reset_game(skip_ui_updates=True)
+        self.palier = self.game.player.palier
+        self.player = self.game.player
+        self.enemies = self.game.enemies
+        self.interface()
+
+
     def __show_game_over(self):
         """Display game over screen and provide restart option"""
-        self.game_over = True
+        self.game.game_over = True
 
-        # Clear the main window
         for widget in self.win.winfo_children():
             widget.destroy()
-
-        # Create game over screen
-        game_over_frame = Frame(self.win, width=800, height=600, bg='black',fold=3)
+        game_over_frame = Frame(self.win, width=800, height=600, bg='black', fold=3)
 
 
-        # Game over message
         Label(game_over_frame, text="GAME OVER", font="Arial 36 bold", fg="red", bg="black")
         Label(game_over_frame, text=f"{self.player.name} has been defeated!", font="Arial 18", fg="white", bg="black")
 
@@ -194,15 +200,13 @@ class GameInterface:
         Label(stats_frame, text=f"Class: {self.player.classe_name}", font="Arial 14", fg="white", bg="black")
         Label(stats_frame, text=f"Race: {self.player.race_name}", font="Arial 14", fg="white", bg="black")
 
-        # Button to restart
-        Button(game_over_frame, text="Play Again", font="Arial 16 bold", bg="red", fg="green") #, command=self.restart_game)
+        Button(game_over_frame, text="Play Again", font="Arial 16 bold", bg="red", fg="green", command=self.restart_game)
 
-        # Button to quit
-        Button(game_over_frame, text="Quit", font="Arial 16 bold", bg="gray", fg="red", command=lambda: self.win.exit())#win.destroy())
+        Button(game_over_frame, text="Quit", font="Arial 16 bold", bg="gray", fg="red", command=lambda: self.win.exit())
+
 
     def __show_end_game(self):
         """Display the end game screen when the player wins."""
-        # Clear the main window
         for widget in self.win.winfo_children():
             widget.destroy()
 
@@ -219,18 +223,15 @@ class GameInterface:
         Label(stats_frame, text=f"Class: {self.player.classe_name}", font="Arial 14", fg="white", bg="black")
         Label(stats_frame, text=f"Race: {self.player.race_name}", font="Arial 14", fg="white", bg="black")
 
-        # Button to restart
-        Button(end_game_frame, text="Play Again", font="Arial 16 bold", bg="green", fg="white")#, command=self.restart_game)
+        Button(end_game_frame, text="Play Again", font="Arial 16 bold", bg="green", fg="white", command=self.restart_game)
 
         # Button to quit
         Button(end_game_frame, text="Quit", font="Arial 16 bold", bg="gray", fg="red", command=lambda: self.win.exit())
 
     def __on_inout(self, widget, code, mods):
         """Handle mouse in/out events."""
-        if self.game.game_over:
-            return None
 
-        if not hasattr(self, 'status_case') or not self.status_case.winfo_exists():
+        if hasattr(self.game, 'game_over') and self.game.game_over or not hasattr(self, 'status_case') or not self.status_case.winfo_exists():
             return None
 
         if widget.master == self.map_frame and widget.index is not None:
@@ -266,13 +267,15 @@ class GameInterface:
         if not hasattr(self, 'action_history'):
             self.action_history = []
 
-        # Append the action to history and keep only the last 5
         self.action_history.append(message)
         self.action_history = self.action_history[-9:]
 
-        # Display the last 5 actions
-        self.show_event['text'] = "\n".join(self.action_history)
-
+        if hasattr(self, 'show_event') and self.show_event.winfo_exists():
+            try:
+                self.show_event['text'] = "\n".join(self.action_history)
+            except Exception as e:
+                print(f"Error updating event log: {e}")
+                pass
 
     def update_boss_display(self):
         """Update the display to show current game state"""
@@ -299,7 +302,6 @@ class GameInterface:
                             if isinstance(enemy, Boss) and hasattr(enemy, 'attack_pos') and (row_idx, col_idx) in enemy.attack_pos:
                                 cell.config(bg="orange", text="", border=1)
 
-        # Show player
         x, y = self.player.coord
         self.cells[y][x].config(bg="blue", text="P", fg="white", font="Arial 12 bold", border=1)
 
@@ -308,24 +310,13 @@ class GameInterface:
             self.game.end_turn()
             return
 
-
-
-
+    # --- | Animation functions | ---
     def animate_attack_prepare(self, cell_groups):
         """
         Prepare phase animation - warning glow
         """
         colors = self.PALIER_COLORS.get(self.palier, self.PALIER_COLORS[1])
         for group in cell_groups:
-        #     for cell in group:
-        #         row, col = cell
-        #         if 0 <= row < 19 and 0 <= col < 39:
-        #             self.cells[col][row].config(bg="darkorange")
-        #             if (row, col) == self.player.coord:
-        #                 self.cells[col][row].config(bg="blue")
-        #     self.root.update_idletasks()
-        #     self.root.after(50)
-
             for cell in group:
                 row, col = cell
                 if 0 <= row < 19 and 0 <= col < 39:
@@ -346,8 +337,6 @@ class GameInterface:
         colors = attack_colors.get(attack_type, attack_colors["Fireball"])
 
         previous_groups = []
-
-        # Main attack animation
         for i, group in enumerate(cell_groups):
             color_index = min(i % len(colors), len(colors) - 1)
             for cell in group:
@@ -358,7 +347,7 @@ class GameInterface:
                         self.cells[col][row].config(bg="blue")
             for trail_idx, prev_group in enumerate(previous_groups):
                 trail_intensity = min(100 - (trail_idx * 15), 70)
-                trail_color = f"#FF{trail_intensity:02X}{trail_intensity//3:02X}"  # Reddish trail
+                trail_color = f"#FF{trail_intensity:02X}{trail_intensity//3:02X}"
 
                 for cell in prev_group:
                     row, col = cell
@@ -366,13 +355,9 @@ class GameInterface:
                         self.cells[col][row].config(bg=trail_color)
                     if (row, col) == self.player.coord:
                         self.cells[col][row].config(bg="blue")
-            self.root.update_idletasks()  # Force update
-            self.root.after(70)  # Slightly longer for main effect
-            
-            # Add current group to previous groups for trail effect
+            self.root.update_idletasks()
+            self.root.after(70)
             previous_groups.insert(0, group)
-            
-            # Limit trail length
             if len(previous_groups) > 5:
                 previous_groups.pop()
 
@@ -380,19 +365,18 @@ class GameInterface:
         """
         Fade phase animation - attack fading away with a lasting burn mark
         """
-        # First, set all cells to a bright red flash
         for cell in position:
             row, col = cell
             if 0 <= row < 19 and 0 <= col < 39:
-                self.cells[col][row].config(bg="#FF0000")  # Bright red
+                self.cells[col][row].config(bg="#FF0000")
             if (row, col) == self.player.coord:
                         self.cells[col][row].config(bg="blue")
         self.root.update_idletasks()
         self.root.after(80)
-        
+
         # Gradual cooling down
         fade_colors = ["#FF3300", "#CC3300", "#993300", "#663300"]
-        
+
         for color in fade_colors:
             for cell in position:
                 row, col = cell
@@ -402,26 +386,21 @@ class GameInterface:
                         self.cells[col][row].config(bg="blue")
             self.root.update_idletasks()
             self.root.after(80)
-        
+
         # Leave a permanent scorch mark
         for cell in position:
             row, col = cell
             if 0 <= row < 19 and 0 <= col < 39:
-                # Randomly choose between two scorch mark intensities for a more natural look
-                import random
-                if random.random() < 0.7:  # 70% of cells get a lighter mark
-                    self.cells[col][row].config(bg="#442211")  # Light scorch
+                if random.random() < 0.7:
+                    self.cells[col][row].config(bg="#442211")
                 if (row, col) == self.player.coord:
                     self.cells[col][row].config(bg="blue")
                 else:
-                    self.cells[col][row].config(bg="#221100")  # Dark scorch
-        
+                    self.cells[col][row].config(bg="#221100")
+
         self.root.update_idletasks()
-        
-        # Store scorched cells to remember them for future renders
         self.scorched_cells = position
 
-        # Wait longer before allowing gameplay to continue
         boss = next((enemy for enemy in self.enemies if isinstance(enemy, Boss)), None)
         if not boss or not hasattr(boss, "attack_pos"):
             print("No boss or attack position not set!")
@@ -432,6 +411,7 @@ class GameInterface:
 
 
     def get_damage(self):
+        """Animate the player taking damage"""
         player_x, player_y = self.player.coord
         for _ in range(3):
             self.cells[player_y][player_x].config(bg="red")

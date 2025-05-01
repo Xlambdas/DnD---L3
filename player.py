@@ -2,8 +2,8 @@
 import json
 import os
 import random
-from race import BaseRace, Elf, Dwarf, Human
-from classe import BaseClasse, Warrior, Mage, Rogue
+from race import Human
+from classe import Warrior
 
 def get_all_data(filename='players_database.json'):
     if os.path.exists(filename):
@@ -19,7 +19,7 @@ def get_all_data(filename='players_database.json'):
 class Player():
     def __init__(self, name):
         """
-            Initialize a player with their name and load their data.²
+            Initialize a player with their name and load their data.
         """
         self.name = name
         info_player = self.get_bdd()
@@ -29,15 +29,11 @@ class Player():
         self.health = info_player['health']
         self.palier = info_player['palier']
 
-        # Ajout du système de niveau
         self.level = self.calculate_level()
-        self.xp_to_next_level = 100 * self.level  # XP nécessaire pour le prochain niveau
+        self.xp_to_next_level = 100 * self.level
 
-
-        # Create race object - use specific class if available
         race_class = globals().get(self.race_name)
         self.info_race = race_class() if race_class else Human()
-        # Create class object - use specific class if available
         classe_class = globals().get(self.classe_name)
         self.info_classe = classe_class() if classe_class else Warrior()
 
@@ -46,7 +42,6 @@ class Player():
 
     def calculate_level(self):
         """Calcule le niveau en fonction de l'XP"""
-        # Formule: chaque niveau nécessite 100*niveau précédent XP
         level = 1
         xp_threshold = 100
 
@@ -66,9 +61,6 @@ class Player():
             self.xp_to_next_level = 100 * self.level
             for _ in range(new_level - old_level):
                 self.health += 5
-
-    def descr(self):
-        return {"name": self.name, "level": 1, "classe": self.classe_name, "race": self.race_name}
 
     def get_bdd(self):
         """Get player data from database"""
@@ -105,8 +97,7 @@ class Player():
 
         max_bonus = 10
         bonus = min(bonus, max_bonus)
-
-        print("Bonus range mouvement:", bonus)
+        print("class player - Bonus range mouvement:", bonus)
         return bonus
 
     def bonus_range_attack(self):
@@ -118,8 +109,7 @@ class Player():
 
         max_bonus = 10
         bonus = min(bonus, max_bonus)
-
-        print("Bonus range attack:", bonus)
+        print("class player - Bonus range attack:", bonus)
         return bonus
 
     def bonus_attack(self):
@@ -133,7 +123,7 @@ class Player():
         max_bonus = 20
         total_bonus = min(total_bonus, max_bonus)
 
-        print(f"Bonus attack: {base_bonus} (base) + {level_bonus} (level) + {bonus_race} (race) + {bonus_classe} (class) = {total_bonus}")
+        print(f"class player - Bonus attack: {base_bonus} (base) + {level_bonus} (level) + {bonus_race} (race) + {bonus_classe} (class) = {total_bonus}")
         return total_bonus
 
     def bonus_defense(self):
@@ -147,7 +137,7 @@ class Player():
         max_bonus = 20
         total_bonus = min(total_bonus, max_bonus)
 
-        print(f"Bonus defense: {base_bonus} (base) + {level_bonus} (level) + {bonus_race} (race) + {bonus_classe} (class) = {total_bonus}")
+        print(f"class player - Bonus defense: {base_bonus} (base) + {level_bonus} (level) + {bonus_race} (race) + {bonus_classe} (class) = {total_bonus}")
         return total_bonus
 
     def defensed(self, damage):
@@ -156,7 +146,7 @@ class Player():
         reduced_damage = max(0, damage - bonus)
         self.health -= reduced_damage
 
-        print(f"{self.name} defends and takes {reduced_damage} damage!")
+        print(f"class player - {self.name} defends and takes {reduced_damage} damage!")
         return reduced_damage
 
 

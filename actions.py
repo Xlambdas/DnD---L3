@@ -1,5 +1,4 @@
-import random
-from enemy import Cutiie, Boss
+from enemy import Boss
 
 class GameActions:
     def __init__(self, game, ui):
@@ -33,7 +32,6 @@ class GameActions:
             self.ui.grid_dist(self.player.coord, self.attack_distance)
 
         self.ui.update_game_display()
-
 
     def mouv(self, coords: tuple[int, int]):
         """ Handle player movement."""
@@ -131,13 +129,10 @@ class GameActions:
 
             print(f"{enemy.name} action: {action}, data: {data}")
 
-
         self.ui.root.after(50, None)
-
         self.ui.update_game_display()
         self.ui.root.after(500, self.game.end_turn)
         return
-
 
     def __grid_boss_next_attack(self, attack_type):
         """ Show the next boss attack."""
@@ -207,10 +202,7 @@ class GameActions:
                 boss.attack_pos = position
                 return position
 
-        elif attack_type == "Earthquake":
-            # todo
-            pass
-        elif attack_type == "Summon Minions":
+        elif attack_type == "meteor":
             # todo
             pass
         else:
@@ -224,9 +216,8 @@ class GameActions:
         if not boss or not hasattr(boss, "attack_pos"):
             print("No boss or attack position not set!")
             return
-            
+
         position = boss.attack_pos
-        
         # Initialize burned_cells attribute if it doesn't exist
         if not hasattr(self, 'burned_cells'):
             self.burned_cells = {}
@@ -258,12 +249,8 @@ class GameActions:
             self.ui.animate_attack_execute(cell_groups, attack_type)
             self.ui.animate_attack_fade(position)
 
-            # Apply damage to player if they're in the attack path
             player_x, player_y = self.player.coord
             if (player_x, player_y) in position:
-                # Player is hit by the attack!
                 boss.get_attack()
-
-                self.player.defensed(boss.dmg)  # Assuming a damage method exists
+                self.player.defensed(boss.dmg)
                 self.ui.get_damage()
-                # Optionally flash the player in red to indicate damage

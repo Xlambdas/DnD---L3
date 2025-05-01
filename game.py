@@ -1,24 +1,22 @@
-from ezTK import *  # Import all components, including TOP
-from random import randint, random, choice, shuffle  # Import random functions
-import random
+from ezTK import *
+from random import randint, random, choice, shuffle
 # from other files :
 from player import Player
-from enemy import Goblin, Orc, Cutiie, Boss
+from enemy import Goblin, Orc, Cutiie, Boss, Dragon, Vampire, Troll
 from interface import GameInterface
 from actions import GameActions
 
 class DNDGame:
     def __init__(self, name):
         self.player = Player(name)
-        # Create some enemies
         self.__create_enemy(palier=self.player.palier)
-        self.is_final_boss = False  # Track if the final boss is active
-        self.action_type = None  # Track the current action type
-        self.current_turn = "player"  # Start with player's turn
-        self.selected_cell = None  # Track the selected cell
-        self.game_over = False  # Track if the game is over
-        self.ui = GameInterface(self)  # Create the game interface
-        self.act = GameActions(self, self.ui)  # Create the game actions handler
+        self.is_final_boss = False
+        self.action_type = None
+        self.current_turn = "player"
+        self.selected_cell = None
+        self.game_over = False
+        self.ui = GameInterface(self)
+        self.act = GameActions(self, self.ui)
         self.ui.interface()
 
     def player_act(self, action_type):
@@ -26,7 +24,7 @@ class DNDGame:
         self.act.player_action(action_type)
 
 
-    def possible_coords(self, start_coord, move_distance): # todo : a ne pas modifier
+    def possible_coords(self, start_coord, move_distance):
         """Calculate possible coordinates within a movement distance"""
         possible_moves = []
         for dx in range(-move_distance, move_distance + 1):
@@ -52,7 +50,7 @@ class DNDGame:
             print("No actions left.")
             return
 
-        print(f"Cell clicked oncellclick 1 - action type : {self.action_type}")
+        print(f"class dndgame - Cell clicked oncellclick 1 - action type : {self.action_type}")
 
         if self.action_type == "mouv":
             print(f"Cell clicked: {self.action_type} - {coords}")
@@ -65,7 +63,6 @@ class DNDGame:
                 return
         elif self.action_type == "attack":
             if any(enemy.coord == coords for enemy in self.enemies):
-                # print(f"get enemy at {coords}, or {self.enemies}")
                 self.act.attack(coords)
                 if not self.act.attack(coords):
                     print("Invalid attack!")
@@ -75,7 +72,6 @@ class DNDGame:
                     return
             else:
                 self.move_distance = self.player.bonus_range_mouv()
-                # print(f"Cell clicked: {self.action_type} - {coords}")
                 self.act.mouv(coords)
                 if not self.act.mouv(coords):
                     print("Invalid move!")
@@ -95,7 +91,7 @@ class DNDGame:
             self.current_turn = "enemies"
             self.ui.status_label.config(text="Enemies' turn")
             self.player.actions = 2
-            self.ui.root.after(500, self.act.enemy_action)  # Schedule enemy turn after delay
+            self.ui.root.after(500, self.act.enemy_action)
         else:
             # Update actions display
             self.ui.action_label.config(text=f"Actions left: {self.player.actions}")
@@ -111,12 +107,16 @@ class DNDGame:
         enemy_types = []
         player_level = self.player.level
 
-        if palier <= 2:
-            enemy_types = [Cutiie]
-        elif palier <= 3:
+        if self.player.palier <= 2:
+                enemy_types = [Cutiie]
+        elif self.player.palier <= 3:
             enemy_types = [Cutiie, Goblin]
+        elif self.player.palier <= 4:
+            enemy_types = [Goblin, Orc, Troll]
+        elif self.player.palier <= 5:
+            enemy_types = [Dragon, Vampire]
         else:
-            enemy_types = [Cutiie, Goblin, Orc]
+            enemy_types = [Boss]
         enemy_count = 3 * palier
 
 
@@ -124,12 +124,17 @@ class DNDGame:
             enemy_class = random.choice(enemy_types)
             enemy = enemy_class()
 
-            # Ajuster les statistiques en fonction du niveau
             if player_level > 1:
                 enemy.health = int(enemy.health * (1 + 0.1 * player_level))
                 enemy.strength = int(enemy.strength * (1 + 0.05 * player_level))
                 enemy.xp_value = int(enemy.xp_value * (1 + 0.1 * player_level))
             self.enemies.append(enemy)
+
+        if hasattr(self, 'ui') and self.ui is not None:
+            try:
+                self.ui.log_action(f"{enemy_count} nouveaux ennemis sont apparus!")
+            except Exception as e:
+                print(f"Error logging action: {e}")
 
 
     def new_palier(self, palier):
@@ -140,21 +145,17 @@ class DNDGame:
         print(f"Creating new palier: {palier}")
 
         self.__create_enemy(palier=palier)
-        # print(f"Enemies created: {self.enemies}")
         self.__enemy_coords()
 
         self.ui.log_action(f"You enter in a new palier : {palier}")
         self.ui.status_label.config(text="New palier created")
         self.current_turn = "player"
         self.ui.action_label.config(text=f"Actions left: {self.player.actions}")
-        # print(f"New palier: {self.ui.palier}")
         self.ui.palier_label.config(text=f"Palier: {self.ui.palier}/{self.ui.MAX_PALIER}")
         self.ui.player.coord = (9, 39)
         self.player.palier = self.ui.palier
         self.player.set_bdd()
 
-
-        # print(f"Enemies: {self.enemies}")
         self.ui.action_label.config(text=f"Actions left: {self.player.actions}")
 
 
@@ -164,17 +165,14 @@ class DNDGame:
         """
         position = [(0, y) for y in range(0, 40)] + [(20, y) for y in range(0, 40)] + [(x, 0) for x in range(0, 20)] + [(x, 40) for x in range(0, 20)]
         position.append((1,1))
-        # print(f"Cell clicked on enemy coords: {position}")
         for enemy in self.enemies:
             if enemy.coord in position:
-                # print("enemy coords", enemy.coord)
                 # Ensure all enemies are placed on different cells
                 while True:
                     x, y = randint(0, 19), randint(0, 39)
                     if (x, y) not in position:
                         enemy.coord = (x, y)
                         position.append(enemy.coord)
-                        # print(f"Enemy {enemy.name} moved to {enemy.coord}")
                         break
 
         self.ui.enemies = self.enemies
@@ -200,3 +198,64 @@ class DNDGame:
         self.act.enemies = self.enemies
         self.ui.update_boss_display()
         return
+
+
+    def reset_game(self, keep_progress=False, skip_ui_updates=False):
+        """
+        Reset the game state to start a new game
+        Args:
+            keep_progress (bool): If True, keep the player's palier and just restore health
+                                If False, reset to palier 1 (but XP will be managed by caller)
+            skip_ui_updates (bool): If True, skip any UI updates during reset
+        """
+        saved_xp = self.player.xp
+        saved_palier = self.player.palier
+        self.player.health = 105
+        self.player.actions = 2
+
+        if keep_progress:
+            self.player.palier = saved_palier
+            self.player.xp = saved_xp
+        else:
+            self.player.palier = 1
+            self.player.xp = 0
+
+        self.player.coord = (9, 39)
+        self.enemies = []
+        if skip_ui_updates:
+            enemy_count = 3 * self.player.palier
+            player_level = self.player.level
+
+            enemy_types = []
+            if self.player.palier <= 2:
+                enemy_types = [Cutiie]
+            elif self.player.palier <= 3:
+                enemy_types = [Cutiie, Goblin]
+            elif self.player.palier <= 4:
+                enemy_types = [Goblin, Orc, Troll]
+            elif self.player.palier <= 5:
+                enemy_types = [Dragon, Vampire]
+            else:
+                enemy_types = [Boss]
+
+            for _ in range(enemy_count):
+                enemy_class = random.choice(enemy_types)
+                enemy = enemy_class()
+
+                if player_level > 1:
+                    enemy.health = int(enemy.health * (1 + 0.1 * player_level))
+                    enemy.strength = int(enemy.strength * (1 + 0.05 * player_level))
+                    enemy.xp_value = int(enemy.xp_value * (1 + 0.1 * player_level))
+
+                enemy.coord = (randint(1, 18), randint(1, 38))
+                self.enemies.append(enemy)
+        else:
+            self.create_enemy(self.player.palier)
+
+        # Reset game state
+        self.game_over = False
+        self.is_final_boss = False
+        self.current_turn = "player"
+        self.action_type = None
+        self.selected_cell = None
+

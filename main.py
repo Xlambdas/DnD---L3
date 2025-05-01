@@ -11,7 +11,7 @@ Functions:
     - open_game(name): Opens the game for the specified player.
 
 Usage:
-    Run this script to start the game for a player.
+    Run this script to start the game.
 """
 from ezTK import *
 from player import get_all_data

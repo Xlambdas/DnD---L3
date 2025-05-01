@@ -12,6 +12,7 @@
                 "Lockpick"
             ],
             "xp": 750,
+            "palier": 2,
             "gold": 200
         },
         {
@@ -26,6 +27,7 @@
                 "Mana Potion"
             ],
             "xp": 900,
+            "palier": 2,
             "gold": 150
         },
         {
