@@ -1,4 +1,3 @@
-
 # Avanccé du travail
 
 ## fait sur la premiere semaine
@@ -53,12 +52,6 @@ Alignement : Un personnage possède une éthique (ex. : Loyal Bon, Chaotique Mau
 
 Évolution du personnage : L’expérience gagnée permet de monter en niveau et d’améliorer les compétences, capacités et caractéristiques.
 
-## Questions pour le prof
-
-comment faire un choix avec deux listes (classes et races) ? comment gerer loop et window ?
-
-...
-
 ## Liste des choses a faire
 
 <!-- Todo -->
@@ -66,19 +59,5 @@ comment faire un choix avec deux listes (classes et races) ? comment gerer loop 
 Urgent :
 
 Autre / objectifs :
-
-- personnage
-  - create perso
-  - save to database
-  - UPDATE : if he already exist : return (waw man, the gamer already exist, find another name nigger)
-  - UPDATE :
-    - delete player
-- Jet de dé
-- Caractéristique (force, dextérité, constitution, intelligence, sagesse, charisme)
-- Bonus / malus
-- classes / niveau
-- combat au tour par tour
-- sauvegarde
-- evolution du personnage
 
 ...

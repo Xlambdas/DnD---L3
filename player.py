@@ -1,176 +1,152 @@
+# player.py
 import json
 import os
-from ezTK import *
-#from other files :
-from race import get_all_data, Race
-from classe import Classe
+import random
+from race import Human
+from classe import Warrior
 
-class Player ():
+def get_all_data(filename='players_database.json'):
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = {}
+    else:
+        data = {}
+    return data
+
+class Player():
     def __init__(self, name):
         """
-            require :
-                - name : str : name of the player
-                - classe : str : class of the player (in a predetermined list)
-                - race : str : race of the player (by default = Human)
-            Ensures : get all the information about the player in the database.
+            Initialize a player with their name and load their data.
         """
         self.name = name
         info_player = self.get_bdd()
-        self.race = info_player['race']
-        self.classe = info_player['classe']
+        self.race_name = info_player['race']
+        self.classe_name = info_player['classe']
         self.xp = info_player['xp']
-        self.info_race = Race(self.race)
-        self.info_classe = Classe(self.classe)
-        self.actions = 2
+        self.health = info_player['health']
+        self.palier = info_player['palier']
 
-    def descr(self):
-        return {"name": self.name, "level": 1, "classe": self.classe, "race": self.race}
+        self.level = self.calculate_level()
+        self.xp_to_next_level = 100 * self.level
+
+        race_class = globals().get(self.race_name)
+        self.info_race = race_class() if race_class else Human()
+        classe_class = globals().get(self.classe_name)
+        self.info_classe = classe_class() if classe_class else Warrior()
+
+        self.actions = 2
+        self.coord = (random.randrange(0,10), random.randrange(0,3))
+
+    def calculate_level(self):
+        """Calcule le niveau en fonction de l'XP"""
+        level = 1
+        xp_threshold = 100
+
+        while self.xp >= xp_threshold:
+            level += 1
+            xp_threshold += 100 * level
+        return level
+
+    def gain_xp(self, amount):
+        """Ajoute de l'XP au joueur et gère la montée de niveau"""
+        old_level = self.level
+        self.xp += amount
+
+        new_level = self.calculate_level()
+        if new_level > old_level:
+            self.level = new_level
+            self.xp_to_next_level = 100 * self.level
+            for _ in range(new_level - old_level):
+                self.health += 5
 
     def get_bdd(self):
-        """
-            Get all the data concerning the player from the database.
-            required : name : str : name of the player.
-            Ensures : get all the infos about the current player from the database.
-        """
+        """Get player data from database"""
         data = get_all_data()
-        # print("class player - data :",data)
         for player in data['players']:
             if player['name'] == self.name:
                 return player
-        if not self.name in data['players']:
-            print("You can't play, the name enter is not in the Database...")
-            return {}
-        return data['players']
+        print("You can't play, the name enter is not in the Database...")
+        return {}
 
-    def set_bdd(self): # todo -
-        """
-            Set all the data concerning the player in the database.
-            required : name : str : name of the player.
-            Ensures : set all the infos about the current player in the database.
-        """
-        pass
+    def set_bdd(self):
+        """Set player data in database"""
+        data = get_all_data()
+        for player in data.get('players', []):
+            if player['name'] == self.name:
+                player['xp'] = self.xp
+                player['palier'] = self.palier
+                player['health'] = self.health
+                player['level'] = self.level
+                player['race'] = self.race_name
+                player['classe'] = self.classe_name
+                break
 
-    def action(self, type):
-        """
-            Perform an action based on the type of action.
-            required : type : str : type of action (attack, heal, etc.)
-            Ensures : perform the action and return the result.
-        """
-        if self.actions <= 0:
-            print("No actions left.")
-            return None
-        self.actions -= 1
-        if type == "attack":
-            return self.attack()
-        elif type == "mouv":
-            return self.mouv()
-        else:
-            print("Unknown action type.")
-            return None
+        with open('players_database.json', 'w') as f:
+            json.dump(data, f, indent=4)
+        return
 
-    def attack(self):
-        """
-            Calculate the attack bonus of the player.
-            Ensures : return the attack bonus of the player.
-        """
-        # base_attack = 10
-        print ("file player - attack")
-        pass
+    def bonus_range_mouv(self):
+        """Calculate a balanced bonus for the player's movement range."""
+        bonus_race = self.info_race.range_mouv()
+        bonus_classe = self.info_classe.range_mouv()
+        random_bonus = random.randint(1, 3)
+        bonus = random_bonus + bonus_race + bonus_classe
 
-    def mouv(self):
-        """
-            Calculate the movement of the player.
-            Ensures : return the movement of the player.
-        """
-        print("file player - mouv")
-        pass
+        max_bonus = 10
+        bonus = min(bonus, max_bonus)
+        print("class player - Bonus range mouvement:", bonus)
+        return bonus
 
+    def bonus_range_attack(self):
+        """Calculate a balanced bonus for the player's attack range."""
+        bonus_race = self.info_race.range_attack()
+        bonus_classe = self.info_classe.range_attack()
+        random_bonus = random.randint(1, 3)
+        bonus = random_bonus + bonus_race + bonus_classe
 
-# --- | brouillon | -----------------------------------------------
+        max_bonus = 10
+        bonus = min(bonus, max_bonus)
+        print("class player - Bonus range attack:", bonus)
+        return bonus
 
+    def bonus_attack(self):
+        """Calculate a balanced bonus for the player's attack."""
+        base_bonus = random.randint(1, 6)
+        level_bonus = int(self.level * 2)
+        bonus_race = self.info_race.attack(base_bonus)
+        bonus_classe = self.info_classe.attack()
+        total_bonus = base_bonus + level_bonus + bonus_race + bonus_classe
 
+        max_bonus = 20
+        total_bonus = min(total_bonus, max_bonus)
 
+        print(f"class player - Bonus attack: {base_bonus} (base) + {level_bonus} (level) + {bonus_race} (race) + {bonus_classe} (class) = {total_bonus}")
+        return total_bonus
 
+    def bonus_defense(self):
+        """Calculate a balanced bonus for the player's defense."""
+        base_bonus = random.randint(1, 6)
+        level_bonus = int(self.level * 2)
+        bonus_race = self.info_race.defend()
+        bonus_classe = self.info_classe.defend()
+        total_bonus = base_bonus + level_bonus + bonus_race + bonus_classe
 
-# # print("test create player : ", create_player("testme", "Warrior", "Elf"))
+        max_bonus = 20
+        total_bonus = min(total_bonus, max_bonus)
 
-# # print ("test del player : ", delete_player("testme"))
+        print(f"class player - Bonus defense: {base_bonus} (base) + {level_bonus} (level) + {bonus_race} (race) + {bonus_classe} (class) = {total_bonus}")
+        return total_bonus
 
+    def defensed(self, damage):
+        """Defend against an attack."""
+        bonus = self.bonus_defense()
+        reduced_damage = max(0, damage - bonus)
+        self.health -= reduced_damage
 
-# # player = get_player("test_name")
-# # testPlayer = Player(player['name'], player['classe'], player['race'])
-
-# # print("show current player : ", testPlayer.descr())
-
-
-# # create_player_window()
-# plyer = Player("zdc")
-# # plyer.get_player()
-# print("show current player : ", plyer.descr())
-
-
-
-
-
-
-
-# def save_player(name, level, player_class, player_race):
-#     data = {"players": []}  # Initialize an empty data structure for players
-#     print("player creation - : ", data)
-#     # Read existing data from the JSON file
-#     with open('game_database.json', 'r') as f:
-#         data = json.load(f)
-
-#     # Generate a new ID for the player
-#     new_id = max(player['id'] for player in data['players']) + 1 if data['players'] else 1
-
-#     # Add the new player to the data
-#     data['players'].append({
-#         "id": new_id,
-#         "name": name,
-#         "level": level,
-#         "classe": player_class,
-#         "race": player_race
-#     })
-
-#     # Write updated data back to the JSON file
-#     with open('game_database.json', 'w') as f:
-#         json.dump(data, f, indent=4)
+        print(f"class player - {self.name} defends and takes {reduced_damage} damage!")
+        return reduced_damage
 
 
-
-
-
-# def delete_player(name):
-#         """Supprime un joueur en fonction de son nom."""
-#         data = get_all_data()
-#         # print("data",data)
-#         # data_player = {"players": data.get("players", [])}
-
-#         #  = get_players(name)
-#         # print("current players",data)
-
-#         # Filtrer les joueurs à garder
-#         new_players = [p for p in data["players"] if p["name"] != name]
-#         # print("new_players",new_players)
-#         # print(len(new_players), len(data["players"]))
-#         # Si aucun joueur n'a été supprimé, le nom n'existe pas
-
-
-#         if len(new_players) == len(data["players"]):
-#             print(f"❌ Player {name} not found.")
-#             return False
-
-#         # Sauvegarde les nouveaux joueurs
-#         data["players"] = new_players
-#         # print("all_data players",data["players"])
-#         # all_data["players"] = data["players"]
-#         # print("all_data",all_data)
-#         # data = all_data
-#         with open('players_database.json', 'w') as f:
-#             json.dump(data, f, indent=4)
-#         # Sauvegarde les données
-#         print(f"✅ Player {name} deleted successfully!")
-#         return True
-
-# --- | Zone de test | ---

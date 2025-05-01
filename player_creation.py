@@ -1,12 +1,11 @@
 import json
-import os
 from ezTK import *
-
 # from other files :
-from classe import get_all_classe_name
-from race import get_all_data
-from main import open_game
+from player import get_all_data
+from game import DNDGame
 
+all_classe = ["Warrior", "Mage", "Rogue", "Paladin", "Druid", "Bard", "Sorcerer", "Warlock"]
+all_race = ["Human", "Elf", "Dwarf", "Orc", "Halfling", "Gnome", "Tiefling"]
 
 def open_player_window(name):
     """
@@ -21,7 +20,6 @@ def open_player_window(name):
     player = next((p for p in players_info if p['name'] == name), None)
     if not player:
         return print(f"Player '{name}' not found.")
-    print("file : player_creation - player_info : ", player['name'])
 
     window = Win(title="Player Info", width=300, height=200)
     Label(window, text=f"Welcome to the game, {name}!", font=("Arial", 16), bg="lightblue")
@@ -59,13 +57,12 @@ def create_player_window():
             return
 
         player_classe = classe_entry.get(classe_entry.curselection())
-        data_players.append({"name": name, "level": 1, "classe": player_classe, "race": 'Human', "health": 100, "mana": 100, "inventory": [], "xp": 0})
+        data_players.append({"name": name, "level": 1, "classe": player_classe, "race": 'Human', "health": 100, "mana": 100, "inventory": [], "xp": 0, "palier": 1})
         data ["players"]= data_players
         with open('players_database.json', 'w') as f:
             json.dump(data, f, indent=4)
             print(f"Player {name} added successfully!")
         open_game(name)
-
 
     # Create the window for the player creation :
     window = Win(title="Create Player", width=500, height=400)
@@ -75,7 +72,7 @@ def create_player_window():
     Label(window, text="Choose your Class:")
     classe_entry = Listbox(window, width=20, height=5, scroll=True)
 
-    for item in get_all_classe_name():
+    for item in all_classe:
         classe_entry.insert('end', item)
 
     Button(window, text="Create Player", command=submit)
@@ -83,13 +80,10 @@ def create_player_window():
 
 # ---------------------------------------------------
 
+def open_game(name):
+    """
+        Open the game for the selected player.
+    """
+    print(f"Opening game for {name}")
+    game = DNDGame(name)
 
-
-
-
-# --- | brouillon | -----------------------------------------------
-
-# --- | Zone de test | ---
-
-# open_player_window('fg')
-# create_player_window()

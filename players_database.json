@@ -12,6 +12,7 @@
                 "Lockpick"
             ],
             "xp": 750,
+            "palier": 2,
             "gold": 200
         },
         {
@@ -26,243 +27,63 @@
                 "Mana Potion"
             ],
             "xp": 900,
+            "palier": 2,
             "gold": 150
-        },
-        {
-            "name": "test_name",
-            "level": 1,
-            "classe": "Warrior",
-            "race": "Elf",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "name": "L_exterminateur_de_race",
-            "level": 1,
-            "classe": "Warrior",
-            "race": "Elf",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "name": "drfgbhnj",
-            "level": 1,
-            "classe": "Monk",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
         },
         {
             "name": "fg",
             "level": 1,
             "classe": "Necromancer",
             "race": "Human",
-            "health": 100,
+            "health": 118,
             "mana": 100,
             "inventory": [],
-            "xp": 0
+            "xp": 45,
+            "palier": 2
         },
         {
-            "name": "qsdvg",
+            "name": "im cooked",
             "level": 1,
-            "classe": "Bard",
+            "classe": "Warrior",
+            "race": "Human",
+            "health": 96,
+            "mana": 100,
+            "inventory": [],
+            "xp": 45,
+            "palier": 2
+        },
+        {
+            "name": "let's try it",
+            "level": 1,
+            "classe": "Druid",
             "race": "Human",
             "health": 100,
             "mana": 100,
             "inventory": [],
-            "xp": 0
+            "xp": 0,
+            "palier": 1
         },
         {
-            "name": "sxdvgbh",
-            "level": 1,
-            "classe": "Sorcerer",
+            "name": "erfvcbvfde",
+            "level": 3,
+            "classe": "Mage",
             "race": "Human",
-            "health": 100,
+            "health": 110,
             "mana": 100,
             "inventory": [],
-            "xp": 0
+            "xp": 570,
+            "palier": 5
         },
         {
-            "name": "rty",
-            "level": 1,
-            "classe": "Bard",
+            "name": "ah ca ne marche pas",
+            "level": 2,
+            "classe": "Paladin",
             "race": "Human",
-            "health": 100,
+            "health": 6,
             "mana": 100,
             "inventory": [],
-            "xp": 0
-        }
-    ],
-    "classe": [
-        {
-            "name": "Warrior",
-            "strength": 40,
-            "endurance": 30,
-            "bonus": {
-                "strength": 10,
-                "endurance": 5
-            }
-        },
-        {
-            "name": "Monk",
-            "strength": 35,
-            "endurance": 25,
-            "bonus": {
-                "dexterity": 4,
-                "wisdom": 3
-            }
-        },
-        {
-            "name": "Necromancer",
-            "strength": 20,
-            "endurance": 20,
-            "bonus": {
-                "dark_magic": 6,
-                "summoning": 3
-            }
-        },
-        {
-            "name": "Bard",
-            "strength": 25,
-            "endurance": 20,
-            "bonus": {
-                "charisma": 5,
-                "inspiration": 3
-            }
-        },
-        {
-            "name": "Mage",
-            "strength": 20,
-            "endurance": 25,
-            "bonus": {
-                "intelligence": 5,
-                "mana": 3
-            }
-        },
-        {
-            "name": "Rogue",
-            "strength": 30,
-            "endurance": 20,
-            "bonus": {
-                "dexterity": 5,
-                "stealth": 3
-            }
-        },
-        {
-            "name": "Cleric",
-            "strength": 25,
-            "endurance": 30,
-            "bonus": {
-                "wisdom": 5,
-                "healing": 3
-            }
-        },
-        {
-            "name": "Paladin",
-            "strength": 35,
-            "endurance": 40,
-            "bonus": {
-                "charisma": 5,
-                "holy_power": 3
-            }
-        },
-        {
-            "name": "Ranger",
-            "strength": 30,
-            "endurance": 25,
-            "bonus": {
-                "dexterity": 4,
-                "marksmanship": 3
-            }
-        },
-        {
-            "name": "Barbarian",
-            "strength": 45,
-            "endurance": 30,
-            "bonus": {
-                "strength": 6,
-                "rage": 3
-            }
-        },
-        {
-            "name": "Sorcerer",
-            "strength": 20,
-            "endurance": 20,
-            "bonus": {
-                "magic_power": 6,
-                "arcane_knowledge": 3
-            }
-        }
-    ],
-    "race": [
-        {
-            "name": "Elf",
-            "base_health": 30,
-            "bonus": {
-                "Dexterity": 2,
-                "Perception": 1
-            }
-        },
-        {
-            "name": "Dwarf",
-            "base_health": 25,
-            "bonus": {
-                "Constitution": 2,
-                "Resilience": 1
-            }
-        },
-        {
-            "name": "Human",
-            "base_health": 30,
-            "bonus": {
-                "Versatility": 1
-            }
-        },
-        {
-            "name": "Halfling",
-            "base_health": 25,
-            "bonus": {
-                "Dexterity": 2,
-                "Luck": 1
-            }
-        },
-        {
-            "name": "Orc",
-            "base_health": 30,
-            "bonus": {
-                "Strength": 2,
-                "Intimidation": 1
-            }
-        },
-        {
-            "name": "Tiefling",
-            "base_health": 30,
-            "bonus": {
-                "Charisma": 2,
-                "Infernal Resistance": 1
-            }
-        },
-        {
-            "name": "Gnome",
-            "base_health": 25,
-            "bonus": {
-                "Intelligence": 2,
-                "Craftiness": 1
-            }
-        },
-        {
-            "name": "Dragonborn",
-            "base_health": 30,
-            "bonus": {
-                "Strength": 2,
-                "Draconic Ancestry": 1
-            }
+            "xp": 285,
+            "palier": 6
         }
     ]
 }
