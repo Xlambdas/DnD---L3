@@ -60,13 +60,13 @@
         },
         {
             "name": "fg",
-            "level": 2,
+            "level": 4,
             "classe": "Necromancer",
             "race": "Human",
-            "health": 1,
+            "health": 104,
             "mana": 100,
             "inventory": [],
-            "xp": 0,
+            "xp": 600,
             "palier": 5
         }
     ]

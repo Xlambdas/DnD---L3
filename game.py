@@ -109,6 +109,9 @@ class DNDGame:
         # Reset player health and actions
         self.player.health = 105  # self.player.max_health
         self.player.actions = 2   # self.player.max_actions
+
+        if self.game_over :
+            keep_progress = True
         
         if keep_progress:
             # Continue from current palier (after death)
@@ -118,7 +121,7 @@ class DNDGame:
             # Start from beginning (after winning)
             self.player.palier = 1
             # XP is reset here, but caller will restore it if needed
-            self.player.xp = 0
+            self.player.xp = saved_xp#0
         
         # Reset player position to starting position
         self.player.coord = (9, 39)
@@ -166,7 +169,10 @@ class DNDGame:
         self.current_turn = "player"
         self.action_type = None
         self.selected_cell = None    
-
+        
+        # Ensure that the enemies and game instance references are updated in the actions handler
+        if hasattr(self, 'act') and self.act is not None:
+            self.act.enemies = self.enemies
 
     def create_enemy(self, palier):
         """
@@ -202,7 +208,8 @@ class DNDGame:
             except Exception as e:
                 print(f"Error logging action: {e}")
                 # Continue sans planter en cas d'erreur
-                
+        
+
     def new_palier(self, palier):
 
         """

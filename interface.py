@@ -184,6 +184,7 @@ class GameInterface:
             for widget in self.win.winfo_children():
                 if widget.winfo_exists():
                     widget.destroy()
+            self.win.exit()
         
         # Réinitialiser l'historique des actions avant de recréer l'UI
         self.action_history = []
@@ -199,6 +200,10 @@ class GameInterface:
         
         # Recréer l'interface complètement
         self.interface()
+
+        # Force the end of player's first turn to trigger enemy actions
+        # This will cause enemies to take their turn automatically
+        self.root.after(1000, lambda: self.game.end_turn())
 
     def show_game_over(self):
         """Display game over screen and provide restart option"""
@@ -290,22 +295,15 @@ class GameInterface:
 
     def log_action(self, message):
         """Log actions to the event log."""
-        # Vérifier si l'attribut existe et l'initialiser si nécessaire
         if not hasattr(self, 'action_history'):
             self.action_history = []
 
-        # Append the action to history and keep only the last 9
+        # Append the action to history and keep only the last 5
         self.action_history.append(message)
         self.action_history = self.action_history[-9:]
 
-        # Vérifier si le widget existe avant de mettre à jour son texte
-        if hasattr(self, 'show_event') and self.show_event.winfo_exists():
-            try:
-                self.show_event['text'] = "\n".join(self.action_history)
-            except Exception as e:
-                print(f"Error updating event log: {e}")
-                # Si erreur, on continue sans planter
-                pass
+        # Display the last 5 actions
+        self.show_event['text'] = "\n".join(self.action_history)
 
     def update_boss_display(self):
         """Update the display to show current game state"""
