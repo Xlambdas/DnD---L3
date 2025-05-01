@@ -24,6 +24,7 @@ class GameInterface:
         }
 
         self.MAX_PALIER = 5
+        self.action_history = []
 
 
     def interface(self):
@@ -172,17 +173,43 @@ class GameInterface:
         self.action_panel.config(text=f"Actions left: {self.player.actions}")
         return
 
+    def restart_game(self):
+        """Restart the game by reinitializing everything"""
+        # Créer une copie du nom du joueur actuel
+        player_name = self.player.name
+        
+        # Nettoyer la fenêtre principale
+        if hasattr(self, 'win') and self.win.winfo_exists():
+            # Supprimer tous les widgets enfants
+            for widget in self.win.winfo_children():
+                if widget.winfo_exists():
+                    widget.destroy()
+        
+        # Réinitialiser l'historique des actions avant de recréer l'UI
+        self.action_history = []
+        
+        # Réinitialiser le jeu en premier (avant de recréer les widgets)
+        # Important: Modifiez reset_game pour qu'il n'utilise pas l'UI avant qu'elle ne soit recréée
+        self.game.reset_game(skip_ui_updates=True)
+        
+        # Mettre à jour les références
+        self.palier = self.game.player.palier
+        self.player = self.game.player
+        self.enemies = self.game.enemies
+        
+        # Recréer l'interface complètement
+        self.interface()
+
     def show_game_over(self):
         """Display game over screen and provide restart option"""
-        self.game_over = True
+        self.game.game_over = True
 
         # Clear the main window
         for widget in self.win.winfo_children():
             widget.destroy()
 
         # Create game over screen
-        game_over_frame = Frame(self.win, width=800, height=600, bg='black',fold=3)
-
+        game_over_frame = Frame(self.win, width=800, height=600, bg='black', fold=3)
 
         # Game over message
         Label(game_over_frame, text="GAME OVER", font="Arial 36 bold", fg="red", bg="black")
@@ -194,11 +221,11 @@ class GameInterface:
         Label(stats_frame, text=f"Class: {self.player.classe_name}", font="Arial 14", fg="white", bg="black")
         Label(stats_frame, text=f"Race: {self.player.race_name}", font="Arial 14", fg="white", bg="black")
 
-        # Button to restart
-        Button(game_over_frame, text="Play Again", font="Arial 16 bold", bg="red", fg="green") #, command=self.restart_game)
+        # Button to restart - connect to restart_game method
+        Button(game_over_frame, text="Play Again", font="Arial 16 bold", bg="red", fg="green", command=self.restart_game)
 
         # Button to quit
-        Button(game_over_frame, text="Quit", font="Arial 16 bold", bg="gray", fg="red", command=lambda: self.win.exit())#win.destroy())
+        Button(game_over_frame, text="Quit", font="Arial 16 bold", bg="gray", fg="red", command=lambda: self.win.exit())
 
     def show_end_game(self):
         """Display the end game screen when the player wins."""
@@ -219,7 +246,7 @@ class GameInterface:
         Label(stats_frame, text=f"Class: {self.player.classe_name}", font="Arial 14", fg="white", bg="black")
         Label(stats_frame, text=f"Race: {self.player.race_name}", font="Arial 14", fg="white", bg="black")
 
-        # Button to restart
+        # Button to restart - connect to restart_game method
         Button(end_game_frame, text="Play Again", font="Arial 16 bold", bg="green", fg="white", command=self.restart_game)
 
         # Button to quit
@@ -227,7 +254,7 @@ class GameInterface:
 
     def on_inout(self, widget, code, mods):
         """Handle mouse in/out events."""
-        if self.game.game_over:
+        if hasattr(self.game, 'game_over') and self.game.game_over:
             return None
 
         if not hasattr(self, 'status_case') or not self.status_case.winfo_exists():
@@ -263,16 +290,22 @@ class GameInterface:
 
     def log_action(self, message):
         """Log actions to the event log."""
+        # Vérifier si l'attribut existe et l'initialiser si nécessaire
         if not hasattr(self, 'action_history'):
             self.action_history = []
 
-        # Append the action to history and keep only the last 5
+        # Append the action to history and keep only the last 9
         self.action_history.append(message)
         self.action_history = self.action_history[-9:]
 
-        # Display the last 5 actions
-        self.show_event['text'] = "\n".join(self.action_history)
-
+        # Vérifier si le widget existe avant de mettre à jour son texte
+        if hasattr(self, 'show_event') and self.show_event.winfo_exists():
+            try:
+                self.show_event['text'] = "\n".join(self.action_history)
+            except Exception as e:
+                print(f"Error updating event log: {e}")
+                # Si erreur, on continue sans planter
+                pass
 
     def update_boss_display(self):
         """Update the display to show current game state"""
@@ -304,4 +337,3 @@ class GameInterface:
             self.status_label.config(text="No actions left!")
             self.game.end_turn()
             return
-

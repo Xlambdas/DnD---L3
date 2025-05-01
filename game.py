@@ -93,6 +93,80 @@ class DNDGame:
             self.current_turn = "player"
             self.ui.status_label.config(text="Player's turn")
 
+    def reset_game(self, keep_progress=False, skip_ui_updates=False):
+        """
+        Reset the game state to start a new game
+        
+        Args:
+            keep_progress (bool): If True, keep the player's palier and just restore health
+                                If False, reset to palier 1 (but XP will be managed by caller)
+            skip_ui_updates (bool): If True, skip any UI updates during reset
+        """
+        # Save XP and palier in case we need them
+        saved_xp = self.player.xp
+        saved_palier = self.player.palier
+        
+        # Reset player health and actions
+        self.player.health = 105  # self.player.max_health
+        self.player.actions = 2   # self.player.max_actions
+        
+        if keep_progress:
+            # Continue from current palier (after death)
+            self.player.palier = saved_palier
+            self.player.xp = saved_xp
+        else:
+            # Start from beginning (after winning)
+            self.player.palier = 1
+            # XP is reset here, but caller will restore it if needed
+            self.player.xp = 0
+        
+        # Reset player position to starting position
+        self.player.coord = (9, 39)
+        
+        # Reset enemy list with new enemies
+        self.enemies = []
+        
+        # Créer les ennemis, mais sans mettre à jour l'UI
+        if skip_ui_updates:
+            enemy_count = 3 * self.player.palier
+            player_level = self.player.level
+            
+            # Déterminer les types d'ennemis basés sur le palier
+            from enemy import Cutiie, Goblin, Orc
+            
+            enemy_types = []
+            if self.player.palier <= 2:
+                enemy_types = [Cutiie]
+            elif self.player.palier <= 3:
+                enemy_types = [Cutiie, Goblin]
+            else:
+                enemy_types = [Cutiie, Goblin, Orc]
+                
+            # Créer les ennemis sans mettre à jour l'UI
+            for _ in range(enemy_count):
+                enemy_class = random.choice(enemy_types)
+                enemy = enemy_class()
+                
+                # Ajuster les statistiques en fonction du niveau
+                if player_level > 1:
+                    enemy.health = int(enemy.health * (1 + 0.1 * player_level))
+                    enemy.strength = int(enemy.strength * (1 + 0.05 * player_level))
+                    enemy.xp_value = int(enemy.xp_value * (1 + 0.1 * player_level))
+                    
+                # Position aléatoire pour l'ennemi (à éviter les murs et le joueur)
+                enemy.coord = (randint(1, 18), randint(1, 38))
+                self.enemies.append(enemy)
+        else:
+            # Utiliser la méthode standard avec mise à jour de l'UI
+            self.create_enemy(self.player.palier)
+        
+        # Reset game state
+        self.game_over = False
+        self.is_final_boss = False
+        self.current_turn = "player"
+        self.action_type = None
+        self.selected_cell = None    
+
 
     def create_enemy(self, palier):
         """
@@ -110,7 +184,6 @@ class DNDGame:
             enemy_types = [Cutiie, Goblin, Orc]
         enemy_count = 3 * palier
 
-
         for _ in range(enemy_count):
             enemy_class = random.choice(enemy_types)
             enemy = enemy_class()
@@ -121,10 +194,15 @@ class DNDGame:
                 enemy.strength = int(enemy.strength * (1 + 0.05 * player_level))
                 enemy.xp_value = int(enemy.xp_value * (1 + 0.1 * player_level))
             self.enemies.append(enemy)
-    
-        self.ui.log_action(f"{enemy_count} nouveaux ennemis sont apparus!")
-
-
+        
+        # Vérifier si l'interface est disponible avant de mettre à jour le log
+        if hasattr(self, 'ui') and self.ui is not None:
+            try:
+                self.ui.log_action(f"{enemy_count} nouveaux ennemis sont apparus!")
+            except Exception as e:
+                print(f"Error logging action: {e}")
+                # Continue sans planter en cas d'erreur
+                
     def new_palier(self, palier):
 
         """
