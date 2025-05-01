@@ -76,14 +76,14 @@
         },
         {
             "name": "ah ca ne marche pas",
-            "level": 1,
+            "level": 2,
             "classe": "Paladin",
             "race": "Human",
-            "health": 1,
+            "health": 6,
             "mana": 100,
             "inventory": [],
-            "xp": 90,
-            "palier": 3
+            "xp": 285,
+            "palier": 6
         }
     ]
 }

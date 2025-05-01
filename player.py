@@ -26,7 +26,7 @@ class Player():
         self.race_name = info_player['race']
         self.classe_name = info_player['classe']
         self.xp = info_player['xp']
-        self.health = 0#info_player['health']
+        self.health = info_player['health']
         self.palier = info_player['palier']
 
         self.level = self.calculate_level()

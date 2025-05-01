@@ -108,7 +108,7 @@ class DNDGame:
         player_level = self.player.level
 
         if self.player.palier <= 2:
-                enemy_types = [Cutiie]
+            enemy_types = [Cutiie]
         elif self.player.palier <= 3:
             enemy_types = [Cutiie, Goblin]
         elif self.player.palier <= 4:
@@ -117,7 +117,7 @@ class DNDGame:
             enemy_types = [Dragon, Vampire]
         else:
             enemy_types = [Boss]
-        enemy_count = 3 * palier
+        enemy_count = 3 * palier if palier < 6 else 1
 
 
         for _ in range(enemy_count):
@@ -132,7 +132,7 @@ class DNDGame:
 
         if hasattr(self, 'ui') and self.ui is not None:
             try:
-                self.ui.log_action(f"{enemy_count} nouveaux ennemis sont apparus!")
+                self.ui.log_action(f"{enemy_count} new enemies !")
             except Exception as e:
                 print(f"Error logging action: {e}")
 

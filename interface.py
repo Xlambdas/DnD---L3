@@ -126,6 +126,9 @@ class GameInterface:
                     self.cells[y][x].config(bg="red", border=1)
                 elif isinstance(enemy, Cutiie):
                     self.cells[y][x].config(bg="darkgreen", border=1)
+                elif isinstance(enemy, Boss):
+                    self.cells[y][x].config(bg="#FF4500", border=1)
+
 
         if self.player.actions <= 0:
             self.status_label.config(text="No actions left!")

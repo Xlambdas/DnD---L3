@@ -155,7 +155,8 @@ class Boss(Enemy):
             self.__attack()
             self.ability = None
         else:
-            self.ability = random.choice(self.special_abilities)
+            # self.ability = random.choice(self.special_abilities)
+            self.ability = "Fireball"
             self.dmg = self.__next_attack()
         return
 
