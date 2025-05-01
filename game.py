@@ -121,7 +121,7 @@ class DNDGame:
 
 
         for _ in range(enemy_count):
-            enemy_class = random.choice(enemy_types)
+            enemy_class = choice(enemy_types)
             enemy = enemy_class()
 
             if player_level > 1:
@@ -213,12 +213,15 @@ class DNDGame:
         self.player.health = 105
         self.player.actions = 2
 
+        if self.game_over :
+            keep_progress = True
+
         if keep_progress:
             self.player.palier = saved_palier
             self.player.xp = saved_xp
         else:
             self.player.palier = 1
-            self.player.xp = 0
+            self.player.xp = saved_xp#0
 
         self.player.coord = (9, 39)
         self.enemies = []
@@ -239,7 +242,7 @@ class DNDGame:
                 enemy_types = [Boss]
 
             for _ in range(enemy_count):
-                enemy_class = random.choice(enemy_types)
+                enemy_class = choice(enemy_types)
                 enemy = enemy_class()
 
                 if player_level > 1:

@@ -68,11 +68,11 @@
             "level": 3,
             "classe": "Mage",
             "race": "Human",
-            "health": 110,
+            "health": 86,
             "mana": 100,
             "inventory": [],
             "xp": 570,
-            "palier": 5
+            "palier": 6
         }
     ]
 }
