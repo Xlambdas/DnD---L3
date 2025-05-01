@@ -29,45 +29,48 @@
             "gold": 150
         },
         {
-            "name": "test_name",
-            "level": 1,
-            "classe": "Warrior",
-            "race": "Elf",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "name": "L_exterminateur_de_race",
-            "level": 1,
-            "classe": "Warrior",
-            "race": "Elf",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
-            "name": "drfgbhnj",
-            "level": 1,
-            "classe": "Monk",
-            "race": "Human",
-            "health": 100,
-            "mana": 100,
-            "inventory": [],
-            "xp": 0
-        },
-        {
             "name": "fg",
-            "level": 5,
+            "level": 1,
             "classe": "Necromancer",
             "race": "Human",
-            "health": 105,
+            "health": 118,
             "mana": 100,
             "inventory": [],
-            "xp": 1433,
+            "xp": 45,
+            "palier": 2
+        },
+        {
+            "name": "im cooked",
+            "level": 1,
+            "classe": "Warrior",
+            "race": "Human",
+            "health": 96,
+            "mana": 100,
+            "inventory": [],
+            "xp": 45,
+            "palier": 2
+        },
+        {
+            "name": "let's try it",
+            "level": 1,
+            "classe": "Druid",
+            "race": "Human",
+            "health": 100,
+            "mana": 100,
+            "inventory": [],
+            "xp": 0,
             "palier": 1
+        },
+        {
+            "name": "erfvcbvfde",
+            "level": 3,
+            "classe": "Mage",
+            "race": "Human",
+            "health": 110,
+            "mana": 100,
+            "inventory": [],
+            "xp": 570,
+            "palier": 5
         }
     ]
 }

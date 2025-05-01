@@ -36,59 +36,36 @@ class Player():
 
         # Create race object - use specific class if available
         race_class = globals().get(self.race_name)
-        self.info_race = race_class() if race_class else BaseRace("Human")
+        self.info_race = race_class() if race_class else Human()
         # Create class object - use specific class if available
         classe_class = globals().get(self.classe_name)
-        self.info_classe = classe_class() if classe_class else BaseClasse("Warrior")
+        self.info_classe = classe_class() if classe_class else Warrior()
 
         self.actions = 2
         self.coord = (random.randrange(0,10), random.randrange(0,3))
 
-        # Référence à l'UI (sera définie plus tard)
-        self.ui = None
-    
-    def set_ui(self, ui):
-        """Définit la référence à l'interface utilisateur"""
-        self.ui = ui
-    
     def calculate_level(self):
         """Calcule le niveau en fonction de l'XP"""
         # Formule: chaque niveau nécessite 100*niveau précédent XP
         level = 1
         xp_threshold = 100
-        
+
         while self.xp >= xp_threshold:
             level += 1
             xp_threshold += 100 * level
-            
         return level
-    
+
     def gain_xp(self, amount):
         """Ajoute de l'XP au joueur et gère la montée de niveau"""
         old_level = self.level
         self.xp += amount
-        
-        if self.ui:
-            self.ui.log_action(f"Vous gagnez {amount} XP!")
-        
-        # Recalculer le niveau
+
         new_level = self.calculate_level()
-        
-        # Si montée de niveau
         if new_level > old_level:
             self.level = new_level
             self.xp_to_next_level = 100 * self.level
-            # Bonus de statistiques pour chaque niveau gagné
             for _ in range(new_level - old_level):
-                self.health += 5  # Augmente les PV à chaque niveau
-            
-            if self.ui:
-                self.ui.log_action(f"Vous montez au niveau {self.level}!")
-                self.ui.log_action(f"Vos PV maximum augmentent de {5 * (new_level - old_level)}!")
-        
-        # Sauvegarder les modifications
-        self.set_bdd()
-
+                self.health += 5
 
     def descr(self):
         return {"name": self.name, "level": 1, "classe": self.classe_name, "race": self.race_name}
@@ -111,54 +88,74 @@ class Player():
                 player['palier'] = self.palier
                 player['health'] = self.health
                 player['level'] = self.level
+                player['race'] = self.race_name
+                player['classe'] = self.classe_name
                 break
-        else:
-            # If player not found, add new player data
-            pass
 
-        # Save updated data back to the file
         with open('players_database.json', 'w') as f:
             json.dump(data, f, indent=4)
+        return
 
-    def bonus_range_mouv (self):
-        """randomly take a number between 1 and 6 for the bonus of mouvement of the player
-        return the bonus of movement"""
-        bonus = random.randint(1, 3) + 40
-        print ("bonus range mouvement : ", bonus)
+    def bonus_range_mouv(self):
+        """Calculate a balanced bonus for the player's movement range."""
+        bonus_race = self.info_race.range_mouv()
+        bonus_classe = self.info_classe.range_mouv()
+        random_bonus = random.randint(1, 3)
+        bonus = random_bonus + bonus_race + bonus_classe
+
+        max_bonus = 10
+        bonus = min(bonus, max_bonus)
+
+        print("Bonus range mouvement:", bonus)
         return bonus
 
-    def bonus_range_attack (self):
-        """randomly take a number between 1 and 6 for the bonus of mouvement of the player
-        return the bonus of movement"""
-        bonus = random.randint(1, 3) + 1
-        print ("bonus range attack : ", bonus)
+    def bonus_range_attack(self):
+        """Calculate a balanced bonus for the player's attack range."""
+        bonus_race = self.info_race.range_attack()
+        bonus_classe = self.info_classe.range_attack()
+        random_bonus = random.randint(1, 3)
+        bonus = random_bonus + bonus_race + bonus_classe
+
+        max_bonus = 10
+        bonus = min(bonus, max_bonus)
+
+        print("Bonus range attack:", bonus)
         return bonus
 
-    def bonus_attack (self):
-        """randomly take a number between 1 and 6 for the bonus of attack of the player
-        return the bonus of attack"""
-        base_bonus = random.randint(1, 3) + 1
-        level_bonus = int(self.level * 0.5)  # +0.5 dégâts par niveau
-        total_bonus = base_bonus + level_bonus
-        print(f"Bonus d'attaque: {base_bonus} (base) + {level_bonus} (level) = {total_bonus}")
+    def bonus_attack(self):
+        """Calculate a balanced bonus for the player's attack."""
+        base_bonus = random.randint(1, 6)
+        level_bonus = int(self.level * 2)
+        bonus_race = self.info_race.attack(base_bonus)
+        bonus_classe = self.info_classe.attack()
+        total_bonus = base_bonus + level_bonus + bonus_race + bonus_classe
+
+        max_bonus = 20
+        total_bonus = min(total_bonus, max_bonus)
+
+        print(f"Bonus attack: {base_bonus} (base) + {level_bonus} (level) + {bonus_race} (race) + {bonus_classe} (class) = {total_bonus}")
         return total_bonus
 
-    def bonus_defense (self):
-        """randomly take a number between 1 and 6 for the bonus of defense of the player
-        return the bonus of defense"""
-        base_bonus = random.randint(1, 3) + 1
-        level_bonus = int(self.level * 0.3)  # +0.3 défense par niveau
-        total_bonus = base_bonus + level_bonus
-        print(f"Bonus de defense: {base_bonus} (base) + {level_bonus} (level) = {total_bonus}")
+    def bonus_defense(self):
+        """Calculate a balanced bonus for the player's defense."""
+        base_bonus = random.randint(1, 6)
+        level_bonus = int(self.level * 2)
+        bonus_race = self.info_race.defend()
+        bonus_classe = self.info_classe.defend()
+        total_bonus = base_bonus + level_bonus + bonus_race + bonus_classe
+
+        max_bonus = 20
+        total_bonus = min(total_bonus, max_bonus)
+
+        print(f"Bonus defense: {base_bonus} (base) + {level_bonus} (level) + {bonus_race} (race) + {bonus_classe} (class) = {total_bonus}")
         return total_bonus
 
-
-    def defensed (self, damage):
-        """Defend against an attack"""
-        # Calculate damage after endurance reduction
+    def defensed(self, damage):
+        """Defend against an attack."""
         bonus = self.bonus_defense()
         reduced_damage = max(0, damage - bonus)
         self.health -= reduced_damage
+
         print(f"{self.name} defends and takes {reduced_damage} damage!")
         return reduced_damage
 

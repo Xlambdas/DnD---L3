@@ -13,15 +13,36 @@ Functions:
 Usage:
     Run this script to start the game for a player.
 """
-from game import DNDGame
+from ezTK import *
+from player import get_all_data
+from player_creation import create_player_window, open_player_window
 
-def open_game(name):
+
+def get_all_players():
     """
-        Open the game for the selected player.
+        Get all players from the database.
+        Returns:
+            players: A list of dictionaries representing all players in the database.
     """
-    print(f"Opening game for {name}")
-    game = DNDGame(name)
+    data = get_all_data()
+    players = data['players']
+    return players
+
+
+def home_page():
+    """
+        Open the home page for the game. to get or create the player instance.
+    """
+    root = Win(title="Main Menu", width=300, height=200, bg='lightgray')
+    Label(root, text="Main menu", font="Arial 20 bold")
+    players = get_all_players()
+    Button(root, text="Create Player", command=lambda: {create_player_window(), root.quit()})
+    for player in players:
+        Button(root, text=f"Name: {player['name']}, Level: {player['level']}, Classe: {player['classe']}, Race: {player['race']}", command=lambda:{open_player_window(player['name']), root.quit()})
+    root.loop()
 
 
 if __name__ == "__main__":
-    open_game("fg")
+    open = home_page()
+
+
