@@ -20,7 +20,6 @@ def open_player_window(name):
     player = next((p for p in players_info if p['name'] == name), None)
     if not player:
         return print(f"Player '{name}' not found.")
-    print("file : player_creation - player_info : ", player['name'])
 
     window = Win(title="Player Info", width=300, height=200)
     Label(window, text=f"Welcome to the game, {name}!", font=("Arial", 16), bg="lightblue")

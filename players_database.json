@@ -68,11 +68,22 @@
             "level": 3,
             "classe": "Mage",
             "race": "Human",
-            "health": 86,
+            "health": 110,
             "mana": 100,
             "inventory": [],
             "xp": 570,
-            "palier": 6
+            "palier": 5
+        },
+        {
+            "name": "ah ca ne marche pas",
+            "level": 1,
+            "classe": "Paladin",
+            "race": "Human",
+            "health": 1,
+            "mana": 100,
+            "inventory": [],
+            "xp": 90,
+            "palier": 3
         }
     ]
 }

@@ -19,7 +19,8 @@ class GameInterface:
             2: {"bg1": "#d9c7a3", "bg2": "#e5d4b3", "border": "#8a7654"},
             3: {"bg1": "#a3b5d9", "bg2": "#b3c5e5", "border": "#546d8a"},
             4: {"bg1": "#d9a3a3", "bg2": "#e5b3b3", "border": "#8a5454"},
-            5: {"bg1": "#1f1f1f", "bg2": "#2a2a2a", "border": "#555555"}
+            5: {"bg1": "#1f1f1f", "bg2": "#2a2a2a", "border": "#555555"},
+            6: {"bg1": "#1a0d1a", "bg2": "#2a1a2a", "border": "#4d0026"}
         }
         self.MAX_PALIER = 6
         self.action_history = []

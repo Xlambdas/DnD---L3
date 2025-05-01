@@ -38,7 +38,7 @@ def home_page():
     players = get_all_players()
     Button(root, text="Create Player", command=lambda: {create_player_window(), root.quit()})
     for player in players:
-        Button(root, text=f"Name: {player['name']}, Level: {player['level']}, Classe: {player['classe']}, Race: {player['race']}", command=lambda:{open_player_window(player['name']), root.quit()})
+        Button(root, text=f"Name: {player['name']}, Level: {player['level']}, Classe: {player['classe']}, Race: {player['race']}", command=lambda p=player: (open_player_window(p['name']), root.quit())).pack()
     root.loop()
 
 

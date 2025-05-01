@@ -221,7 +221,7 @@ class DNDGame:
             self.player.xp = saved_xp
         else:
             self.player.palier = 1
-            self.player.xp = saved_xp#0
+            self.player.xp = saved_xp
 
         self.player.coord = (9, 39)
         self.enemies = []

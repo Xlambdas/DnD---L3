@@ -116,7 +116,9 @@ class GameActions:
                 position.append(enemy.coord)
                 dmg = self.player.defensed(data)
                 self.ui.get_damage()
+                self.ui.log_action(f"{enemy.name} attacks you !")
                 self.ui.log_action(f"You defend and take {dmg} damage!")
+                self.ui.update_game_display()
 
                 # Check if player died after this attack
 

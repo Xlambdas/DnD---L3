@@ -1,5 +1,6 @@
 import random
 
+
 class Enemy:
     """Base for all enemies"""
     def __init__(self, name, health, strength, endurance, xp_value = 5, range_att = 1):
@@ -78,7 +79,7 @@ class Enemy:
 
 class Cutiie(Enemy):
     def __init__(self):
-        super().__init__("Cutiie", health=3, strength=5, endurance=15, xp_value=15, range_att=1)
+        super().__init__("Cutiie", health=3, strength=6, endurance=15, xp_value=15, range_att=10)
 
 class Goblin(Enemy):
     """Goblin enemy - fast but weak"""
@@ -128,7 +129,7 @@ class Dragon(Enemy):
 
 class Boss(Enemy):
     def __init__(self):
-        super().__init__("Boss", health=1, strength=30, endurance=15, xp_value=150, range_att=10)
+        super().__init__("Boss", health=150, strength=30, endurance=15, xp_value=150, range_att=10)
         self.coord = (10, 20)
         self.special_abilities = ["Fireball", "meteor"]
         self.phase = 1
